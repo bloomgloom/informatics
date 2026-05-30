@@ -3,12 +3,216 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="refresh" content="0; url=./ch1/" />
     <title>정보 수업 콘텐츠</title>
+    <style>
+      :root {
+        --bg: #f7fafc;
+        --paper: #ffffff;
+        --ink: #172033;
+        --muted: #5c6b7d;
+        --line: #d7e0ea;
+        --blue: #2563eb;
+        --green: #159957;
+        --orange: #f28c28;
+        --red: #e84a5f;
+        --shadow: 0 24px 70px rgba(26, 41, 61, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+      }
+
+      .page {
+        width: min(1120px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 64px 0;
+      }
+
+      header {
+        margin-bottom: 34px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--blue);
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(44px, 7vw, 82px);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .subtitle {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: clamp(22px, 3vw, 32px);
+        font-weight: 800;
+      }
+
+      .chapters {
+        display: grid;
+        gap: 14px;
+      }
+
+      .chapter {
+        display: grid;
+        grid-template-columns: 116px 1fr auto;
+        align-items: center;
+        gap: 24px;
+        min-height: 118px;
+        border: 2px solid var(--line);
+        border-radius: 8px;
+        padding: 22px 26px;
+        background: var(--paper);
+        color: inherit;
+        text-decoration: none;
+        box-shadow: 0 10px 30px rgba(23, 32, 51, 0.06);
+      }
+
+      .chapter.active {
+        border-color: rgba(37, 99, 235, 0.35);
+      }
+
+      .chapter.disabled {
+        opacity: 0.72;
+      }
+
+      .number {
+        color: var(--blue);
+        font-size: 42px;
+        font-weight: 900;
+      }
+
+      .chapter:nth-child(2) .number {
+        color: var(--green);
+      }
+
+      .chapter:nth-child(3) .number {
+        color: var(--orange);
+      }
+
+      .chapter:nth-child(4) .number {
+        color: var(--red);
+      }
+
+      .chapter:nth-child(5) .number {
+        color: #7c3aed;
+      }
+
+      .title {
+        display: grid;
+        gap: 6px;
+      }
+
+      .title b {
+        font-size: clamp(28px, 3vw, 40px);
+        line-height: 1.12;
+      }
+
+      .title span {
+        color: var(--muted);
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .action {
+        border-radius: 999px;
+        padding: 12px 18px;
+        background: #eef5ff;
+        color: var(--blue);
+        font-size: 18px;
+        font-weight: 900;
+      }
+
+      .disabled .action {
+        background: #f2f5f8;
+        color: var(--muted);
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          width: min(100% - 28px, 1120px);
+          padding: 36px 0;
+        }
+
+        .chapter {
+          grid-template-columns: 1fr;
+          gap: 12px;
+          min-height: 0;
+        }
+
+        .action {
+          width: max-content;
+        }
+      }
+    </style>
   </head>
   <body>
-    <p>
-      <a href="./ch1/">수업 콘텐츠 열기</a>
-    </p>
+    <main class="page">
+      <header>
+        <p class="eyebrow">정보 수업 콘텐츠</p>
+        <h1>단원 목록</h1>
+        <p class="subtitle">단원을 선택하면 수업 슬라이드가 열립니다.</p>
+      </header>
+
+      <section class="chapters" aria-label="단원 목록">
+        <a class="chapter active" href="./ch1/">
+          <span class="number">01</span>
+          <span class="title">
+            <b>컴퓨팅 시스템</b>
+            <span>유무선 네트워크와 사물 인터넷</span>
+          </span>
+          <span class="action">열기</span>
+        </a>
+
+        <div class="chapter disabled">
+          <span class="number">02</span>
+          <span class="title">
+            <b>데이터</b>
+            <span>준비 중</span>
+          </span>
+          <span class="action">예정</span>
+        </div>
+
+        <div class="chapter disabled">
+          <span class="number">03</span>
+          <span class="title">
+            <b>알고리즘과 프로그래밍</b>
+            <span>준비 중</span>
+          </span>
+          <span class="action">예정</span>
+        </div>
+
+        <div class="chapter disabled">
+          <span class="number">04</span>
+          <span class="title">
+            <b>인공지능</b>
+            <span>준비 중</span>
+          </span>
+          <span class="action">예정</span>
+        </div>
+
+        <div class="chapter disabled">
+          <span class="number">05</span>
+          <span class="title">
+            <b>디지털 문화</b>
+            <span>준비 중</span>
+          </span>
+          <span class="action">예정</span>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
