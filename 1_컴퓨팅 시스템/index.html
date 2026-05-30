@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>유무선 네트워크와 사물 인터넷</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p>
+          <h1>(컴퓨터) 네트워크</h1>
+          <p class="subtitle">서로 다른 (컴퓨팅) 기기들이 연결된 통신망</p>
+        </div>
+
+        <div class="router-scene" aria-label="공유기를 기준으로 한 유선 네트워크와 무선 네트워크">
+          <article class="network-side wired-side">
+            <div class="network-title">
+              <h2>유선</h2>
+              <span class="port-icon" aria-hidden="true"></span>
+            </div>
+            <p>케이블 사용</p>
+            <div class="pros-cons">
+              <div>
+                <span>안정적이고 빠르게 데이터를 전송</span>
+              </div>
+              <div>
+                <span>장치를 배치하거나 활용하는 데에 장소의 제약</span>
+              </div>
+            </div>
+          </article>
+
+          <div class="router" aria-hidden="true">
+            <div class="router-wifi">
+              <span></span>
+            </div>
+            <img src="assets/router-wired-wireless.png" alt="" />
+            <img class="lan-photo" src="assets/lan-port-cable.png" alt="" />
+          </div>
+
+          <article class="network-side wireless-side">
+            <div class="network-title">
+              <h2>무선</h2>
+              <span class="title-wifi-icon" aria-hidden="true"><span></span></span>
+            </div>
+            <p>무선 주파수 사용</p>
+            <div class="pros-cons">
+              <div>
+                <span>장소의 제약을 받지 않고 자유롭게 기기들을 사용</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p>
+          <h1>무선 네트워크 기술</h1>
+        </div>
+
+        <div class="wireless-tech-list">
+          <article class="tech-row">
+            <img src="assets/wireless-rfid.png" alt="" />
+            <h2>전자 태그<br>(RFID)</h2>
+            <div class="tech-text">
+              <p>소형 반도체 칩 내장 태그·라벨·카드 등에 저장된 데이터를 무선 주파수로 읽음</p>
+              <strong>교통 카드 · 하이패스 · 상품 정보 인식</strong>
+            </div>
+          </article>
+
+          <article class="tech-row">
+            <img src="assets/wireless-wifi.png" alt="" />
+            <h2>와이파이<br>(WIFI)</h2>
+            <div class="tech-text">
+              <p>랜을 무선화하여 가까운 거리에서 데이터를 주고받음</p>
+              <strong>비용이 저렴하고 전송 속도가 빠름</strong>
+            </div>
+          </article>
+
+          <article class="tech-row">
+            <img src="assets/wireless-bluetooth.png" alt="" />
+            <h2>블루투스<br>(Bluetooth)</h2>
+            <div class="tech-text">
+              <p>10m 이내에서 무선으로 데이터를 주고받음</p>
+              <strong>무선 이어폰 · 인공지능 스피커 · 페어링</strong>
+            </div>
+          </article>
+
+          <article class="tech-row">
+            <img src="assets/wireless-nfc.png" alt="" />
+            <h2>근거리 무선 통신<br>(NFC)</h2>
+            <div class="tech-text">
+              <p>10cm 내 가까운 거리에서 접촉하지 않고 데이터를 주고받음</p>
+              <strong>비용 지불 · 티켓 발매 · 출입 통제</strong>
+            </div>
+          </article>
+
+          <article class="tech-row">
+            <img src="assets/wireless-display-share.png" alt="" />
+            <h2>디스플레이 공유<br>기술</h2>
+            <div class="tech-text">
+              <p>서로 다른 기기의 화면을 공유</p>
+              <strong>미러링 · 미라캐스트 · DLNA</strong>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p>
+          <h1>사물 인터넷(IoT; Internet of Things)</h1>
+          <p class="subtitle">물건이 인터넷에 연결되어 데이터를 주고받을 수 있는 시스템</p>
+        </div>
+
+        <div class="iot-compare" aria-label="기존 인터넷과 사물 인터넷 비교 그림">
+          <article class="internet-panel">
+            <h2>기존 인터넷</h2>
+            <div class="internet-diagram" aria-hidden="true">
+              <span class="net-line net-line-a"></span>
+              <span class="net-line net-line-b"></span>
+              <span class="net-line net-line-c"></span>
+              <span class="net-line net-line-d"></span>
+              <div class="internet-cloud">인터넷</div>
+              <div class="computer-node desktop-a">
+                <span></span>
+                <b>컴퓨터</b>
+              </div>
+              <div class="computer-node laptop-a">
+                <span></span>
+                <b>노트북</b>
+              </div>
+              <div class="computer-node server-a">
+                <span></span>
+                <b>서버</b>
+              </div>
+              <div class="computer-node tablet-a">
+                <span></span>
+                <b>태블릿</b>
+              </div>
+            </div>
+          </article>
+
+          <article class="things-panel">
+            <h2>사물 인터넷</h2>
+            <div class="things-diagram" aria-hidden="true">
+              <span class="things-line things-line-a"></span>
+              <span class="things-line things-line-b"></span>
+              <span class="things-line things-line-c"></span>
+              <div class="things-hub">네트워크</div>
+              <div class="greenhouse">
+                <div class="greenhouse-roof"></div>
+                <div class="greenhouse-body">
+                  <div class="plant plant-a"></div>
+                  <div class="plant plant-b"></div>
+                  <div class="water"></div>
+                </div>
+              </div>
+              <div class="thing-module sensor-module">
+                <span class="module-icon sensor-icon"></span>
+                <b>센서</b>
+                <small>온도 · 습도 · 조도</small>
+              </div>
+              <div class="thing-module actuator-module">
+                <span class="module-icon actuator-icon"></span>
+                <b>액추에이터</b>
+                <small>펌프 · 환풍기 · 조명</small>
+              </div>
+              <div class="phone-node">
+                <span></span>
+                <b>스마트폰</b>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p>
+          <h1>구성, 동작 원리, 기술</h1>
+        </div>
+
+        <div class="iot-matrix" aria-label="사물 인터넷의 구성, 동작 원리, 사용 기술">
+          <div class="matrix-label">구성</div>
+          <div class="matrix-cell config-cell">사물(디바이스)</div>
+          <div class="matrix-cell config-cell">통신 장치</div>
+          <div class="matrix-cell config-cell">데이터를 처리하고 저장하기 위한 장치</div>
+          <div class="matrix-cell config-cell">소프트웨어</div>
+
+          <div class="matrix-label main-label">동작 원리</div>
+          <div class="matrix-cell flow-cell">
+            <span>1</span>
+            <b>데이터 수집<br>(센서)</b>
+            <small>동작 센서로 문 열림 감지 신호 발생</small>
+          </div>
+          <div class="matrix-cell flow-cell">
+            <span>2</span>
+            <b>데이터 전송</b>
+            <small>(네트워크)</small>
+          </div>
+          <div class="matrix-cell flow-cell">
+            <span>3</span>
+            <b>데이터 처리</b>
+            <small>보안 모드 상태 및 센서 신호 분석으로 외부인 침입 가능성 판단</small>
+          </div>
+          <div class="matrix-cell flow-cell">
+            <span>4</span>
+            <b>서비스 제공</b>
+            <small>침입 판단 시 가까운 경찰서에 자동 연결</small>
+          </div>
+
+          <div class="matrix-label">기술</div>
+          <div class="matrix-cell tech-cell">센서 기술<br />저장 기술</div>
+          <div class="matrix-cell tech-cell">데이터 보안 기술</div>
+          <div class="matrix-cell tech-cell">분석 기술</div>
+          <div class="matrix-cell tech-cell">소프트웨어 기술</div>
+        </div>
+
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p>
+          <h1>사물 인터넷으로 인한 사회 변화</h1>
+        </div>
+
+        <div class="social-grid" aria-label="사물 인터넷으로 인한 사회 변화 사례">
+          <article>
+            <img src="assets/iot-social/smart-grid.png" alt="스마트 그리드" />
+          </article>
+          <article>
+            <img src="assets/iot-social/smart-education.png" alt="스마트 교육" />
+          </article>
+          <article>
+            <img src="assets/iot-social/smart-farm.png" alt="스마트팜" />
+          </article>
+          <article>
+            <img src="assets/iot-social/smart-healthcare.png" alt="스마트 헬스케어" />
+          </article>
+          <article>
+            <img src="assets/iot-social/smart-factory.png" alt="스마트 공장" />
+          </article>
+          <article>
+            <img src="assets/iot-social/smart-traffic.png" alt="스마트 교통" />
+          </article>
+          <article>
+            <img src="assets/iot-social/smart-home.png" alt="스마트 홈" />
+          </article>
+          <article>
+            <img src="assets/iot-social/smart-building.png" alt="스마트 빌딩" />
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드">
+      <span></span>
+    </button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드">
+      <span></span>
+    </button>
+
+    <div class="footer">
+      <div class="dots" aria-label="슬라이드 위치"></div>
+      <p><span id="currentSlide">1</span> / <span id="totalSlides">5</span></p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
