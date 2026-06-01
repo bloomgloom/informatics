@@ -1096,7 +1096,7 @@ h1 {
 .iot-matrix {
   display: grid;
   grid-template-columns: 180px repeat(4, minmax(0, 1fr));
-  grid-template-rows: 1fr 1.9fr 1fr;
+  grid-template-rows: 0.95fr 1.75fr 1.25fr;
   gap: 14px;
   flex: 1;
   min-height: 0;
@@ -1185,6 +1185,29 @@ h1 {
   background: #f6f8fb;
 }
 
+.tech-list {
+  grid-column: 2 / -1;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  place-items: stretch;
+  gap: 12px;
+  padding: 16px;
+  background: #f6f8fb;
+  color: var(--ink);
+}
+
+.tech-list span {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  place-items: center;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  font-size: clamp(23px, 1.8vw, 30px);
+  line-height: 1.18;
+}
+
 .iot-matrix .matrix-cell:nth-child(2),
 .iot-matrix .matrix-cell:nth-child(7),
 .iot-matrix .matrix-cell:nth-child(12) {
@@ -1207,6 +1230,10 @@ h1 {
 .iot-matrix .matrix-cell:nth-child(10),
 .iot-matrix .matrix-cell:nth-child(15) {
   color: var(--red);
+}
+
+.iot-matrix .tech-list {
+  color: var(--ink);
 }
 
 .example-box {
