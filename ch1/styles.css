@@ -69,6 +69,19 @@ body {
   z-index: 1;
 }
 
+.page-ref {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 16px;
+  background: #f6f8fb;
+  color: var(--muted);
+  font-size: clamp(18px, 1.45vw, 24px);
+  font-weight: 900;
+}
+
 .unit {
   margin: 0 0 8px;
   color: var(--blue);

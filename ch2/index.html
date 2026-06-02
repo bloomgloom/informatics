@@ -14,9 +14,403 @@
   </head>
   <body>
     <main class="deck" aria-live="polite">
-      <section class="slide active" data-slide="1">
+      <section class="slide active compression-slide" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p>
+          <p class="page-ref">p.41</p>
+          <h1>문자열 압축</h1>
+          <p class="subtitle">반복되는 문자나 패턴을 더 적은 비트로 표현하는 비손실 압축</p>
+        </div>
+
+        <div class="string-layout" aria-label="문자열 압축 알고리즘">
+          <article class="algorithm-card rle-card">
+            <div class="algorithm-head">
+              <span>1</span>
+              <h2>런-렝스 인코딩</h2>
+            </div>
+            <p>동일한 문자가 연속해서 반복되는 경우, 그것을 반복 문자 개수와 반복 문자의 쌍으로 표현</p>
+            <div class="encoding-demo">
+              <div class="raw-string rle-example">
+                <span>C</span><span>O</span><span class="group-f">F</span><span class="group-f">F</span><span class="group-e6">E</span><span class="group-e6">E</span><span class="group-e6">E</span><span class="group-e6">E</span><span class="group-e6">E</span><span class="group-e6">E</span><span>&nbsp;</span><span>F</span><span>R</span><span class="group-e3">E</span><span class="group-e3">E</span><span class="group-e3">E</span>
+              </div>
+              <div class="compressed-string">
+                <span>C</span><span>O</span><b class="group-f">2F</b><b class="group-e6">6E</b><span>&nbsp;</span><span>F</span><span>R</span><b class="group-e3">3E</b>
+              </div>
+            </div>
+            <strong>알고리즘 단순<br>반복 문자가 길수록 압축 효율 높음</strong>
+          </article>
+
+          <article class="algorithm-card lz-card">
+            <div class="algorithm-head">
+              <span>2</span>
+              <h2>렘펠-지브 인코딩</h2>
+            </div>
+            <p>문자열에 포함된 같은 패턴의 상대적 위치와 패턴의 길이로 문자열을 치환하여 압축</p>
+            <div class="pattern-demo">
+              <div>
+                <b>WELCOME</b><span>&nbsp;</span><b>COM</b><span>PANY</span>
+              </div>
+              <div class="lz-output-line">
+                <span>WELCOME</span><span>&nbsp;</span><b class="tuple">(5, 3)</b><span>PANY</span>
+              </div>
+            </div>
+            <strong>떨어져 있는 같은 패턴 압축 가능<br>반복 패턴이 많은 긴 문자열에서 압축 효율 높음</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide compression-slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p>
+          <p class="page-ref">p.41</p>
+          <h1>런-렝스 인코딩 시뮬레이션</h1>
+          <p class="subtitle">연속해서 반복되는 문자를 개수와 문자로 바꾸어 압축한다</p>
+        </div>
+
+        <div class="simulation-layout rle-sim" data-sim="rle">
+          <article class="sim-board">
+            <h2>원래 문자열</h2>
+            <div class="sim-string" aria-label="COFFEEEEEE FREEE">
+              <span>C</span><span>O</span><span>F</span><span>F</span><span>E</span><span>E</span><span>E</span><span>E</span><span>E</span><span>E</span><span class="space-cell">빈칸</span><span>F</span><span>R</span><span>E</span><span>E</span><span>E</span>
+            </div>
+            <div class="sim-result">
+              <small>압축 후 문자열</small>
+              <div class="compressed-string">
+                <span>C</span><span>O</span><b class="group-f">2F</b><b class="group-e6">6E</b><span>&nbsp;</span><span>F</span><span>R</span><b class="group-e3">3E</b>
+              </div>
+            </div>
+          </article>
+
+          <article class="sim-panel">
+            <h2>단계</h2>
+            <ol class="sim-steps">
+              <li class="active">반복이 없는 `C`, `O`는 그대로 기록</li>
+              <li>`FF`는 `2F`로 기록</li>
+              <li>`EEEEEE`는 `6E`로 기록</li>
+              <li>빈칸과 반복 없는 `F`, `R`은 그대로 기록</li>
+              <li>`EEE`는 `3E`로 기록</li>
+            </ol>
+            <div class="sim-controls">
+              <button type="button" data-action="prev">이전</button>
+              <button type="button" data-action="next">다음</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide compression-slide quiz-slide" data-slide="3">
         <div class="slide-header">
           <p class="unit">03</p>
+          <p class="page-ref">p.41</p>
+          <h1>런-렝스 인코딩 퀴즈</h1>
+          <p class="subtitle">반복 문자 개수와 반복 문자의 쌍으로 직접 압축해 보자</p>
+        </div>
+
+        <div class="quiz-layout" data-quiz="rle">
+          <article class="quiz-card">
+            <span>1</span>
+            <h2>AAABCCCC</h2>
+            <label>
+              압축 결과
+              <input type="text" data-answer="3AB4C" autocomplete="off" />
+            </label>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="quiz-card">
+            <span>2</span>
+            <h2>HELLOOO</h2>
+            <label>
+              압축 결과
+              <input type="text" data-answer="HE2L3O" autocomplete="off" />
+            </label>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="quiz-card">
+            <span>3</span>
+            <h2>MMMMNNP</h2>
+            <label>
+              압축 결과
+              <input type="text" data-answer="4M2NP" autocomplete="off" />
+            </label>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </article>
+
+          <button class="check-quiz" type="button">정답 확인</button>
+        </div>
+      </section>
+
+      <section class="slide compression-slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p>
+          <p class="page-ref">p.41</p>
+          <h1>렘펠-지브 인코딩 시뮬레이션</h1>
+          <p class="subtitle">이미 나온 패턴을 현재 위치 기준의 거리와 길이로 표현한다</p>
+        </div>
+
+        <div class="simulation-layout lz-sim" data-sim="lz">
+          <article class="sim-board">
+            <h2>원래 문자열</h2>
+            <div class="lz-phrase" aria-label="WELCOME COMPANY">
+              <span>WELCOME</span><span class="space-token"> </span><b>COM</b><span>PANY</span>
+            </div>
+            <div class="lz-window">
+              <div>
+                <small>현재 위치</small>
+                <b>C</b>
+              </div>
+              <div>
+                <small>왼쪽으로 5칸</small>
+                <b>5</b>
+              </div>
+              <div>
+                <small>반복 길이</small>
+                <b>3</b>
+              </div>
+            </div>
+            <div class="sim-result">
+              <small>압축 후 문자열</small>
+              <div class="lz-output-line">
+                <span>WELCOME</span><span class="space-token"> </span><b class="tuple">(5, 3)</b><span>PANY</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="sim-panel">
+            <h2>단계</h2>
+            <ol class="sim-steps">
+              <li class="active">`WELCOME`까지 그대로 기록</li>
+              <li>현재 위치 `C`에서 왼쪽을 탐색</li>
+              <li>5문자 앞에서 같은 패턴 `COM` 발견</li>
+              <li>반복 패턴 길이 3을 확인</li>
+              <li>`COM`을 `(5, 3)`으로 치환</li>
+            </ol>
+            <div class="sim-controls">
+              <button type="button" data-action="prev">이전</button>
+              <button type="button" data-action="next">다음</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide compression-slide quiz-slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p>
+          <p class="page-ref">p.41</p>
+          <h1>렘펠-지브 인코딩 퀴즈</h1>
+          <p class="subtitle">반복 패턴을 현재 위치 기준의 거리와 길이로 바꾸어 보자</p>
+        </div>
+
+        <div class="quiz-layout" data-quiz="lz">
+          <article class="quiz-card">
+            <span>1</span>
+            <h2>ABCABC</h2>
+            <label>
+              압축 결과
+              <input type="text" data-answer="ABC(3,3)" autocomplete="off" />
+            </label>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="quiz-card">
+            <span>2</span>
+            <h2>CODE CODE</h2>
+            <label>
+              압축 결과
+              <input type="text" data-answer="CODE (5,4)" autocomplete="off" />
+            </label>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="quiz-card">
+            <span>3</span>
+            <h2>HELLO HELLO</h2>
+            <label>
+              압축 결과
+              <input type="text" data-answer="HELLO (6,5)" autocomplete="off" />
+            </label>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </article>
+
+          <button class="check-quiz" type="button">정답 확인</button>
+        </div>
+      </section>
+
+      <section class="slide compression-slide" data-slide="6">
+        <div class="slide-header">
+          <p class="unit">06</p>
+          <p class="page-ref">p.42~43</p>
+          <h1>이미지 압축</h1>
+          <p class="subtitle">BMP 원본 이미지를 목적에 맞는 압축 파일 형식으로 변환한다</p>
+        </div>
+
+        <div class="image-compression-layout" aria-label="BMP 원본과 이미지 압축 파일 형식">
+          <article class="bmp-panel">
+            <h2>BMP 원본</h2>
+            <div class="pixel-art" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <p>각 화소의 색 정보를 차례대로 기록하는 무압축 파일</p>
+            <strong>품질 우수 · 파일 크기 큼 · 확장자 .bmp</strong>
+          </article>
+
+          <div class="compress-arrow" aria-hidden="true"></div>
+
+          <article class="image-format-panel">
+            <h2>압축 파일 형식</h2>
+            <div class="image-format-table" aria-label="이미지 압축 파일 형식 비교">
+              <div class="table-head">파일 형식</div>
+              <div class="format-name">
+                <b>PNG</b>
+              </div>
+              <div class="format-name">
+                <b>GIF</b>
+              </div>
+              <div class="format-name">
+                <b>JPEG</b>
+              </div>
+
+              <div class="table-head">압축 방식</div>
+              <div>비손실</div>
+              <div>손실·비손실</div>
+              <div>손실</div>
+
+              <div class="table-head">지원 색상</div>
+              <div>트루 컬러(24b)</div>
+              <div>256색(8b)</div>
+              <div>트루 컬러(24b)</div>
+
+              <div class="table-head">압축 특징</div>
+              <div>반복 색 정보를 줄이고 손실 없이 압축</div>
+              <div>지원 색상이 적어 파일 크기가 작음</div>
+              <div>색 차이와 세밀한 정보를 제거</div>
+
+              <div class="table-head">확장자</div>
+              <div>.png</div>
+              <div>.gif</div>
+              <div>.jpg .jpeg .jpe .jfif</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide compression-slide" data-slide="7">
+        <div class="slide-header">
+          <p class="unit">07</p>
+          <p class="page-ref">p.44~45</p>
+          <h1>소리 압축</h1>
+          <p class="subtitle">WAV 원음을 디지털로 표현하고 목적에 맞는 압축 형식으로 변환한다</p>
+        </div>
+
+        <div class="sound-layout" aria-label="WAV 변환 과정과 소리 압축 파일 형식">
+          <article class="wav-process">
+            <h2>WAV 파일</h2>
+            <p>웨이브 방식의 디지털 신호를 압축하지 않은 무압축 파일 형식</p>
+            <div class="sound-steps">
+              <div>
+                <div class="wave-graph sampling-wave" aria-hidden="true">
+                  <svg viewBox="0 0 220 110" role="img">
+                    <path class="wave-line" d="M10 62 C28 18, 48 18, 66 62 S104 106, 122 62 S160 18, 178 62 S204 102, 216 72" />
+                    <g class="sample-lines">
+                      <line x1="28" y1="18" x2="28" y2="96" />
+                      <line x1="56" y1="38" x2="56" y2="96" />
+                      <line x1="84" y1="88" x2="84" y2="96" />
+                      <line x1="112" y1="80" x2="112" y2="96" />
+                      <line x1="140" y1="32" x2="140" y2="96" />
+                      <line x1="168" y1="30" x2="168" y2="96" />
+                      <line x1="196" y1="88" x2="196" y2="96" />
+                    </g>
+                    <g class="sample-dots">
+                      <circle cx="28" cy="18" r="4" />
+                      <circle cx="56" cy="38" r="4" />
+                      <circle cx="84" cy="88" r="4" />
+                      <circle cx="112" cy="80" r="4" />
+                      <circle cx="140" cy="32" r="4" />
+                      <circle cx="168" cy="30" r="4" />
+                      <circle cx="196" cy="88" r="4" />
+                    </g>
+                  </svg>
+                </div>
+                <span>1</span>
+                <b>표본화</b>
+                <p>아날로그 소리 파형을 일정 간격으로 나누어 샘플 값을 측정</p>
+              </div>
+              <div>
+                <div class="wave-graph quantized-wave" aria-hidden="true">
+                  <svg viewBox="0 0 220 110" role="img">
+                    <g class="level-lines">
+                      <line x1="12" y1="26" x2="208" y2="26" />
+                      <line x1="12" y1="50" x2="208" y2="50" />
+                      <line x1="12" y1="74" x2="208" y2="74" />
+                    </g>
+                    <polyline class="step-line" points="18,50 44,50 44,26 72,26 72,74 104,74 104,74 132,74 132,26 164,26 164,26 192,26 192,74 212,74" />
+                    <g class="level-tags">
+                      <text x="18" y="22">3</text>
+                      <text x="18" y="46">2</text>
+                      <text x="18" y="70">1</text>
+                    </g>
+                  </svg>
+                </div>
+                <span>2</span>
+                <b>양자화</b>
+                <p>소리의 크기를 가까운 정숫값으로 표현</p>
+              </div>
+              <div>
+                <div class="wave-graph encoded-wave" aria-hidden="true">
+                  <div class="code-row"><b>2</b><i>010</i></div>
+                  <div class="code-row"><b>3</b><i>011</i></div>
+                  <div class="code-row"><b>1</b><i>001</i></div>
+                  <div class="code-row"><b>2</b><i>010</i></div>
+                </div>
+                <span>3</span>
+                <b>부호화</b>
+                <p>각 정수를 0과 1의 디지털값으로 표현</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="audio-format-panel">
+            <h2>압축 파일 형식</h2>
+            <div class="audio-formats">
+              <div>
+                <div class="audio-format-head">
+                  <b>FLAC</b>
+                  <span>비손실 압축</span>
+                  <small>.flac</small>
+                </div>
+                <p>원음 손실 없이 용량을 줄임</p>
+              </div>
+              <div>
+                <div class="audio-format-head">
+                  <b>MP3</b>
+                  <span>손실 압축</span>
+                  <small>.mp3</small>
+                </div>
+                <p>사람이 잘 듣지 못하는 대역의 신호를 제거</p>
+              </div>
+              <div>
+                <div class="audio-format-head">
+                  <b>AAC</b>
+                  <span>손실 압축</span>
+                  <small>.m4a</small>
+                </div>
+                <p>MP3와 같은 방식이나 같은 비트 전송률에서 음질이 더 좋음</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <div class="slide-header">
+          <p class="unit">08</p>
+          <p class="page-ref">p.55~57</p>
           <h1>빅데이터 개념</h1>
           <p class="subtitle">대규모 데이터를 저장·분석해 숨겨진 가치를 찾는 기술</p>
         </div>
@@ -25,9 +419,8 @@
           <article class="definition-panel">
             <h2>정의</h2>
             <p>
-              디지털 환경에서 생성된 <strong>수십 테라바이트 이상</strong>의 대규모 데이터.
-              최근에는 다양한 유형의 데이터를 효과적으로 저장하고 데이터 과학 기술로 가치를
-              추출해 활용하는 포괄적 개념으로 사용한다.
+              디지털 환경에서 생성된 <strong>수십 테라바이트 이상</strong>의 대규모 데이터<br>
+              다양한 유형의 데이터를 효과적으로 저장하고 데이터 과학 기술로 가치를 추출해 활용하는 포괄적 개념
             </p>
           </article>
 
@@ -37,7 +430,7 @@
               <div>
                 <span class="type-icon table-icon" aria-hidden="true"></span>
                 <b>정형 데이터</b>
-                <p>고정된 형식과 구조에 맞게 저장된 표, CSV 등</p>
+                <p>고정된 형식과 구조에 맞게 저장된 표,CSV 등</p>
               </div>
               <div>
                 <span class="type-icon media-icon" aria-hidden="true"></span>
@@ -64,24 +457,25 @@
             <div class="case-list">
               <div>
                 <b>정치·사회</b>
-                <p>침수 예측 · 지능형 교통 시스템</p>
+                <p>침수 예측·지능형 교통 시스템</p>
               </div>
               <div>
                 <b>의료·보건</b>
-                <p>맞춤형 정밀 의료 · 국민 건강 알람</p>
+                <p>맞춤형 정밀 의료·국민 건강 알람</p>
               </div>
               <div>
                 <b>경제·산업</b>
-                <p>맞춤형 음악 추천 · 카드 부정 사용 탐지</p>
+                <p>맞춤형 음악 추천·카드 부정 사용 탐지</p>
               </div>
             </div>
           </article>
         </div>
       </section>
 
-      <section class="slide" data-slide="2">
+      <section class="slide" data-slide="9">
         <div class="slide-header">
-          <p class="unit">03</p>
+          <p class="unit">09</p>
+          <p class="page-ref">p.58~60</p>
           <h1>빅데이터 분석</h1>
           <p class="subtitle">탐색적 데이터 분석으로 문제를 정의하고, 수집·분석·평가한다</p>
         </div>
@@ -160,7 +554,7 @@
 
     <div class="footer">
       <div class="dots" aria-label="슬라이드 위치"></div>
-      <p><span id="currentSlide">1</span> / <span id="totalSlides">2</span></p>
+      <p><span id="currentSlide">1</span> / <span id="totalSlides">9</span></p>
     </div>
 
     <script src="script.js"></script>
