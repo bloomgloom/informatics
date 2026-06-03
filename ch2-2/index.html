@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>디지털 데이터 암호화</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active encryption-slide" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p>
+          <p class="page-ref">p.48~49</p>
+          <h1>디지털 데이터 암호화의 이해</h1>
+          <p class="subtitle">권한이 없는 사람이 데이터를 알아볼 수 없게 바꾸어 보호한다</p>
+        </div>
+
+        <div class="encryption-overview" aria-label="디지털 데이터 암호화의 핵심 개념">
+          <article class="plain-card">
+            <h2>왜 필요할까?</h2>
+            <p>비밀번호, 카드 번호, 디지털 자산, 거래 기록처럼 중요하고 민감한 정보를 저장하거나 전송할 때 보호한다.</p>
+            <div class="need-grid">
+              <span>보안 위협 감소</span>
+              <span>데이터 유출 피해 완화</span>
+              <span>위조·변조 확인</span>
+              <span>소유권 증명</span>
+            </div>
+          </article>
+
+          <article class="crypto-flow-card">
+            <h2>핵심 과정</h2>
+            <div class="crypto-flow">
+              <div>
+                <small>평문</small>
+                <b>2020</b>
+                <span>누구나 읽을 수 있는 데이터</span>
+              </div>
+              <i>암호화</i>
+              <div>
+                <small>암호문</small>
+                <b>6EB8863CE399A2</b>
+                <span>알아보기 어렵게 변환된 데이터</span>
+              </div>
+              <i>복호화</i>
+              <div>
+                <small>평문</small>
+                <b>2020</b>
+                <span>올바른 키로 다시 복원</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="key-card">
+            <h2>키와 알고리즘</h2>
+            <p>암호 알고리즘은 변환 규칙이고, 키는 그 규칙 안에서 실제 변환을 결정하는 문자열이다.</p>
+            <div class="key-types">
+              <div>
+                <b>대칭키</b>
+                <span>암호화 키 = 복호화 키</span>
+              </div>
+              <div>
+                <b>공개키</b>
+                <span>암호화 키와 복호화 키가 다름</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide encryption-slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p>
+          <p class="page-ref">p.50</p>
+          <h1>고대·근대 암호화 정리</h1>
+          <p class="subtitle">문자를 숨기기 위해 자리 바꾸기와 문자 바꾸기를 사용했다</p>
+        </div>
+
+        <div class="history-layout" aria-label="고대와 근대 암호화 사례">
+          <article class="history-card">
+            <span>전치 암호</span>
+            <h2>스키테일 암호</h2>
+            <p>굵기와 길이가 같은 막대에 리본을 감아 메시지를 적고, 같은 막대에 다시 감아 읽는다.</p>
+            <div class="skytale-demo">
+              <b>SECRET MESSAGE</b>
+              <i></i>
+              <strong>STSE ACMGREEES</strong>
+            </div>
+            <small>평문의 문자 위치를 재배열</small>
+          </article>
+
+          <article class="history-card caesar-history">
+            <span>치환 암호</span>
+            <h2>카이사르 암호</h2>
+            <p>알파벳을 키만큼 평행 이동한 문자로 바꾸고, 복호화할 때는 반대로 이동한다.</p>
+            <div class="mini-alphabet">
+              <div><b>A</b><b>B</b><b>C</b><b>D</b><b>E</b><b>F</b></div>
+              <div><b>D</b><b>E</b><b>F</b><b>G</b><b>H</b><b>I</b></div>
+            </div>
+            <small>SECRET + key 3 = VHFUHW</small>
+          </article>
+
+          <article class="history-card">
+            <span>기계식 암호</span>
+            <h2>에니그마</h2>
+            <p>키보드 입력을 배전반과 회전자로 여러 번 치환해 발광판에 암호 문자를 출력한다.</p>
+            <div class="enigma-demo">
+              <div>키보드</div>
+              <i></i>
+              <div>배전반</div>
+              <i></i>
+              <div>회전자</div>
+              <i></i>
+              <div>발광판</div>
+            </div>
+            <small>전치와 치환을 복잡하게 혼합</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide encryption-slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p>
+          <p class="page-ref">p.49, 52</p>
+          <h1>카이사르 암호 시뮬레이터</h1>
+          <p class="subtitle">문자를 키만큼 이동해 암호화하고, 반대로 이동해 복호화한다</p>
+        </div>
+
+        <div class="caesar-simulator" data-caesar-sim>
+          <article class="sim-input-card">
+            <h2>입력</h2>
+            <label>
+              평문 또는 암호문
+              <input type="text" value="LOVE" data-caesar-text autocomplete="off" />
+            </label>
+            <label>
+              키
+              <input type="range" min="1" max="25" value="3" data-caesar-key />
+              <strong data-caesar-key-value>3</strong>
+            </label>
+            <div class="mode-control" role="group" aria-label="암호화 또는 복호화 선택">
+              <button class="active" type="button" data-caesar-mode="encrypt">암호화</button>
+              <button type="button" data-caesar-mode="decrypt">복호화</button>
+            </div>
+          </article>
+
+          <article class="alphabet-board">
+            <h2>알파벳 이동</h2>
+            <div class="alphabet-rows">
+              <div data-caesar-plain-row></div>
+              <div data-caesar-cipher-row></div>
+            </div>
+            <p>알파벳이 끝나면 다시 A부터 이어진다.</p>
+          </article>
+
+          <article class="sim-output-card">
+            <h2>결과</h2>
+            <div class="caesar-result" data-caesar-result>ORYH</div>
+            <div class="letter-map" data-caesar-map></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide encryption-slide quiz-slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p>
+          <p class="page-ref">p.52</p>
+          <h1>카이사르 암호 퀴즈</h1>
+          <p class="subtitle">문항마다 다른 키를 적용해 암호화와 복호화를 직접 확인해 보자</p>
+        </div>
+
+        <div class="quiz-layout caesar-quiz" data-quiz="caesar">
+          <article class="quiz-card">
+            <span>1</span>
+            <h2>LOVE</h2>
+            <label>
+              key 3 암호화 결과
+              <input type="text" data-answer="ORYH" autocomplete="off" />
+            </label>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="quiz-card">
+            <span>2</span>
+            <h2>SECRET</h2>
+            <label>
+              key 5 암호화 결과
+              <input type="text" data-answer="XJHWJY" autocomplete="off" />
+            </label>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="quiz-card">
+            <span>3</span>
+            <h2>IL JHYLMBS MVY HZZHZZPUHAPVU</h2>
+            <label>
+              key 7 복호화 결과
+              <input type="text" data-answer="BE CAREFUL FOR ASSASSINATION" autocomplete="off" />
+            </label>
+            <p class="quiz-feedback" aria-live="polite"></p>
+          </article>
+
+          <button class="check-quiz" type="button">정답 확인</button>
+        </div>
+      </section>
+
+      <section class="slide encryption-slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p>
+          <p class="page-ref">p.51</p>
+          <h1>현대 암호화</h1>
+          <p class="subtitle">컴퓨터 프로그램 기반 암호 기술로 디지털 정보를 보호하고 신뢰를 만든다</p>
+        </div>
+
+        <div class="modern-layout" aria-label="현대 암호화 활용 사례">
+          <article class="modern-card">
+            <h2>패스워드 암호화</h2>
+            <p>서버는 사용자의 비밀번호를 그대로 저장하지 않고, 해시 함수로 만든 해시값을 저장한다.</p>
+            <div class="hash-demo">
+              <b>1234</b>
+              <i>해시 함수</i>
+              <strong>5d2cdaa...</strong>
+            </div>
+            <small>해시 함수는 복원이 어려워 유출 피해를 줄인다.</small>
+          </article>
+
+          <article class="modern-card">
+            <h2>디지털 서명</h2>
+            <p>송신자의 개인키로 서명을 만들고, 수신자는 송신자의 공개키로 검증해 신원을 확인한다.</p>
+            <div class="signature-demo">
+              <div>메시지</div>
+              <div>해시값</div>
+              <div>개인키 서명</div>
+              <div>공개키 검증</div>
+            </div>
+            <small>공개키 알고리즘을 활용하지만 키 사용 방향이 암호화와 반대이다.</small>
+          </article>
+
+          <article class="modern-card">
+            <h2>HTTPS 암호화</h2>
+            <p>웹 브라우저와 웹 사이트가 데이터를 주고받을 때 암호화하여 안전하게 통신한다.</p>
+            <div class="https-demo">
+              <b>브라우저</b>
+              <span>인증</span>
+              <strong>https</strong>
+              <span>통신</span>
+              <b>웹 사이트</b>
+            </div>
+            <small>주소가 https로 시작하는지 확인한다.</small>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드">
+      <span></span>
+    </button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드">
+      <span></span>
+    </button>
+
+    <div class="footer">
+      <div class="dots" aria-label="슬라이드 위치"></div>
+      <p><span id="currentSlide">1</span> / <span id="totalSlides">5</span></p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

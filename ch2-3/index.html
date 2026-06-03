@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>빅데이터 개념과 분석</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p>
+          <p class="page-ref">p.55~57</p>
+          <h1>빅데이터 개념</h1>
+          <p class="subtitle">대규모 데이터를 저장·분석해 숨겨진 가치를 찾는 기술</p>
+        </div>
+
+        <div class="concept-layout" aria-label="빅데이터의 정의, 유형, 특징, 활용 분야">
+          <article class="definition-panel">
+            <h2>정의</h2>
+            <p>
+              디지털 환경에서 생성된 <strong>수십 테라바이트 이상</strong>의 대규모 데이터<br>
+              다양한 유형의 데이터를 효과적으로 저장하고 데이터 과학 기술로 가치를 추출해 활용하는 포괄적 개념
+            </p>
+          </article>
+
+          <article class="type-panel">
+            <h2>데이터 유형</h2>
+            <div class="type-grid">
+              <div>
+                <span class="type-icon table-icon" aria-hidden="true"></span>
+                <b>정형 데이터</b>
+                <p>고정된 형식과 구조에 맞게 저장된 표,CSV 등</p>
+              </div>
+              <div>
+                <span class="type-icon media-icon" aria-hidden="true"></span>
+                <b>비정형 데이터</b>
+                <p>고정된 구조가 없는 이미지, 소리, 문서 등</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="feature-panel">
+            <h2>특징 5V</h2>
+            <div class="feature-wheel" aria-label="빅데이터의 5가지 특징">
+              <div class="feature-core">Big<br />Data</div>
+              <div class="feature-card volume"><b>규모</b><span>Volume</span></div>
+              <div class="feature-card velocity"><b>속도</b><span>Velocity</span></div>
+              <div class="feature-card variety"><b>다양성</b><span>Variety</span></div>
+              <div class="feature-card veracity"><b>정확성</b><span>Veracity</span></div>
+              <div class="feature-card value"><b>가치</b><span>Value</span></div>
+            </div>
+          </article>
+
+          <article class="case-panel">
+            <h2>활용 분야</h2>
+            <div class="case-list">
+              <div>
+                <b>정치·사회</b>
+                <p>침수 예측·지능형 교통 시스템</p>
+              </div>
+              <div>
+                <b>의료·보건</b>
+                <p>맞춤형 정밀 의료·국민 건강 알람</p>
+              </div>
+              <div>
+                <b>경제·산업</b>
+                <p>맞춤형 음악 추천·카드 부정 사용 탐지</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p>
+          <p class="page-ref">p.58~60</p>
+          <h1>빅데이터 분석</h1>
+          <p class="subtitle">탐색적 데이터 분석으로 문제를 정의하고, 수집·분석·평가한다</p>
+        </div>
+
+        <div class="analysis-flow" aria-label="빅데이터 분석 과정">
+          <article class="flow-step">
+            <div class="step-heading">
+              <span>1</span>
+              <h2>문제 정의</h2>
+            </div>
+            <div class="step-body">
+              <p>분석 필요성, 요구 사항, 분석 범위를 파악해 구체적인 목적을 정한다.</p>
+            </div>
+          </article>
+
+          <article class="flow-step">
+            <div class="step-heading">
+              <span>2</span>
+              <h2>데이터 수집</h2>
+            </div>
+            <div class="step-body">
+              <p>목적에 맞는 데이터를 자동 수집기, 인터넷 검색, 설문·실험·관찰로 모은다.</p>
+              <small>균형 · 개인정보 · 편향성 · 저작권 확인</small>
+            </div>
+          </article>
+
+          <article class="flow-step wide-step">
+            <div class="step-heading">
+              <span>3</span>
+              <h2>데이터 분석</h2>
+            </div>
+            <div class="step-body">
+              <div class="analysis-detail">
+                <div>
+                  <b>전처리</b>
+                  <p>평균·중앙값·최빈값을 확인하고 결측치, 중복값, 이상치를 정리한다.</p>
+                </div>
+                <div>
+                  <b>시각화·분석</b>
+                  <p>시간, 관계, 비교 시각화로 흐름·관계·패턴을 찾아 해석한다.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="flow-step">
+            <div class="step-heading">
+              <span>4</span>
+              <h2>공유 및 평가</h2>
+            </div>
+            <div class="step-body">
+              <p>분석 결과가 의사 결정에 도움을 주는지 검토하고 개선책을 제시한다.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="method-strip" aria-label="분석 과정 보조 개념">
+          <div>
+            <b>탐색적 데이터 분석(EDA)</b>
+            <p>데이터를 여러 관점에서 관찰해 구조적 관계를 찾는 분석법</p>
+          </div>
+          <div>
+            <b>시각화 유형</b>
+            <p>선그래프·막대그래프·버블 차트·산점도·히트맵·워드 클라우드</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드">
+      <span></span>
+    </button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드">
+      <span></span>
+    </button>
+
+    <div class="footer">
+      <div class="dots" aria-label="슬라이드 위치"></div>
+      <p><span id="currentSlide">1</span> / <span id="totalSlides">2</span></p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
