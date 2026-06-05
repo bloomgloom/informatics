@@ -23,53 +23,66 @@
         </div>
 
         <div class="encryption-overview" aria-label="디지털 데이터 암호화의 핵심 개념">
-          <article class="plain-card">
-            <h2>왜 필요할까?</h2>
-            <p>비밀번호, 카드 번호, 디지털 자산, 거래 기록처럼 중요하고 민감한 정보를 저장하거나 전송할 때 보호한다.</p>
-            <div class="need-grid">
-              <span>보안 위협 감소</span>
-              <span>데이터 유출 피해 완화</span>
-              <span>위조·변조 확인</span>
-              <span>소유권 증명</span>
-            </div>
+          <article class="plain-card textbook-definition">
+            <ul class="definition-list">
+              <li>
+                <b>암호화(encryption)</b>
+                <span>평문을 암호문으로 바꾸는 과정</span>
+              </li>
+              <li>
+                <b>복호화(decryption)</b>
+                <span>암호문을 평문으로 복원하는 과정</span>
+              </li>
+            </ul>
           </article>
 
-          <article class="crypto-flow-card">
-            <h2>핵심 과정</h2>
-            <div class="crypto-flow">
-              <div>
+          <article class="crypto-flow-card process-card">
+            <h2>암호화, 복호화 과정</h2>
+            <div class="process-diagram" aria-label="키와 암호 알고리즘을 사용한 암호화와 복호화 과정">
+              <div class="process-data plain-data">
                 <small>평문</small>
                 <b>2020</b>
-                <span>누구나 읽을 수 있는 데이터</span>
               </div>
-              <i>암호화</i>
-              <div>
+
+              <div class="process-step encrypt-step">
+                <div class="key-badge">키(key)</div>
+                <div class="algorithm-box">
+                  <small>암호 알고리즘</small>
+                  <b>암호화</b>
+                </div>
+              </div>
+
+              <div class="process-data cipher-data">
                 <small>암호문</small>
                 <b>6EB8863CE399A2</b>
-                <span>알아보기 어렵게 변환된 데이터</span>
               </div>
-              <i>복호화</i>
-              <div>
+
+              <div class="process-step decrypt-step">
+                <div class="key-badge">키(key)</div>
+                <div class="algorithm-box">
+                  <small>암호 알고리즘</small>
+                  <b>복호화</b>
+                </div>
+              </div>
+
+              <div class="process-data restored-data">
                 <small>평문</small>
                 <b>2020</b>
-                <span>올바른 키로 다시 복원</span>
               </div>
             </div>
           </article>
 
-          <article class="key-card">
-            <h2>키와 알고리즘</h2>
-            <p>암호 알고리즘은 변환 규칙이고, 키는 그 규칙 안에서 실제 변환을 결정하는 문자열이다.</p>
-            <div class="key-types">
-              <div>
-                <b>대칭키</b>
-                <span>암호화 키 = 복호화 키</span>
-              </div>
-              <div>
-                <b>공개키</b>
-                <span>암호화 키와 복호화 키가 다름</span>
-              </div>
-            </div>
+          <article class="key-card component-card">
+            <ul class="crypto-components" aria-label="암호화와 복호화의 구성 요소">
+              <li>
+                <b>키(key)</b>
+                <span>암호화 키는 암호 알고리즘 내에서 평문을 암호문으로 변경할 때 사용하는 문자열</span>
+              </li>
+              <li>
+                <b>암호 알고리즘</b>
+                <span>평문과 키를 이용해 암호문을 만들거나, 암호문을 평문으로 복원하는 변환 규칙</span>
+              </li>
+            </ul>
           </article>
         </div>
       </section>
@@ -219,40 +232,63 @@
         </div>
 
         <div class="modern-layout" aria-label="현대 암호화 활용 사례">
-          <article class="modern-card">
+          <article class="modern-card password-card">
             <h2>패스워드 암호화</h2>
             <p>서버는 사용자의 비밀번호를 그대로 저장하지 않고, 해시 함수로 만든 해시값을 저장한다.</p>
-            <div class="hash-demo">
-              <b>1234</b>
-              <i>해시 함수</i>
-              <strong>5d2cdaa...</strong>
+            <div class="hash-machine" aria-label="해시 함수 입력과 출력">
+              <div class="password-input">
+                <b>password123</b>
+                <span></span>
+              </div>
+              <div class="function-shape">
+                <svg viewBox="0 0 360 170" role="img" aria-label="해시 함수 상자">
+                  <path d="M18 52 H104" />
+                  <path d="M88 14 L112 52" />
+                  <path d="M168 52 L192 14" />
+                  <path d="M176 52 H342 Q354 52 354 66 V108 Q354 122 338 122 H272" />
+                  <path d="M272 122 L296 160" />
+                  <path d="M224 160 L248 122" />
+                  <path d="M248 122 H18 Q6 122 6 108 V66 Q6 52 18 52" />
+                </svg>
+                <i>해시 함수</i>
+              </div>
+              <div class="hash-output">
+                <span></span>
+                <strong>5d2cdaa...</strong>
+              </div>
             </div>
-            <small>해시 함수는 복원이 어려워 유출 피해를 줄인다.</small>
+            <div class="password-table" aria-label="서버에 저장된 아이디와 비밀번호">
+              <div>아이디</div>
+              <div>비번</div>
+              <div>minji</div>
+              <div>5d2cdaa...</div>
+              <div>minsu</div>
+              <div>fhc65lc...</div>
+            </div>
           </article>
 
-          <article class="modern-card">
+          <article class="modern-card signature-card">
             <h2>디지털 서명</h2>
             <p>송신자의 개인키로 서명을 만들고, 수신자는 송신자의 공개키로 검증해 신원을 확인한다.</p>
-            <div class="signature-demo">
-              <div>메시지</div>
-              <div>해시값</div>
-              <div>개인키 서명</div>
-              <div>공개키 검증</div>
+            <div class="signature-image-frame">
+              <img
+                class="signature-image"
+                src="./스크린샷 2026-06-05 오전 11.41.34.png"
+                alt="A 송신자가 메시지를 해시하고 개인키로 디지털 서명을 만든 뒤 B 수신자가 공개키와 해시값으로 검증하는 과정"
+              />
             </div>
-            <small>공개키 알고리즘을 활용하지만 키 사용 방향이 암호화와 반대이다.</small>
           </article>
 
-          <article class="modern-card">
+          <article class="modern-card https-card">
             <h2>HTTPS 암호화</h2>
-            <p>웹 브라우저와 웹 사이트가 데이터를 주고받을 때 암호화하여 안전하게 통신한다.</p>
-            <div class="https-demo">
-              <b>브라우저</b>
-              <span>인증</span>
-              <strong>https</strong>
-              <span>통신</span>
-              <b>웹 사이트</b>
+            <div class="https-row">
+              <p>주소가 https로 시작하는지 확인한다.</p>
+              <div class="https-demo">
+                <span>주소</span>
+                <strong>https://</strong>
+                <b>www.google.com/</b>
+              </div>
             </div>
-            <small>주소가 https로 시작하는지 확인한다.</small>
           </article>
         </div>
       </section>
