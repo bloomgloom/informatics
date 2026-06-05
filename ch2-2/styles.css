@@ -1564,7 +1564,7 @@ h1 {
 }
 
 .password-card {
-  gap: 12px;
+  gap: 10px;
 }
 
 .signature-card {
@@ -1636,8 +1636,8 @@ h1 {
   grid-template-rows: auto 1fr auto;
   justify-items: stretch;
   gap: 0;
-  min-height: 188px;
-  padding: 10px 18px 8px;
+  min-height: 160px;
+  padding: 8px 14px 6px;
   overflow: hidden;
 }
 
@@ -1651,24 +1651,29 @@ h1 {
 
 .password-input {
   justify-items: start;
-  padding-left: 36px;
+  padding-left: 154px;
 }
 
 .hash-output {
   justify-items: end;
-  margin-top: -3px;
-  padding-right: 36px;
+  margin-top: -8px;
+  padding-right: 112px;
 }
 
 .password-input b,
 .hash-output strong {
   display: grid;
-  min-width: 190px;
-  min-height: 40px;
+  min-width: 160px;
+  min-height: 34px;
   place-items: center;
   border-radius: 8px;
   background: #fff;
   text-align: center;
+}
+
+.password-input b,
+.hash-output strong {
+  font-size: clamp(20px, 1.55vw, 28px);
 }
 
 .password-input span,
@@ -1680,11 +1685,11 @@ h1 {
 }
 
 .password-input span {
-  margin-left: 95px;
+  margin-left: 78px;
 }
 
 .hash-output span {
-  margin-right: 95px;
+  margin-right: 78px;
 }
 
 .password-input span::after,
@@ -1706,11 +1711,11 @@ h1 {
 .function-shape {
   position: relative;
   display: grid;
-  width: min(94%, 360px);
-  min-height: 108px;
+  width: min(92%, 330px);
+  min-height: 88px;
   place-items: center;
   justify-self: center;
-  margin: -4px 0 -2px;
+  margin: -9px 0 -6px;
 }
 
 .function-shape svg {
@@ -1734,7 +1739,7 @@ h1 {
   transform: translateY(4px);
   color: var(--orange);
   font-style: normal;
-  font-size: clamp(22px, 1.7vw, 29px);
+  font-size: clamp(19px, 1.45vw, 25px);
   font-weight: 900;
 }
 
@@ -1749,12 +1754,12 @@ h1 {
 
 .password-table div {
   min-width: 0;
-  padding: 7px 10px;
+  padding: 6px 8px;
   border-right: 2px solid var(--line);
   border-bottom: 2px solid var(--line);
   color: var(--ink);
   text-align: center;
-  font-size: clamp(17px, 1.2vw, 21px);
+  font-size: clamp(15px, 1.05vw, 19px);
   font-weight: 900;
   overflow-wrap: anywhere;
 }
