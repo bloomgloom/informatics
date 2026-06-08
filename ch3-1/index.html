@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>정렬과 탐색 알고리즘</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p>
+          <p class="page-ref">p.97</p>
+          <h1>정렬</h1>
+          <p class="subtitle">데이터를 특정 기준에 따라 순서대로 나열하는 과정</p>
+        </div>
+
+        <div class="sort-intro">
+          <article class="definition">
+            <h2>정렬이 필요한 이유</h2>
+            <p>원하는 데이터를 빠르게 찾고, 일을 효율적으로 처리할 수 있다.</p>
+            <div class="example-row">
+              <span>쇼핑몰 낮은 가격순</span>
+              <span>채팅방 최근 메시지순</span>
+              <span>놀이기구 짧은 대기 시간순</span>
+            </div>
+          </article>
+
+          <article class="order-card asc">
+            <h2>오름차순</h2>
+            <p>작은 것부터 큰 순서</p>
+            <div class="order-items"><span>2</span><span>3</span><span>5</span><span>7</span></div>
+            <b>0 -> 9, A -> Z, ㄱ -> ㅎ</b>
+          </article>
+
+          <article class="order-card desc">
+            <h2>내림차순</h2>
+            <p>큰 것부터 작은 순서</p>
+            <div class="order-items"><span>7</span><span>5</span><span>3</span><span>2</span></div>
+            <b>9 -> 0, Z -> A, ㅎ -> ㄱ</b>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p>
+          <p class="page-ref">p.98</p>
+          <h1>버블 정렬</h1>
+          <p class="subtitle">인접한 두 데이터를 비교하여 필요한 경우 자리를 교환한다</p>
+        </div>
+        <div class="sim-layout" data-sim="bubble" data-values="5 2 7 3"></div>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p>
+          <p class="page-ref">p.99</p>
+          <h1>버블 정렬 문제 1</h1>
+          <p class="subtitle">오름차순으로 정렬하며 가운데 숫자 칸을 채운다</p>
+        </div>
+        <div class="problem-layout" data-problem="bubble" data-values="6 1 4 2" data-title="문제 1"></div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p>
+          <p class="page-ref">p.99</p>
+          <h1>버블 정렬 문제 2</h1>
+          <p class="subtitle">오름차순으로 정렬하며 가운데 숫자 칸을 채운다</p>
+        </div>
+        <div class="problem-layout" data-problem="bubble" data-values="9 5 7 3 1" data-title="문제 2"></div>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p>
+          <p class="page-ref">p.99</p>
+          <h1>선택 정렬</h1>
+          <p class="subtitle">기준 위치 뒤에서 최솟값을 찾아 기준 위치와 교환한다</p>
+        </div>
+        <div class="sim-layout" data-sim="selection" data-values="5 2 7 3"></div>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <div class="slide-header">
+          <p class="unit">06</p>
+          <p class="page-ref">p.99</p>
+          <h1>선택 정렬 문제 1</h1>
+          <p class="subtitle">오름차순으로 정렬하며 가운데 숫자 칸을 채운다</p>
+        </div>
+        <div class="problem-layout" data-problem="selection" data-values="6 1 4 2" data-title="문제 1"></div>
+      </section>
+
+      <section class="slide" data-slide="7">
+        <div class="slide-header">
+          <p class="unit">07</p>
+          <p class="page-ref">p.99</p>
+          <h1>선택 정렬 문제 2</h1>
+          <p class="subtitle">오름차순으로 정렬하며 가운데 숫자 칸을 채운다</p>
+        </div>
+        <div class="problem-layout" data-problem="selection" data-values="9 5 7 3 1" data-title="문제 2"></div>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <div class="slide-header">
+          <p class="unit">08</p>
+          <p class="page-ref">p.102</p>
+          <h1>탐색</h1>
+          <p class="subtitle">여러 개의 데이터 중에서 원하는 데이터를 찾는 과정</p>
+        </div>
+        <div class="search-intro">
+          <article class="search-definition">
+            <h2>탐색</h2>
+            <p>여러 데이터 중에서 원하는 데이터를 찾는 과정</p>
+            <div class="search-examples">
+              <span>연락처 검색</span>
+              <span>빠른 길 찾기</span>
+              <span>도서관 책 찾기</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="9">
+        <div class="slide-header">
+          <p class="unit">09</p>
+          <p class="page-ref">p.103</p>
+          <h1>순차 탐색</h1>
+          <p class="subtitle">처음부터 차례대로 비교하며 원하는 데이터를 찾는다</p>
+        </div>
+        <div class="sim-layout" data-sim="linear" data-values="10 20 30 40 50 60 70" data-target="50"></div>
+      </section>
+
+      <section class="slide" data-slide="10">
+        <div class="slide-header">
+          <p class="unit">10</p>
+          <p class="page-ref">p.104</p>
+          <h1>이진 탐색</h1>
+          <p class="subtitle">정렬된 데이터의 가운데 값을 기준으로 범위를 절반씩 줄인다</p>
+        </div>
+        <div class="sim-layout" data-sim="binary" data-values="10 20 30 40 50 60 70" data-target="50"></div>
+      </section>
+
+      <section class="slide" data-slide="11">
+        <div class="slide-header">
+          <p class="unit">11</p>
+          <p class="page-ref">p.104</p>
+          <h1>이진 탐색 문제 1</h1>
+          <p class="subtitle">각 단계에서 중앙값을 클릭하며 탐색 과정을 완성한다</p>
+        </div>
+        <div class="problem-layout" data-problem="binary" data-values="4 9 13 18 22 27 31" data-target="22" data-title="문제 1"></div>
+      </section>
+
+      <section class="slide" data-slide="12">
+        <div class="slide-header">
+          <p class="unit">12</p>
+          <p class="page-ref">p.104</p>
+          <h1>이진 탐색 문제 2</h1>
+          <p class="subtitle">각 단계에서 중앙값을 클릭하며 탐색 과정을 완성한다</p>
+        </div>
+        <div class="problem-layout" data-problem="binary" data-values="2 6 11 15 21 28 36 45 53" data-target="45" data-title="문제 2"></div>
+      </section>
+    </main>
+
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드"><span></span></button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드"><span></span></button>
+
+    <div class="footer">
+      <div class="dots" aria-label="슬라이드 위치"></div>
+      <p><span id="currentSlide">1</span> / <span id="totalSlides">12</span></p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
