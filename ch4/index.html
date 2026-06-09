@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>인공지능과 지능 에이전트</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p>
+          <p class="page-ref">p.174</p>
+          <h1>인공지능</h1>
+          <p class="subtitle">사람의 지능적인 판단과 결정을 컴퓨터 소프트웨어로 구현하는 기술</p>
+        </div>
+
+        <div class="ai-definition-layout">
+          <article class="definition-card">
+            <h2>정의</h2>
+            <p>
+              <strong>인식, 학습, 추론, 문제 해결, 언어 구사</strong> 등
+              사람의 지능적인 판단과 결정을 컴퓨터 소프트웨어로 구현하는 것
+            </p>
+          </article>
+
+          <div class="intelligence-map" aria-label="인공지능이 구현하는 지능적 기능">
+            <span class="map-core">AI</span>
+            <span class="map-item item-recognition">인식</span>
+            <span class="map-item item-learning">학습</span>
+            <span class="map-item item-reasoning">추론</span>
+            <span class="map-item item-solving">문제 해결</span>
+            <span class="map-item item-language">언어 구사</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p>
+          <p class="page-ref">p.175</p>
+          <h1>에이전트와 지능 에이전트</h1>
+          <p class="subtitle">주어진 환경과 상호 작용하며 목적을 위해 행동하는 시스템</p>
+        </div>
+
+        <div class="compare-layout">
+          <article class="agent-card basic-agent">
+            <h2>에이전트</h2>
+            <p>누군가를 대신하여 주어진 환경과 상호 작용하며 어떤 목적을 위해 자율적으로 행동하는 시스템</p>
+            <div class="example-chip">예: 온도 조절기</div>
+          </article>
+
+          <article class="agent-card smart-agent">
+            <h2>지능 에이전트</h2>
+            <p>학습과 추론으로 스스로 행동을 개선하거나 새로운 규칙과 전략을 만들어 상황에 효과적으로 대응하는 시스템</p>
+            <div class="example-chip">예: 로봇 청소기, 추천 시스템</div>
+          </article>
+
+          <article class="compare-table">
+            <h2>비교</h2>
+            <div class="compare-row">
+              <b>행동 기준</b>
+              <span>설정된 규칙</span>
+              <span>학습과 추론</span>
+            </div>
+            <div class="compare-row">
+              <b>상황 대응</b>
+              <span>단순 반응</span>
+              <span>판단 후 행동 조정</span>
+            </div>
+            <div class="compare-row">
+              <b>목표 달성</b>
+              <span>정해진 방식</span>
+              <span>더 효과적인 전략 선택</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p>
+          <p class="page-ref">p.176</p>
+          <h1>지능 에이전트의 원리와 특성</h1>
+          <p class="subtitle">외부 환경을 인지하고 판단한 뒤 적절한 행동을 반복한다</p>
+        </div>
+
+        <div class="principle-layout">
+          <article class="flow-panel">
+            <h2>원리</h2>
+            <div class="agent-flow" aria-label="지능 에이전트의 동작 순서">
+              <div class="flow-node sensor">
+                <span>1</span>
+                <b>센서</b>
+                <p>외부 환경 인지</p>
+              </div>
+              <div class="flow-arrow"></div>
+              <div class="flow-node thinking">
+                <span>2</span>
+                <b>추론과 학습</b>
+                <p>상황 판단</p>
+              </div>
+              <div class="flow-arrow"></div>
+              <div class="flow-node decision">
+                <span>3</span>
+                <b>지능적 판단</b>
+                <p>행동 결정</p>
+              </div>
+              <div class="flow-arrow"></div>
+              <div class="flow-node actuator">
+                <span>4</span>
+                <b>구동기</b>
+                <p>적절한 행동</p>
+              </div>
+            </div>
+            <p class="repeat-note">이 과정을 반복하여 주어진 목적을 달성한다.</p>
+          </article>
+
+          <article class="feature-panel">
+            <h2>특성</h2>
+            <div class="feature-grid">
+              <span>자율성</span>
+              <span>목적성</span>
+              <span>적응성</span>
+              <span>사회성</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p>
+          <p class="page-ref">p.177</p>
+          <h1>지능 에이전트 사례</h1>
+          <p class="subtitle">인공지능 서비스와 제품은 지능 에이전트의 형태로 활용된다</p>
+        </div>
+
+        <div class="textbook-case-layout">
+          <ul class="agent-case-list" aria-label="지능 에이전트 사례 목록">
+            <li><b>인공지능 스피커</b><span>사용자와 자연스럽게 상호 작용한다.</span></li>
+            <li><b>안전 로봇 에이전트</b><span>위험한 곳을 탐지한다.</span></li>
+            <li><b>추천 시스템</b><span>사용자의 활동을 분석하여 더 나은 활동을 추천한다.</span></li>
+            <li><b>드론 택배 에이전트</b><span>사람이 가기 힘든 곳에 물건을 배달한다.</span></li>
+          </ul>
+
+          <figure class="textbook-figure">
+            <img src="assets/intelligent-agent-cases.png" alt="교과서의 다양한 지능 에이전트 예시" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p>
+          <p class="page-ref">p.180</p>
+          <h1>기계학습</h1>
+          <p class="subtitle">컴퓨터가 수많은 데이터로 학습하여 예측과 분류 같은 판단을 수행한다</p>
+        </div>
+
+        <div class="ml-definition-layout">
+          <article class="ml-definition-card">
+            <h2>정의</h2>
+            <p>
+              사람의 학습 능력을 컴퓨터로 구현하는 인공지능 기술<br> 
+              컴퓨터가 수많은 데이터로 학습하여 <strong>모델</strong>을 만들고<br>
+              이 <strong>모델</strong>에 새로운 데이터를 적용하여<br>
+              예측과 분류 같은 지능적인 판단을 할 수있다.
+            </p>
+          </article>
+
+          <article class="ml-cycle-card" aria-label="기계학습 과정">
+            <div class="cycle-step data">
+              <b>데이터</b>
+              <span>자동차 사진·기록</span>
+            </div>
+            <div class="cycle-arrow"></div>
+            <div class="cycle-step learn">
+              <b>학습</b>
+              <span>패턴 찾기</span>
+            </div>
+            <div class="cycle-arrow"></div>
+            <div class="cycle-step model">
+              <b>모델</b>
+              <span>판단 기준 생성</span>
+            </div>
+            <div class="cycle-arrow"></div>
+            <div class="cycle-step use">
+              <b>활용</b>
+              <span>예측·분류</span>
+            </div>
+          </article>
+
+          <article class="ml-example-panel">
+            <h2>예시</h2>
+            <div class="ml-example-grid">
+              <div><b>북극 해빙 면적 예측</b><span>인공위성 데이터로 미래 면적을 예측</span></div>
+              <div><b>추천 시스템</b><span>사용자 선호도를 판단하여 콘텐츠 추천</span></div>
+              <div><b>게임 AI</b><span>이용자 수준에 맞게 난이도 조절</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <div class="slide-header">
+          <p class="unit">06</p>
+          <p class="page-ref">p.181~182</p>
+          <h1>기계학습의 종류</h1>
+          <p class="subtitle">정답 데이터의 유무와 보상 경험에 따라 학습 방식이 달라진다</p>
+        </div>
+
+        <div class="learning-types-grid">
+          <article class="learning-type supervised">
+            <h2>지도학습</h2>
+            <p>입력과 정답 데이터로 학습한다.</p>
+            <div class="type-flow">
+              <span>특징</span>
+              <span>레이블</span>
+              <span>예측·분류</span>
+            </div>
+            <ul>
+              <li>날씨 예측</li>
+              <li>스팸 메일 분류</li>
+              <li>질병 유무 판단</li>
+            </ul>
+          </article>
+
+          <article class="learning-type unsupervised">
+            <h2>비지도학습</h2>
+            <p>정답이 없는 데이터에서 패턴이나 구조를 찾는다.</p>
+            <div class="type-flow">
+              <span>데이터</span>
+              <span>패턴 발견</span>
+              <span>그룹·특징</span>
+            </div>
+            <ul>
+              <li>고객 세분화</li>
+              <li>신용 카드 이상 사용 탐지</li>
+              <li>도서 추천 시스템</li>
+            </ul>
+          </article>
+
+          <article class="learning-type reinforcement">
+            <h2>강화 학습</h2>
+            <p>시행착오와 보상으로 더 나은 행동을 학습한다.</p>
+            <div class="type-flow">
+              <span>행동</span>
+              <span>보상</span>
+              <span>전략 개선</span>
+            </div>
+            <ul>
+              <li>게임 AI 캐릭터</li>
+              <li>알파고</li>
+              <li>걷는 로봇</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="7">
+        <div class="slide-header">
+          <p class="unit">07</p>
+          <p class="page-ref">p.180~182</p>
+          <h1>기계학습 모델</h1>
+          <p class="subtitle">기계학습의 유형, 모델, 활용 분야</p>
+        </div>
+
+        <figure class="model-screenshot">
+          <img src="스크린샷 2026-06-09 오후 5.45.01.png" alt="교과서의 기계학습 유형, 모델, 활용 분야 도식" />
+        </figure>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <div class="slide-header">
+          <p class="unit">08</p>
+          <p class="page-ref">p.184~185</p>
+          <h1>회귀 모델</h1>
+          <p class="subtitle">연속적인 수치형 데이터를 예측하는 지도학습 방법</p>
+        </div>
+
+        <div class="model-lesson">
+          <article class="model-notes">
+            <h2>정의</h2>
+            <p>입력값과 결괏값의 관계를 나타내는 함수를 만들고, 새로운 값이 입력되면 그 함수를 이용하여 값을 예측한다.</p>
+            <div class="example-list">
+              <b>예시</b>
+              <span>미래의 강우량 예측</span>
+              <span>운행 거리에 따른 중고차 판매 가격 예측</span>
+              <span>원유 가격 예측</span>
+              <span>시간별 지하철 이용 승객 예측</span>
+            </div>
+          </article>
+          <figure class="model-figure primary">
+            <img src="assets/regression-study-score.png" alt="학습 시간에 따른 성적 예측 회귀 모델 표와 그래프" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="9">
+        <div class="slide-header">
+          <p class="unit">09</p>
+          <p class="page-ref">p.185</p>
+          <h1>분류 모델</h1>
+          <p class="subtitle">입력 데이터가 미리 정의된 범주 중 어디에 해당하는지 정한다</p>
+        </div>
+
+        <div class="model-lesson">
+          <article class="model-notes">
+            <h2>정의</h2>
+            <p>둘 이상의 범주(클래스)를 구분하는 경계를 학습하고, 새로운 데이터가 어떤 클래스에 속하는지 판단한다.</p>
+            <div class="example-list">
+              <b>예시</b>
+              <span>암의 양성 여부</span>
+              <span>손 글씨체 숫자 판별</span>
+              <span>스팸 메일 분류</span>
+            </div>
+          </article>
+          <figure class="model-figure wide">
+            <img src="assets/classification-handwriting.png" alt="손 글씨체를 이용한 분류 모델" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="10">
+        <div class="slide-header">
+          <p class="unit">10</p>
+          <p class="page-ref">p.186</p>
+          <h1>결정트리</h1>
+          <p class="subtitle">특징의 기준값을 비교하며 데이터를 하위 그룹으로 나눈다</p>
+        </div>
+
+        <div class="model-lesson">
+          <article class="model-notes">
+            <h2>정의</h2>
+            <p>트리의 루트에서부터 각 분기마다 특징에 대한 분류 기준을 만들어 데이터를 분류하는 방법이다.</p>
+            <div class="step-list">
+              <b>알고리즘</b>
+              <span>데이터를 가장 잘 분류할 특징 선택</span>
+              <span>기준값에 따라 하위 그룹으로 분할</span>
+              <span>기준을 다시 정하며 반복</span>
+            </div>
+            <!--
+            <div class="example-list compact">
+              <b>예시</b>
+              <span>지폐의 아래 여백과 위 여백으로 진짜 지폐와 위조지폐를 분류</span>
+              <span>분류 문제와 회귀 문제에 모두 적용 가능</span>
+            </div>
+            -->
+          </article>
+          <figure class="model-figure wide">
+            <img src="assets/decision-tree-bills.png" alt="위조지폐 구분을 위한 결정트리" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="11">
+        <div class="slide-header">
+          <p class="unit">11</p>
+          <p class="page-ref">p.187</p>
+          <h1>로지스틱 회귀</h1>
+          <p class="subtitle">클래스에 속할 확률을 예측하고 가능성이 높은 클래스로 분류한다</p>
+        </div>
+
+        <div class="model-lesson">
+          <article class="model-notes">
+            <h2>정의</h2>
+            <p>데이터가 어떤 클래스에 속할 확률을 0부터 1 사이의 값으로 예측하고, 주로 0.5를 기준으로 분류한다.</p>
+            <!--
+            <div class="example-list">
+              <b>예시</b>
+              <span>지폐 1: 0.21 → 진짜 지폐</span>
+              <span>지폐 2: 0.98 → 위조지폐</span>
+              <span>지폐 3: 0.82 → 위조지폐</span>
+              <span>이름에는 회귀가 있지만 분류에 사용</span>
+            </div>
+            -->
+          </article>
+          <figure class="model-figure wide">
+            <img src="assets/logistic-bills.png" alt="위조지폐 구분을 위한 로지스틱 회귀" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="12">
+        <div class="slide-header">
+          <p class="unit">12</p>
+          <p class="page-ref">p.187</p>
+          <h1>k-최근접 이웃</h1>
+          <p class="subtitle">가까운 이웃 데이터의 클래스를 보고 새로운 데이터를 분류한다</p>
+        </div>
+
+        <div class="model-lesson">
+          <article class="model-notes">
+            <h2>정의</h2>
+            <p>새로운 데이터가 들어왔을 때 k개의 가까운 이웃 데이터의 클래스를 확인하고, 더 많은 수가 속한 클래스로 분류한다.</p>
+            <div class="step-list">
+              <b>kNN 알고리즘</b>
+              <span>기존 데이터와 예측 데이터 사이의 거리 계산</span>
+              <span>가까운 순서대로 k개의 이웃 선택</span>
+              <span>가장 많은 이웃의 클래스로 분류</span>
+            </div>
+            <!--
+            <div class="example-list compact">
+              <b>예시</b>
+              <span>k=1: 위조지폐로 예측</span>
+              <span>k=5: 진짜 지폐로 예측</span>
+            </div>
+            -->
+          </article>
+          <figure class="model-figure wide">
+            <img src="assets/knn-bills.png" alt="위조지폐 구분을 위한 k-최근접 이웃" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="13">
+        <div class="slide-header">
+          <p class="unit">13</p>
+          <p class="page-ref">p.188</p>
+          <h1>인공 신경망</h1>
+          <p class="subtitle">사람의 뇌 신경계가 정보를 처리하는 방식을 모방한 모델</p>
+        </div>
+
+        <div class="model-lesson">
+          <article class="model-notes">
+            <h2>정의</h2>
+            <p>수많은 노드가 연결되어 신호를 주고받도록 하며, 연결이 깊어질수록 더 복잡한 문제를 해결할 수 있다.</p>
+            <div class="example-list">
+              <b>핵심</b>
+              <span>심층 신경망: 연결이 깊어진 인공 신경망</span>
+              <span>선형 모델의 단점을 해결하는 비선형 모델 생성 가능</span>
+              <span>복잡한 경계를 학습하여 클래스를 분류</span>
+            </div>
+          </article>
+          <figure class="model-figure wide">
+            <img src="assets/neural-network-figures.png" alt="심층 신경망 모델 구조와 인공 신경망 모델에 의해 분류된 클래스 영역" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="14">
+        <div class="slide-header">
+          <p class="unit">14</p>
+          <p class="page-ref">p.188</p>
+          <h1>군집화</h1>
+          <p class="subtitle">정답이 없는 데이터에서 비슷한 특징을 가진 데이터끼리 그룹화한다</p>
+        </div>
+
+        <div class="model-lesson">
+          <article class="model-notes">
+            <h2>정의</h2>
+            <p>같은 군집에 속하는 데이터는 서로 비슷하고, 다른 군집에 속하는 데이터는 차이가 크게 나도록 나눈다.</p>
+            <div class="example-list">
+              <b>예시</b>
+              <span>비슷한 성향의 고객을 그룹화하는 시장 세분화 마케팅</span>
+              <span>비슷한 사진끼리 모아서 관리해 주는 프로그램</span>
+              <span>SNS에서 함께 언급되는 빈도로 화장품 브랜드 군집화</span>
+            </div>
+          </article>
+          <figure class="model-figure wide">
+            <img src="assets/cosmetics-clustering.png" alt="화장품 브랜드 군집화" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="15">
+        <div class="slide-header">
+          <p class="unit">15</p>
+          <p class="page-ref">p.189</p>
+          <h1>k-평균 군집화 알고리즘</h1>
+          <p class="subtitle">주어진 데이터를 k개의 군집으로 묶는 비지도학습 방법</p>
+        </div>
+
+        <div class="model-lesson">
+          <article class="model-notes">
+            <h2>정의</h2>
+            <p>군집의 중심점을 설정하고 각 데이터를 가장 가까운 중심점에 할당한 뒤, 중심점이 바뀌지 않을 때까지 반복한다.</p>
+            <div class="step-list">
+              <b>알고리즘</b>
+              <span>몇 개의 군집으로 묶을지 정함</span>
+              <span>각 군집의 중심점 설정</span>
+              <span>가까운 중심점에 데이터 할당</span>
+              <span>평균 위치로 중심점 변경 후 반복</span>
+            </div>
+            <div class="example-list compact">
+              <b>예시</b>
+              <span>키와 허리둘레에 따라 셔츠 크기를 S, M, L 세 군집으로 나눔</span>
+            </div>
+          </article>
+          <figure class="model-figure wide">
+            <img src="assets/kmeans-shirts.png" alt="셔츠 크기 군집화" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="16">
+        <div class="slide-header">
+          <p class="unit">16</p>
+          <p class="page-ref">p.189</p>
+          <h1>연관 규칙</h1>
+          <p class="subtitle">데이터 항목들 간의 연관성을 찾는다</p>
+        </div>
+
+        <div class="model-lesson">
+          <article class="model-notes">
+            <h2>정의</h2>
+            <p>거래 데이터에서 구매 항목 사이의 관련성을 분석하여 규칙을 발견하고, 추천이나 상품 배치에 활용한다.</p>
+            <div class="example-list">
+              <b>예시</b>
+              <!--<span>우유를 구매하였다면 식빵도 구매할 것이다</span>-->
+              <span>음악 추천 서비스</span>
+              <span>도서·웹툰 추천 서비스</span>
+              <span>매장 상품 배치</span>
+            </div>
+          </article>
+          <figure class="model-figure wide">
+            <img src="assets/association-rules.png" alt="연관 규칙의 예" />
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드"><span></span></button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드"><span></span></button>
+
+    <div class="footer">
+      <div class="dots" aria-label="슬라이드 위치"></div>
+      <p><span id="currentSlide">1</span> / <span id="totalSlides">4</span></p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
