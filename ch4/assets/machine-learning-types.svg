@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 720" role="img" aria-labelledby="title desc">
+  <title id="title">기계학습의 유형, 모델, 활용 분야</title>
+  <desc id="desc">지도학습, 비지도학습, 강화 학습의 데이터, 대표 모델, 활용 분야를 비교한 도식</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7fafc; }
+      .panel { fill: #fff; stroke: #d8e0eb; stroke-width: 3; }
+      .title { fill: #1d2733; font: 800 48px sans-serif; }
+      .subtitle { fill: #566579; font: 600 24px sans-serif; }
+      .label { fill: #fff; font: 800 30px sans-serif; }
+      .head { fill: #1d2733; font: 800 30px sans-serif; }
+      .body { fill: #344055; font: 600 22px sans-serif; }
+      .small { fill: #566579; font: 600 19px sans-serif; }
+      .chip-text { fill: #1d2733; font: 800 20px sans-serif; }
+      .arrow { fill: none; stroke: #9aa9bc; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1,1 L11,6 L1,11 Z" fill="#9aa9bc" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1500" height="720" rx="28" />
+  <text class="title" x="70" y="82">기계학습의 유형, 모델, 활용 분야</text>
+  <text class="subtitle" x="72" y="124">데이터와 피드백 방식에 따라 학습 방법과 적용 분야가 달라진다.</text>
+
+  <g transform="translate(70 170)">
+    <rect class="panel" width="420" height="470" rx="18" />
+    <rect width="420" height="74" rx="18" fill="#4f6fc4" />
+    <text class="label" x="34" y="48">지도학습</text>
+    <text class="small" x="300" y="47">정답 있음</text>
+
+    <g transform="translate(36 112)">
+      <rect x="0" y="0" width="138" height="68" rx="14" fill="#e8f0ff" stroke="#b7c7ef" stroke-width="2" />
+      <text class="chip-text" x="26" y="42">입력 데이터</text>
+      <rect x="212" y="0" width="138" height="68" rx="14" fill="#fdecef" stroke="#f4bdca" stroke-width="2" />
+      <text class="chip-text" x="248" y="42">레이블</text>
+      <path class="arrow" d="M150 34 H200" />
+
+      <path class="arrow" d="M175 94 V138" />
+      <circle cx="175" cy="190" r="48" fill="#dce8ff" stroke="#4f6fc4" stroke-width="4" />
+      <path d="M139 194 C154 155 195 155 211 194 C190 180 160 180 139 194Z" fill="#4f6fc4" opacity="0.35" />
+      <circle cx="158" cy="184" r="7" fill="#1d2733" />
+      <circle cx="192" cy="184" r="7" fill="#1d2733" />
+      <text class="head" x="98" y="272">예측·분류 모델</text>
+      <text class="body" x="0" y="322">회귀, 분류</text>
+      <text class="body" x="0" y="360">날씨·주가 예측</text>
+      <text class="body" x="0" y="398">스팸 메일 분류</text>
+    </g>
+  </g>
+
+  <g transform="translate(540 170)">
+    <rect class="panel" width="420" height="470" rx="18" />
+    <rect width="420" height="74" rx="18" fill="#2f9b8f" />
+    <text class="label" x="34" y="48">비지도학습</text>
+    <text class="small" x="274" y="47">정답 없음</text>
+
+    <g transform="translate(36 112)">
+      <rect x="0" y="0" width="350" height="68" rx="14" fill="#e8f7f5" stroke="#a7d8d1" stroke-width="2" />
+      <text class="chip-text" x="96" y="42">특징만 있는 데이터</text>
+      <path class="arrow" d="M175 92 V132" />
+
+      <circle cx="92" cy="190" r="22" fill="#f8d167" />
+      <circle cx="147" cy="166" r="22" fill="#f8d167" />
+      <circle cx="172" cy="218" r="22" fill="#f8d167" />
+      <circle cx="274" cy="176" r="22" fill="#83c5be" />
+      <circle cx="314" cy="225" r="22" fill="#83c5be" />
+      <circle cx="251" cy="239" r="22" fill="#83c5be" />
+      <path d="M58 150 C100 104 188 112 214 170 C231 209 199 264 132 266 C67 268 18 200 58 150Z" fill="none" stroke="#e3b844" stroke-width="5" stroke-dasharray="10 10" />
+      <path d="M223 136 C280 98 364 138 362 215 C360 281 266 297 224 254 C190 219 184 164 223 136Z" fill="none" stroke="#529d96" stroke-width="5" stroke-dasharray="10 10" />
+      <text class="head" x="103" y="320">패턴·군집 발견</text>
+      <text class="body" x="0" y="360">군집화, 연관 규칙</text>
+      <text class="body" x="0" y="398">고객 세분화</text>
+    </g>
+  </g>
+
+  <g transform="translate(1010 170)">
+    <rect class="panel" width="420" height="470" rx="18" />
+    <rect width="420" height="74" rx="18" fill="#d66c4a" />
+    <text class="label" x="34" y="48">강화 학습</text>
+    <text class="small" x="286" y="47">보상 기반</text>
+
+    <g transform="translate(36 112)">
+      <rect x="0" y="0" width="138" height="68" rx="14" fill="#fff1e8" stroke="#efc2ac" stroke-width="2" />
+      <text class="chip-text" x="47" y="42">행동</text>
+      <rect x="212" y="0" width="138" height="68" rx="14" fill="#edf7e9" stroke="#bcd9ae" stroke-width="2" />
+      <text class="chip-text" x="259" y="42">보상</text>
+      <path class="arrow" d="M150 34 H200" />
+
+      <path class="arrow" d="M281 94 C281 142 227 158 199 183" />
+      <path class="arrow" d="M151 183 C103 157 75 129 75 94" />
+      <rect x="96" y="142" width="158" height="96" rx="20" fill="#ffe3d8" stroke="#d66c4a" stroke-width="4" />
+      <circle cx="144" cy="190" r="11" fill="#1d2733" />
+      <circle cx="206" cy="190" r="11" fill="#1d2733" />
+      <path d="M140 215 C158 233 193 233 211 215" fill="none" stroke="#1d2733" stroke-width="5" stroke-linecap="round" />
+      <text class="head" x="88" y="320">시행착오로 개선</text>
+      <text class="body" x="0" y="360">게임 AI 캐릭터</text>
+      <text class="body" x="0" y="398">알파고, 걷는 로봇</text>
+    </g>
+  </g>
+</svg>
