@@ -280,7 +280,7 @@
           <p class="subtitle">연속적인 수치형 데이터를 예측하는 지도학습 방법</p>
         </div>
 
-        <div class="model-lesson">
+        <div class="model-lesson with-link">
           <article class="model-notes">
             <h2>정의</h2>
             <p>입력값과 결괏값의 관계를 나타내는 함수를 만들고, 새로운 값이 입력되면 그 함수를 이용하여 값을 예측한다.</p>
@@ -295,6 +295,10 @@
           <figure class="model-figure primary">
             <img src="assets/regression-study-score.png" alt="학습 시간에 따른 성적 예측 회귀 모델 표와 그래프" />
           </figure>
+          <div class="model-link-stack">
+            <a class="model-link" href="https://phet.colorado.edu/sims/html/least-squares-regression/latest/least-squares-regression_all.html" target="_blank" rel="noreferrer">회귀 모델 실습 링크</a>
+            <a class="model-link" href="https://www.interactive-ml.com/linear-regression.html" target="_blank" rel="noreferrer">선형 회귀 실습 링크</a>
+          </div>
         </div>
       </section>
 
@@ -331,7 +335,7 @@
           <p class="subtitle">특징의 기준값을 비교하며 데이터를 하위 그룹으로 나눈다</p>
         </div>
 
-        <div class="model-lesson">
+        <div class="model-lesson with-link">
           <article class="model-notes">
             <h2>정의</h2>
             <p>트리의 루트에서부터 각 분기마다 특징에 대한 분류 기준을 만들어 데이터를 분류하는 방법이다.</p>
@@ -352,6 +356,10 @@
           <figure class="model-figure wide">
             <img src="assets/decision-tree-bills.png" alt="위조지폐 구분을 위한 결정트리" />
           </figure>
+          <div class="model-link-stack">
+            <a class="model-link" href="https://ml-playground.com/#" target="_blank" rel="noreferrer">결정트리 실습 링크</a>
+            <a class="model-link" href="https://www.interactive-ml.com/decision-tree.html" target="_blank" rel="noreferrer">결정트리 추가 실습 링크</a>
+          </div>
         </div>
       </section>
 
@@ -363,7 +371,7 @@
           <p class="subtitle">클래스에 속할 확률을 예측하고 가능성이 높은 클래스로 분류한다</p>
         </div>
 
-        <div class="model-lesson">
+        <div class="model-lesson with-link">
           <article class="model-notes">
             <h2>정의</h2>
             <p>데이터가 어떤 클래스에 속할 확률을 0부터 1 사이의 값으로 예측하고, 주로 0.5를 기준으로 분류한다.</p>
@@ -380,6 +388,7 @@
           <figure class="model-figure wide">
             <img src="assets/logistic-bills.png" alt="위조지폐 구분을 위한 로지스틱 회귀" />
           </figure>
+          <a class="model-link" href="https://www.interactive-ml.com/logistic-regression.html" target="_blank" rel="noreferrer">로지스틱 회귀 실습 링크</a>
         </div>
       </section>
 
@@ -391,7 +400,7 @@
           <p class="subtitle">가까운 이웃 데이터의 클래스를 보고 새로운 데이터를 분류한다</p>
         </div>
 
-        <div class="model-lesson">
+        <div class="model-lesson with-link">
           <article class="model-notes">
             <h2>정의</h2>
             <p>새로운 데이터가 들어왔을 때 k개의 가까운 이웃 데이터의 클래스를 확인하고, 더 많은 수가 속한 클래스로 분류한다.</p>
@@ -412,6 +421,10 @@
           <figure class="model-figure wide">
             <img src="assets/knn-bills.png" alt="위조지폐 구분을 위한 k-최근접 이웃" />
           </figure>
+          <div class="model-link-stack">
+            <a class="model-link" href="https://ml-playground.com/#" target="_blank" rel="noreferrer">k-최근접 이웃 실습 링크</a>
+            <a class="model-link" href="https://www.interactive-ml.com/knn.html" target="_blank" rel="noreferrer">k-최근접 이웃 추가 실습 링크</a>
+          </div>
         </div>
       </section>
 
@@ -423,7 +436,7 @@
           <p class="subtitle">사람의 뇌 신경계가 정보를 처리하는 방식을 모방한 모델</p>
         </div>
 
-        <div class="model-lesson">
+        <div class="model-lesson with-link">
           <article class="model-notes">
             <h2>정의</h2>
             <p>수많은 노드가 연결되어 신호를 주고받도록 하며, 연결이 깊어질수록 더 복잡한 문제를 해결할 수 있다.</p>
@@ -437,6 +450,7 @@
           <figure class="model-figure wide">
             <img src="assets/neural-network-figures.png" alt="심층 신경망 모델 구조와 인공 신경망 모델에 의해 분류된 클래스 영역" />
           </figure>
+          <a class="model-link" href="https://playground.tensorflow.org/" target="_blank" rel="noreferrer">인공 신경망 실습 링크</a>
         </div>
       </section>
 
@@ -473,7 +487,7 @@
           <p class="subtitle">주어진 데이터를 k개의 군집으로 묶는 비지도학습 방법</p>
         </div>
 
-        <div class="model-lesson">
+        <div class="model-lesson with-link">
           <article class="model-notes">
             <h2>정의</h2>
             <p>군집의 중심점을 설정하고 각 데이터를 가장 가까운 중심점에 할당한 뒤, 중심점이 바뀌지 않을 때까지 반복한다.</p>
@@ -492,6 +506,7 @@
           <figure class="model-figure wide">
             <img src="assets/kmeans-shirts.png" alt="셔츠 크기 군집화" />
           </figure>
+          <a class="model-link" href="https://www.naftaliharris.com/blog/visualizing-k-means-clustering/" target="_blank" rel="noreferrer">k-평균 군집화 실습 링크</a>
         </div>
       </section>
 
@@ -503,7 +518,7 @@
           <p class="subtitle">데이터 항목들 간의 연관성을 찾는다</p>
         </div>
 
-        <div class="model-lesson">
+        <div class="model-lesson with-link">
           <article class="model-notes">
             <h2>정의</h2>
             <p>거래 데이터에서 구매 항목 사이의 관련성을 분석하여 규칙을 발견하고, 추천이나 상품 배치에 활용한다.</p>
@@ -518,6 +533,7 @@
           <figure class="model-figure wide">
             <img src="assets/association-rules.png" alt="연관 규칙의 예" />
           </figure>
+          <a class="model-link" href="https://www.philippe-fournier-viger.com/tools/Apriori_algorithm_demo.php" target="_blank" rel="noreferrer">연관 규칙 실습 링크</a>
         </div>
       </section>
     </main>

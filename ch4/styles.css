@@ -702,6 +702,20 @@ h1 {
   min-height: 0;
 }
 
+.model-lesson.with-link {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.model-lesson.with-link .model-notes {
+  grid-row: 1 / -1;
+}
+
+.model-lesson.with-link .model-figure {
+  grid-column: 2;
+  grid-row: 1;
+  padding: 12px;
+}
+
 .model-lesson.two-figures {
   grid-template-columns: 0.68fr 1.32fr;
   grid-template-rows: minmax(0, 1.08fr) minmax(0, 0.72fr);
@@ -800,6 +814,34 @@ h1 {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+
+.model-link-stack {
+  display: grid;
+  grid-column: 2;
+  grid-row: 2;
+  gap: 8px;
+}
+
+.model-link {
+  display: grid;
+  min-height: 54px;
+  place-items: center;
+  border: 2px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 8px 18px;
+  background: #eef5ff;
+  color: var(--blue);
+  cursor: pointer;
+  font-size: clamp(17px, 1.25vw, 22px);
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+
+.model-link:hover {
+  background: #dbeafe;
 }
 
 .nav-zone {
