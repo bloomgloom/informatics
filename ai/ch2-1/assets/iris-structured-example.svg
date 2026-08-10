@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="300" viewBox="0 0 760 300">
+  <rect width="760" height="300" rx="18" fill="#fff"/>
+  <text x="30" y="42" font-family="Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="25" font-weight="800" fill="#172033">붓꽃 데이터 표</text>
+  <g transform="translate(30 64)" font-family="Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="17" text-anchor="middle">
+    <rect width="700" height="198" rx="10" fill="#f8fafc" stroke="#a7d7bd" stroke-width="3"/>
+    <rect width="700" height="48" rx="10" fill="#dcfce7"/>
+    <g stroke="#cbd5e1" stroke-width="2">
+      <path d="M0 48H700M0 98H700M0 148H700M140 0V198M280 0V198M420 0V198M560 0V198"/>
+    </g>
+    <g font-weight="800" fill="#08783e">
+      <text x="70" y="30">꽃받침 길이</text><text x="210" y="30">꽃받침 너비</text><text x="350" y="30">꽃잎 길이</text><text x="490" y="30">꽃잎 너비</text><text x="630" y="30">품종</text>
+    </g>
+    <g fill="#334155" font-weight="700">
+      <text x="70" y="80">5.1</text><text x="210" y="80">3.5</text><text x="350" y="80">1.4</text><text x="490" y="80">0.2</text><text x="630" y="80">setosa</text>
+      <text x="70" y="130">7.0</text><text x="210" y="130">3.2</text><text x="350" y="130">4.7</text><text x="490" y="130">1.4</text><text x="630" y="130">versicolor</text>
+      <text x="70" y="180">6.3</text><text x="210" y="180">3.3</text><text x="350" y="180">6.0</text><text x="490" y="180">2.5</text><text x="630" y="180">virginica</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2022 개정 교육과정 · 정보 교과 안내</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" />
+<style>
+  :root{
+    --ink:#0E1626;
+    --ink-2:#16233A;
+    --line:rgba(255,255,255,.12);
+    --paper:#F3F6FB;
+    --muted:#93A6C4;
+    --amber:#FFC44A;
+    --mint:#5FE3BE;
+    --coral:#FF8A73;
+    --sky:#7FB4FF;
+    --font: "Nanum Gothic", "NanumGothic", "맑은 고딕", "Malgun Gothic", sans-serif;
+    --mono: "SFMono-Regular", "D2Coding", Consolas, monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{position:relative;background:var(--ink);color:var(--paper);font-family:var(--font);overflow:hidden;-webkit-font-smoothing:antialiased}
+  .deck{
+    position:absolute;top:50%;left:50%;width:1920px;height:1080px;container-type:size;
+    overflow:hidden;transform:translate(-50%,-50%) scale(var(--deck-scale,1));transform-origin:center;
+    background:var(--ink);
+  }
+  .slide{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:5cqh 6cqw 11cqh;
+    opacity:0;transform:translateY(18px);pointer-events:none;
+    transition:opacity .45s ease, transform .45s ease;
+  }
+  .slide.active{opacity:1;transform:none;pointer-events:auto}
+
+  .eyebrow{font-size:clamp(18px,1.75cqw,34px);letter-spacing:.18em;font-weight:700;color:var(--amber);margin-bottom:2.2cqh}
+  h1{font-size:clamp(40px,6.4cqw,96px);font-weight:800;line-height:1.12;letter-spacing:-.02em}
+  h2{font-size:clamp(30px,4.2cqw,72px);font-weight:800;line-height:1.18;letter-spacing:-.02em;margin-bottom:3cqh}
+  .lead{font-size:clamp(20px,2.15cqw,40px);color:var(--muted);margin-top:2.5cqh;font-weight:600}
+  .hl{color:var(--amber)}
+  .hl-mint{color:var(--mint)}
+
+  /* 표지 */
+  .cover-tags{display:flex;flex-wrap:wrap;gap:12px;margin-top:5cqh}
+  .tag{border:1px solid var(--line);border-radius:999px;padding:14px 26px;font-size:clamp(18px,1.7cqw,32px);font-weight:600;background:var(--ink-2)}
+  .tag b{color:var(--mint);margin-right:8px}
+
+  /* 카드 2단 */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:3cqw}
+  .card{background:var(--ink-2);border:1px solid var(--line);border-radius:20px;padding:3.5cqh 2.4cqw}
+  .card .k{font-size:clamp(18px,1.7cqw,32px);color:var(--muted);font-weight:700;letter-spacing:.06em;margin-bottom:1.6cqh}
+  .card .v{font-size:clamp(24px,2.9cqw,52px);font-weight:800;line-height:1.3}
+  .card .v span{color:var(--sky)}
+  .conclusion{
+    margin-top:4cqh;padding:3.4cqh 2.6cqw;border-radius:20px;
+    background:linear-gradient(90deg, rgba(255,196,74,.16), rgba(95,227,190,.10));
+    border:1px solid rgba(255,196,74,.4);
+    text-align:center;display:flex;flex-direction:column;gap:1.4cqh;
+  }
+  .conclusion .c1{font-size:clamp(20px,2.3cqw,42px);font-weight:800;line-height:1.3;color:var(--mint)}
+  .conclusion .c2{font-size:clamp(22px,2.75cqw,50px);font-weight:800;line-height:1.3}
+
+  /* 계단 */
+  .stairs{display:grid;grid-template-columns:1fr 1fr;gap:3cqw}
+  .stair{background:var(--ink-2);border:1px solid var(--line);border-radius:20px;padding:2.8cqh 2.2cqw}
+  .stair .k{font-size:clamp(20px,1.9cqw,36px);font-weight:800;letter-spacing:.06em;margin-bottom:2cqh}
+  .stair.m .k{color:var(--sky)}
+  .stair.c .k{color:var(--mint)}
+  .steps{display:flex;flex-direction:column;gap:1.2cqh}
+  .step{
+    display:flex;align-items:center;gap:14px;
+    font-size:clamp(20px,2.2cqw,40px);font-weight:800;
+    padding:1.7cqh 1.4cqw;border-radius:14px;background:rgba(255,255,255,.04);
+  }
+  .step:nth-child(1){margin-right:12%;border-left:5px solid var(--amber)}
+  .step:nth-child(2){margin-right:6%;border-left:5px solid var(--amber)}
+  .step:nth-child(3){border-left:5px solid var(--amber)}
+  .step small{font-size:clamp(14px,1.35cqw,25px);color:var(--muted);font-weight:700;font-family:var(--mono)}
+  .skip{margin-top:2cqh;font-size:clamp(18px,1.95cqw,36px);font-weight:700;color:var(--coral)}
+
+  /* 도구 과목 */
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6cqw}
+  .sub{background:var(--ink-2);border:1px solid var(--line);border-radius:18px;padding:2.4cqh 1.4cqw;display:flex;flex-direction:column;gap:1.4cqh}
+  .sub .term{font-size:clamp(15px,1.45cqw,27px);font-weight:800;color:var(--mint);letter-spacing:.06em}
+  .sub .name{font-size:clamp(19px,2cqw,36px);font-weight:800;line-height:1.25}
+  .sub .type{font-size:clamp(14px,1.3cqw,24px);color:var(--muted);font-weight:700}
+  .sub ul{list-style:none;margin-top:auto;display:flex;flex-direction:column;gap:.9cqh}
+  .sub li{font-size:clamp(15px,1.45cqw,27px);color:#D7E2F2;font-weight:700;padding-left:14px;position:relative}
+  .sub li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:2px;background:var(--amber)}
+  .sub .tool{margin-top:1.6cqh;font-size:clamp(15px,1.45cqw,27px);color:var(--ink);background:var(--amber);border-radius:8px;padding:9px 10px;font-weight:800;text-align:center}
+  .sub.ai .tool{background:var(--sky)}
+  .sub.ds .tool{background:var(--mint)}
+  .sub .tool u{text-decoration:none;background:rgba(14,22,38,.85);color:var(--paper);border-radius:6px;padding:2px 8px;margin-left:2px}
+  .sub.sw .tool{background:var(--coral)}
+
+  /* 과목 → 분야 연결 */
+  .bridge{display:flex;flex-direction:column;gap:1.2cqh}
+  .brow{
+    display:grid;grid-template-columns:minmax(0,370px) auto minmax(0,1fr);
+    align-items:center;gap:1.2cqw;
+    background:var(--ink-2);border:1px solid var(--line);border-radius:18px;
+    padding:2.1cqh 1.8cqw;border-left:6px solid var(--amber);
+  }
+  .brow:nth-child(2){border-left-color:var(--sky)}
+  .brow:nth-child(3){border-left-color:var(--mint)}
+  .brow:nth-child(4){border-left-color:var(--coral)}
+  .brow .subj{font-size:clamp(20px,2.1cqw,40px);font-weight:800;line-height:1.25;white-space:nowrap}
+  .brow .subj small{display:block;font-size:clamp(14px,1.4cqw,26px);color:var(--muted);font-weight:700;margin-top:.5cqh}
+  .brow .arrow{font-size:clamp(20px,2cqw,34px);color:var(--muted);font-weight:800}
+  .brow .apps{display:flex;flex-wrap:wrap;gap:10px}
+  .brow .apps span{white-space:nowrap}
+  .brow .apps span{
+    font-size:clamp(16px,1.6cqw,30px);font-weight:800;
+    background:rgba(255,255,255,.06);border:1px solid var(--line);
+    border-radius:10px;padding:8px 12px;
+  }
+  .brow .apps b{color:var(--amber);font-weight:800}
+
+  .core{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4cqw;margin-bottom:2.4cqh}
+  .core div{
+    border:1px dashed var(--line);border-radius:14px;padding:1.5cqh 1.2cqw;
+    display:flex;flex-direction:column;gap:.6cqh;text-align:center;
+  }
+  .core b{color:var(--mint);font-size:clamp(18px,1.9cqw,35px);font-weight:800;line-height:1.2}
+  .core em{font-style:normal;color:var(--paper);font-size:clamp(15px,1.55cqw,28px);font-weight:700;line-height:1.3}
+
+  /* 오해 */
+  .myth{display:grid;grid-template-columns:1fr 1fr;gap:3cqw}
+  .myth .box{border-radius:20px;padding:4cqh 2.4cqw;border:1px solid var(--line)}
+  .myth .false{background:rgba(255,138,115,.10);border-color:rgba(255,138,115,.45)}
+  .myth .true{background:rgba(95,227,190,.10);border-color:rgba(95,227,190,.45)}
+  .myth h3{font-size:clamp(20px,1.95cqw,34px);letter-spacing:.1em;margin-bottom:2.4cqh}
+  .myth .false h3{color:var(--coral)}
+  .myth .true h3{color:var(--mint)}
+  .myth p{font-size:clamp(20px,2.2cqw,40px);font-weight:800;line-height:1.45}
+  .note{
+    margin-top:3.4cqh;text-align:center;border-top:1px solid var(--line);padding-top:3.2cqh;
+    display:flex;flex-direction:column;gap:1.4cqh;
+  }
+  .note .n1{font-size:clamp(20px,2.4cqw,44px);font-weight:800;line-height:1.3}
+  .note .n2{font-size:clamp(16px,1.7cqw,30px);font-weight:700;color:var(--muted);letter-spacing:.12em}
+
+  .hud{
+    position:absolute;left:0;right:0;bottom:0;height:8cqh;
+    display:flex;align-items:center;justify-content:space-between;padding:0 7cqw;
+    border-top:1px solid var(--line);font-size:clamp(13px,1.1cqw,20px);color:var(--muted);
+    background:rgba(14,22,38,.85);backdrop-filter:blur(6px);
+  }
+  .dots{display:flex;gap:10px}
+  .dot{width:34px;height:4px;border-radius:2px;background:var(--line);cursor:pointer;border:0}
+  .dot.on{background:var(--amber)}
+  .hint{font-family:var(--mono);letter-spacing:.05em}
+  @media (prefers-reduced-motion:reduce){.slide{transition:none}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide active">
+    <div class="eyebrow">2022 개정 교육과정 · 정보 교과 선택 안내</div>
+    <h1>AI가 다 해주는 시대,<br /><span class="hl">정보</span>를 왜 배울까</h1>
+    <div class="cover-tags">
+      <div class="tag"><b>2-1</b>정보</div>
+      <div class="tag"><b>2-2</b>인공지능 기초</div>
+      <div class="tag"><b>3-1</b>데이터 과학</div>
+      <div class="tag"><b>3-2</b>소프트웨어와 생활</div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide">
+    <div class="eyebrow">시대가 바뀌었습니다</div>
+    <h2 style="white-space:nowrap">이제는 <span class="hl">프로그램</span>도 내가 만들어 쓰는 시대</h2>
+    <div class="cols">
+      <div class="card">
+        <div class="k">컴퓨터가 집집마다 생겼을 때</div>
+        <div class="v"><span>영상 · 음악 · 그림</span><br />내가 만들어 쓴다</div>
+      </div>
+      <div class="card">
+        <div class="k">AI(챗봇)가 모두에게 생긴 지금</div>
+        <div class="v"><span>앱 · 프로그램</span><br />내가 만들어 쓴다</div>
+      </div>
+    </div>
+    <div class="conclusion">
+      <span class="c1">AI는 만들어 줄 뿐</span>
+      <span class="c2"><span class="hl">무엇을 만들지</span> 정하고, <span class="hl">어떻게 만들지</span> 그리는 건 사람</span>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide">
+    <div class="eyebrow">"AI가 코딩해 주는데 왜 배워요?"</div>
+    <h2>기초는 <span class="hl">다음 계단</span>을 밟기 위한 것</h2>
+    <div class="stairs">
+      <div class="stair m">
+        <div class="k">수학</div>
+        <div class="steps">
+          <div class="step">미적분 <small>더 높은 수학</small></div>
+          <div class="step">함수 · 방정식 <small>원리</small></div>
+          <div class="step">사칙연산 <small>기초</small></div>
+        </div>
+        <p class="skip">계산기가 있다고 연산을 건너뛰고<br />바로 미적분으로 갈 수는 없습니다.</p>
+      </div>
+      <div class="stair c">
+        <div class="k">정보</div>
+        <div class="steps">
+          <div class="step">나만의 프로그램 <small>내가 만드는 것</small></div>
+          <div class="step">알고리즘 · 데이터 <small>원리</small></div>
+          <div class="step">코딩 기초 <small>기초</small></div>
+        </div>
+        <p class="skip">AI가 코드를 써 준다고 기초를 건너뛰면<br />그 위 계단으로 올라갈 수 없습니다.</p>
+      </div>
+    </div>
+    <p class="lead">기초를 아는 사람만 AI가 준 답이 맞는지 판단하고, 고쳐 쓸 수 있습니다.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide">
+    <div class="eyebrow">진로가 컴퓨터가 아니어도</div>
+    <h2>배운 과목이 <span class="hl">내 진로의 도구</span>가 됩니다</h2>
+    <div class="bridge">
+      <div class="brow">
+        <div class="subj">정보<small>파이썬</small></div>
+        <div class="arrow">&rarr;</div>
+        <div class="apps">
+          <span><b>과학·공학</b> 실험 데이터 계산</span>
+          <span><b>경영·행정</b> 반복 작업 자동화</span>
+          <span><b>모든 전공</b> 보고서용 그래프</span>
+        </div>
+      </div>
+      <div class="brow">
+        <div class="subj">인공지능 기초<small>파이썬 · AI 모델</small></div>
+        <div class="arrow">&rarr;</div>
+        <div class="apps">
+          <span><b>의학·생명</b> 영상 판독 모델</span>
+          <span><b>어문·언어</b> 번역·챗봇</span>
+          <span><b>공학</b> 자율주행·로봇</span>
+        </div>
+      </div>
+      <div class="brow">
+        <div class="subj">데이터 과학<small>오렌지 (코딩 없이)</small></div>
+        <div class="arrow">&rarr;</div>
+        <div class="apps">
+          <span><b>경제·경영</b> 소비·가격 분석</span>
+          <span><b>사회·심리</b> 설문·여론 분석</span>
+          <span><b>통계</b> 예측 모델·시각화</span>
+        </div>
+      </div>
+      <div class="brow">
+        <div class="subj">소프트웨어와 생활<small>문제 해결 프로젝트</small></div>
+        <div class="arrow">&rarr;</div>
+        <div class="apps">
+          <span><b>예술·디자인</b> 미디어아트</span>
+          <span><b>교육·복지</b> 문제 해결 앱</span>
+          <span><b>과학</b> 시뮬레이션</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide">
+    <div class="eyebrow">로드맵</div>
+    <h2 style="margin-bottom:2.6cqh">무엇을, 무엇으로 배우나</h2>
+    <div class="core">
+      <div><b>컴퓨팅 사고력</b><em>문제를 찾고 푸는 힘</em></div>
+      <div><b>디지털 문화 소양</b><em>안전하고 바르게 쓰는 힘</em></div>
+      <div><b>인공지능 소양</b><em>AI를 알고 다루는 힘</em></div>
+    </div>
+    <div class="grid4">
+      <div class="sub">
+        <div class="term">2학년 1학기</div>
+        <div class="name">정보</div>
+        <ul>
+          <li>알고리즘과 프로그래밍</li>
+          <li>데이터 · 컴퓨팅 시스템</li>
+          <li>인공지능 · 디지털 문화</li>
+        </ul>
+        <div class="tool">파이썬 코딩 집중</div>
+      </div>
+      <div class="sub ai">
+        <div class="term">2학년 2학기</div>
+        <div class="name">인공지능 기초</div>
+        <ul>
+          <li>인공지능의 이해 · 탐색</li>
+          <li>기계학습(AI가 배우는 법)</li>
+          <li>사회적 영향 · 프로젝트</li>
+        </ul>
+        <div class="tool">파이썬으로 AI 모델 만들기</div>
+      </div>
+      <div class="sub ds">
+        <div class="term">3학년 1학기</div>
+        <div class="name">데이터 과학</div>
+        <ul>
+          <li>데이터 준비와 분석</li>
+          <li>데이터 모델링과 평가</li>
+          <li>데이터 과학 프로젝트</li>
+        </ul>
+        <div class="tool">오렌지 <u>(코딩 없이)</u></div>
+      </div>
+      <div class="sub sw">
+        <div class="term">3학년 2학기</div>
+        <div class="name">소프트웨어와 생활</div>
+        <ul>
+          <li>세상을 바꾼 소프트웨어</li>
+          <li>창작 · 시뮬레이션</li>
+          <li>융합 프로젝트</li>
+        </ul>
+        <div class="tool">문제 해결 프로젝트</div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:2cqh;text-align:center">코딩 기초 → AI의 원리 → 데이터로 판단 → 세상에 쓰이는 소프트웨어</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide">
+    <div class="eyebrow">선택 전, 꼭 알아 두세요</div>
+    <h2>"컴퓨터실에서 노는 과목"이 아닙니다</h2>
+    <div class="myth">
+      <div class="box false">
+        <h3>이런 마음이면 힘듭니다</h3>
+        <p>컴퓨터실 = 쉬어 가는 시간<br />선생님이 준 코드 그대로 따라 치기<br />코딩은 AI가 대신 해 주겠지</p>
+      </div>
+      <div class="box true">
+        <h3>이런 과목입니다</h3>
+        <p>직접 만들고 고치며 배우는 시간<br />내 문제를 내가 만들어 푸는 수업<br />스스로 생각한 만큼 결과가 나옴</p>
+      </div>
+    </div>
+    <div class="note">
+      <span class="n1">따라 하는 과목이 아니라 <span class="hl">스스로 만들어 내는 과목</span>입니다</span>
+      <span class="n2">신중하게 선택하세요</span>
+    </div>
+  </section>
+
+<div class="hud">
+  <div class="dots" id="dots"></div>
+  <div class="hint">← → 또는 클릭으로 이동 &nbsp;·&nbsp; <span id="count">1 / 6</span></div>
+</div>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const deck = document.getElementById('deck');
+  const dotsEl = document.getElementById('dots');
+  const countEl = document.getElementById('count');
+  const DESIGN_WIDTH = 1920;
+  const DESIGN_HEIGHT = 1080;
+
+  function fitDeckToViewport() {
+    const scale = Math.min(window.innerWidth / DESIGN_WIDTH, window.innerHeight / DESIGN_HEIGHT);
+    deck.style.setProperty('--deck-scale', String(scale));
+  }
+
+  window.addEventListener('resize', fitDeckToViewport);
+  fitDeckToViewport();
+  let i = 0;
+
+  slides.forEach((_, n) => {
+    const b = document.createElement('button');
+    b.className = 'dot' + (n === 0 ? ' on' : '');
+    b.setAttribute('aria-label', (n + 1) + '번 슬라이드');
+    b.onclick = (e) => { e.stopPropagation(); go(n); };
+    dotsEl.appendChild(b);
+  });
+  const dots = Array.from(dotsEl.children);
+
+  function go(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    countEl.textContent = (i + 1) + ' / ' + slides.length;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)) { e.preventDefault(); go(i + 1); }
+    if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); go(i - 1); }
+    if (e.key === 'Home') go(0);
+    if (e.key === 'End') go(slides.length - 1);
+    if (e.key.toLowerCase() === 'f') document.documentElement.requestFullscreen?.();
+  });
+
+  document.getElementById('deck').addEventListener('click', (e) => {
+    go(e.clientX < window.innerWidth / 2 ? i - 1 : i + 1);
+  });
+</script>
+</body>
+</html>
