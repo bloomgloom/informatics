@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>기계학습 알고리즘</title>
+    <link rel="stylesheet" href="styles.css?v=5" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p>
+          <p class="page-ref">p.88~91</p>
+          <h1>기계학습의 유형</h1>
+          <p class="subtitle">학습 데이터에 <strong>정답이 있는지</strong>, 그리고 <strong>어떤 방식으로 학습하는지</strong>에 따라 나눈다.</p>
+        </div>
+
+        <div class="learning-map">
+          <div class="learning-root">기계학습</div>
+          <div class="learning-branches">
+            <article class="learning-card supervised">
+              <header><span>정답 있음</span><h2>지도 학습</h2><p>입력과 정답의 관계를 학습</p></header>
+              <div class="type-pair">
+                <section><b>분류</b><p>정해진 범주 중 하나를 예측</p><em>스팸 메일 · 질병 판정</em><small>의사 결정 트리 · 로지스틱 회귀 · k-NN</small></section>
+                <section><b>회귀</b><p>연속적인 수치를 예측</p><em>기온 · 주택 가격 예측</em><small>선형 회귀</small></section>
+              </div>
+            </article>
+
+            <article class="learning-card unsupervised">
+              <header><span>정답 없음</span><h2>비지도 학습</h2><p>데이터 속의 구조와 규칙을 발견</p></header>
+              <div class="type-pair">
+                <section><b>군집</b><p>특성이 비슷한 데이터끼리 묶기</p><em>고객 유형 나누기</em><small>k-평균 군집</small></section>
+                <section><b>연관 규칙</b><p>함께 나타나는 항목의 관계 찾기</p><em>장바구니 상품 분석</em><small>데이터 사이의 연관성</small></section>
+              </div>
+            </article>
+
+            <article class="learning-card reinforcement">
+              <header><span>보상 있음</span><h2>강화 학습</h2><p>행동의 결과로 받은 보상을 이용</p></header>
+              <div class="reward-loop">
+                <div><b>환경</b><span>현재 상태</span></div><i>→</i><div><b>에이전트</b><span>행동 선택</span></div><i>→</i><div><b>행동</b><span>시행착오</span></div>
+              </div>
+              <p class="reward-copy"><strong>보상을 최대화</strong>하는 행동을 학습한다.</p>
+              <div class="examples"><span>게임 인공지능</span><span>로봇 제어</span><span>자율 주행</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p>
+          <p class="page-ref">p.92</p>
+          <h1>기계학습 모델 구현 과정</h1>
+          <p class="subtitle">문제를 정의하고 데이터를 준비한 뒤, 모델을 만들어 평가하는 <strong>반복 과정</strong></p>
+        </div>
+
+        <div class="model-process">
+          <article class="stage-problem">
+            <span>1</span><h2>문제 정의</h2><p>해결할 문제와 예측 목표를 정한다.</p>
+            <div class="stage-points"><b>예측할 값 정하기</b><b>해결 조건 확인하기</b></div>
+          </article>
+          <article class="stage-data">
+            <span>2</span><h2>데이터 수집<br />및 전처리</h2><p>데이터를 학습 가능한 형태로 준비한다.</p>
+            <div class="stage-points"><b>데이터 수집</b><b>데이터 탐색</b><b>결측치·이상치 처리</b><b>핵심 속성 선택</b></div>
+          </article>
+          <article class="stage-model">
+            <span>3</span><h2>모델 생성</h2><p>알맞은 알고리즘을 선택하여 모델을 학습시킨다.</p>
+            <div class="stage-points"><b>학습 유형 선택</b><b>알고리즘 선택</b><b>모델 학습</b></div>
+          </article>
+          <article class="stage-evaluate">
+            <span>4</span><h2>모델 평가</h2><p>새로운 데이터에 대한 예측 성능을 확인한다.</p>
+            <div class="stage-points"><b>실제 값과 비교</b><b>성능 평가</b><b>모델 개선</b></div>
+          </article>
+          <div class="feedback-loop"><span>평가 결과를 바탕으로 데이터와 모델을 다시 점검</span><strong>↶</strong></div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p>
+          <p class="page-ref">p.94~95</p>
+          <h1>기계학습 모델의 학습과 평가</h1>
+          <p class="subtitle">학습에 사용하지 않은 데이터로 평가해야 모델의 <strong>일반화 성능</strong>을 확인할 수 있다.</p>
+        </div>
+
+        <div class="train-layout">
+          <article class="split-panel">
+            <h2>전체 데이터를 두 부분으로 분리</h2>
+            <div class="dataset-bar"><span>학습 데이터</span><span>테스트 데이터</span></div>
+            <div class="split-flow">
+              <section><span>01</span><h3>학습</h3><p>학습 데이터에서 입력과 정답의 관계를 찾아 <b>모델</b>을 만든다.</p></section>
+              <i>→</i><div class="model-node">학습된<br />모델</div><i>→</i>
+              <section><span>02</span><h3>평가</h3><p>테스트 데이터의 실제 값과 예측 값을 비교해 <b>성능</b>을 확인한다.</p></section>
+            </div>
+          </article>
+
+          <div class="evaluation-notes">
+            <article class="overfit-card"><h2>과적합</h2><p>학습 데이터에는 잘 맞지만 새로운 데이터에서는 성능이 낮아지는 현상</p><div class="score-compare"><span>학습 성능 <b>높음</b></span><i>≠</i><span>테스트 성능 <b>낮음</b></span></div></article>
+            <article class="validation-card"><h2>교차 검증</h2><p>데이터를 여러 묶음으로 나누어 <strong>학습과 검증을 반복</strong>하고, 평가 결과의 신뢰도를 높인다.</p><div class="folds"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p>
+          <p class="page-ref">p.96</p>
+          <h1>선형 회귀</h1>
+          <p class="subtitle">입력 속성과 예측값 사이의 관계를 가장 잘 나타내는 <strong>직선 또는 평면</strong>을 찾는다.</p>
+        </div>
+
+        <div class="regression-layout">
+          <article class="regression-card simple-regression">
+            <header><span>1개</span><div><h2>단순 선형 회귀</h2><p>독립 변수가 한 개인 경우</p></div></header>
+            <div class="mini-chart" aria-label="단순 선형 회귀 산점도">
+              <span class="axis-y">허리둘레</span><span class="axis-x">목둘레</span><i class="trend-line"></i>
+              <b style="--x:12%;--y:16%"></b><b style="--x:26%;--y:34%"></b><b style="--x:39%;--y:41%"></b><b style="--x:50%;--y:55%"></b><b style="--x:65%;--y:61%"></b><b style="--x:80%;--y:82%"></b>
+            </div>
+            <div class="formula">ŷ = <strong>a</strong>x + <strong>b</strong></div>
+          </article>
+
+          <article class="regression-card multiple-regression">
+            <header><span>여러 개</span><div><h2>다중 선형 회귀</h2><p>독립 변수가 두 개 이상인 경우</p></div></header>
+            <div class="variable-map"><div><span>목둘레</span><span>키</span><span>체중</span></div><i>→</i><strong>선형 회귀<br />모델</strong><i>→</i><b>허리둘레<br />예측</b></div>
+            <div class="formula">ŷ = <strong>a₁</strong>x₁ + <strong>a₂</strong>x₂ + … + <strong>b</strong></div>
+          </article>
+
+          <aside class="term-strip">
+            <section><b>x</b><div><h3>독립 변수</h3><p>예측에 사용하는 입력 속성</p></div></section>
+            <section><b>ŷ</b><div><h3>종속 변수</h3><p>모델이 예측하려는 값</p></div></section>
+            <section><b>a</b><div><h3>회귀 계수</h3><p>입력값이 예측값에 미치는 영향</p></div></section>
+            <section><b>b</b><div><h3>절편</h3><p>직선이 세로축과 만나는 값</p></div></section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p>
+          <p class="page-ref">p.97</p>
+          <h1>선형 회귀 모델의 성능 평가</h1>
+          <p class="subtitle">실제 값과 예측 값의 차이인 <strong>오차</strong>가 작을수록 예측 성능이 좋다.</p>
+        </div>
+
+        <div class="metric-layout">
+          <article class="error-figure">
+            <h2>실제 값과 예측 값 비교</h2>
+            <div class="residual-chart" aria-label="회귀선과 오차를 나타낸 산점도">
+              <span class="chart-y">실제 값</span><span class="chart-x">입력값</span><i class="regression-line"></i>
+              <div class="residual r1"><b></b><em></em></div><div class="residual r2"><b></b><em></em></div><div class="residual r3"><b></b><em></em></div><div class="residual r4"><b></b><em></em></div><div class="residual r5"><b></b><em></em></div>
+            </div>
+            <p><span>● 실제 값</span><i>↕ 오차</i><strong>━ 예측값을 나타내는 회귀선</strong></p>
+          </article>
+
+          <article class="metrics-panel">
+            <h2>오차를 하나의 수로 나타내기</h2>
+            <div class="metric-list">
+              <section><span>MAE</span><div><h3>평균 절대 오차</h3><p>오차의 <b>절댓값</b>을 평균</p></div><em>작을수록 좋음</em></section>
+              <section><span>MSE</span><div><h3>평균 제곱 오차</h3><p>오차를 <b>제곱</b>하여 평균</p></div><em>큰 오차에 민감</em></section>
+              <section><span>RMSE</span><div><h3>평균 제곱근 오차</h3><p>MSE에 <b>제곱근</b>을 적용</p></div><em>예측값과 같은 단위</em></section>
+            </div>
+            <div class="metric-check"><span>평가값이 작다</span><i>→</i><strong>실제 값에 가까운 예측</strong><i>→</i><b>성능이 좋다</b></div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드"><span></span></button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드"><span></span></button>
+    <div class="footer"><div class="dots" aria-label="슬라이드 위치"></div><p><span id="currentSlide">1</span> / <span id="totalSlides">1</span></p></div>
+    <script src="script.js"></script>
+  </body>
+</html>
