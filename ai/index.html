@@ -25,9 +25,9 @@
       .resource-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
       .resource-title strong { overflow: hidden; color: #293449; font-size: 17px; text-overflow: ellipsis; white-space: nowrap; }
       .activity-label { flex: 0 0 auto; border-radius: 999px; padding: 5px 9px; background: #f1f5f9; color: #64748b; font-size: 13px; font-weight: 900; }
-      .model-group { border-top: 1px solid #e5eaf0; }
-      .model-group-title { display: flex; align-items: center; gap: 12px; margin: 0; padding: 18px 0 4px; color: #293449; font-size: 18px; }
-      .model-group-title span { border-radius: 999px; padding: 6px 11px; background: #ede9fe; color: #6d28d9; font-size: 14px; }
+      .model-group { overflow: hidden; border: 1px solid #d8ccf8; border-radius: 12px; background: #faf8ff; }
+      .model-group-title { margin: 0; padding: 15px 18px; border-bottom: 1px solid #d8ccf8; background: #ede9fe; color: #5b21b6; font-size: 22px; font-weight: 900; line-height: 1.2; }
+      .model-group .resource-row { margin: 0 18px; }
       .model-group .resource-row:first-of-type { border-top: 0; }
       .downloads { display: flex; gap: 8px; }
       .download { display: inline-flex; align-items: center; justify-content: center; min-width: 82px; border: 1px solid #d8ccf8; border-radius: 8px; padding: 9px 12px; background: #fff; color: #6d28d9; font-size: 14px; transition: border-color 160ms ease, background 160ms ease; }
@@ -95,10 +95,7 @@
         </div>
         <div class="resources" aria-label="2-2 실습 자료">
           <section class="model-group" aria-labelledby="regression-title">
-            <h2 class="model-group-title" id="regression-title">
-              <span>회귀</span>
-              연속적인 수치 예측 모델
-            </h2>
+            <h2 class="model-group-title" id="regression-title">회귀</h2>
             <div class="resource-row">
               <div class="resource-title">
                 <span class="activity-label">실습 2</span>
