@@ -12,6 +12,7 @@
       .back { font-size: 18px; }
       h1 { margin: 48px 0 34px; font-size: clamp(44px, 7vw, 82px); line-height: 1; }
       .chapter { overflow: hidden; border: 2px solid #d7e0ea; border-radius: 12px; background: #fff; box-shadow: 0 10px 30px rgba(23, 32, 51, 0.06); }
+      .chapter + .chapter { margin-top: 24px; }
       .chapter-main { display: grid; grid-template-columns: 116px 1fr auto; align-items: center; gap: 24px; min-height: 118px; padding: 22px 26px; color: inherit; }
       .number { color: #7c3aed; font-size: 42px; font-weight: 900; }
       .title { display: grid; gap: 6px; }
@@ -24,6 +25,10 @@
       .resource-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
       .resource-title strong { overflow: hidden; color: #293449; font-size: 17px; text-overflow: ellipsis; white-space: nowrap; }
       .activity-label { flex: 0 0 auto; border-radius: 999px; padding: 5px 9px; background: #f1f5f9; color: #64748b; font-size: 13px; font-weight: 900; }
+      .model-group { border-top: 1px solid #e5eaf0; }
+      .model-group-title { display: flex; align-items: center; gap: 12px; margin: 0; padding: 18px 0 4px; color: #293449; font-size: 18px; }
+      .model-group-title span { border-radius: 999px; padding: 6px 11px; background: #ede9fe; color: #6d28d9; font-size: 14px; }
+      .model-group .resource-row:first-of-type { border-top: 0; }
       .downloads { display: flex; gap: 8px; }
       .download { display: inline-flex; align-items: center; justify-content: center; min-width: 82px; border: 1px solid #d8ccf8; border-radius: 8px; padding: 9px 12px; background: #fff; color: #6d28d9; font-size: 14px; transition: border-color 160ms ease, background 160ms ease; }
       .download:hover { border-color: #a78bfa; background: #faf8ff; }
@@ -63,7 +68,7 @@
               <strong>펭귄 데이터 탐색하기</strong>
             </div>
             <div class="downloads">
-              <a class="download" href="./ch2-1/2-1_실습1_펭귄_데이터_탐색하기.ipynb" download>노트북</a>
+              <a class="download" href="./ch2-1/실습1_펭귄_데이터_탐색하기.ipynb" download>노트북</a>
               <a class="download csv" href="./ch2-1/penguins_size.csv" download>CSV</a>
             </div>
           </div>
@@ -73,10 +78,58 @@
               <strong>지진 데이터 분석하기</strong>
             </div>
             <div class="downloads">
-              <a class="download" href="./ch2-1/2-1_선택활동1_지진_데이터_분석하기.ipynb" download>노트북</a>
+              <a class="download" href="./ch2-1/선택활동1_지진_데이터_분석하기.ipynb" download>노트북</a>
               <a class="download csv" href="./ch2-1/earthquake.csv" download>CSV</a>
             </div>
           </div>
+        </div>
+      </article>
+      <article class="chapter">
+        <div class="chapter-main">
+          <span class="number">2-2</span>
+          <span class="title">
+            <b>기계학습 알고리즘</b>
+            <span>기계학습 모델을 구현하고 성능 평가하기</span>
+          </span>
+          <a class="action" href="./ch2-2/">열기</a>
+        </div>
+        <div class="resources" aria-label="2-2 실습 자료">
+          <section class="model-group" aria-labelledby="regression-title">
+            <h2 class="model-group-title" id="regression-title">
+              <span>회귀</span>
+              연속적인 수치 예측 모델
+            </h2>
+            <div class="resource-row">
+              <div class="resource-title">
+                <span class="activity-label">실습 2</span>
+                <strong>목둘레로 허리둘레를 예측하는 선형 회귀 모델 구현하기</strong>
+              </div>
+              <div class="downloads">
+                <a class="download" href="./ch2-2/regression/실습2_목둘레로_허리둘레를_예측하는_선형_회귀_모델_구현하기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/regression/jeans.csv" download>CSV</a>
+              </div>
+            </div>
+            <div class="resource-row">
+              <div class="resource-title">
+                <span class="activity-label">선택 활동 2</span>
+                <strong>다중 선형 회귀로 허리둘레를 예측해 보기</strong>
+              </div>
+              <div class="downloads">
+                <a class="download" href="./ch2-2/regression/선택활동2_다중_선형_회귀로_허리둘레를_예측해_보기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/regression/jeans.csv" download>CSV</a>
+              </div>
+            </div>
+            <div class="resource-row">
+              <div class="resource-title">
+                <span class="activity-label">선택 활동 3</span>
+                <strong>전복의 나이를 예측해 해양 생태계 보존하기</strong>
+              </div>
+              <div class="downloads">
+                <a class="download" href="./ch2-2/regression/선택활동3_전복의_나이를_예측해_해양_생태계_보존하기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/regression/abalone_original.csv" download>CSV</a>
+              </div>
+            </div>
+          </section>
         </div>
       </article>
     </main>
