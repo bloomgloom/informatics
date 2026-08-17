@@ -26,6 +26,7 @@
       .resource-title strong { overflow: hidden; color: #293449; font-size: 17px; text-overflow: ellipsis; white-space: nowrap; }
       .activity-label { flex: 0 0 auto; border-radius: 999px; padding: 5px 9px; background: #f1f5f9; color: #64748b; font-size: 13px; font-weight: 900; }
       .model-group { overflow: hidden; border: 1px solid #d8ccf8; border-radius: 12px; background: #faf8ff; }
+      .model-group + .model-group { margin-top: 18px; }
       .model-group-title { margin: 0; padding: 15px 18px; border-bottom: 1px solid #d8ccf8; background: #ede9fe; color: #5b21b6; font-size: 22px; font-weight: 900; line-height: 1.2; }
       .model-group .resource-row { margin: 0 18px; }
       .model-group .resource-row:first-of-type { border-top: 0; }
@@ -102,8 +103,8 @@
                 <strong>목둘레로 허리둘레를 예측하는 선형 회귀 모델 구현하기</strong>
               </div>
               <div class="downloads">
-                <a class="download" href="./ch2-2/regression/실습2_목둘레로_허리둘레를_예측하는_선형_회귀_모델_구현하기.ipynb" download>노트북</a>
-                <a class="download csv" href="./ch2-2/regression/jeans.csv" download>CSV</a>
+                <a class="download" href="./ch2-2/2/실습2_목둘레로_허리둘레를_예측하는_선형_회귀_모델_구현하기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/2/jeans.csv" download>CSV</a>
               </div>
             </div>
             <div class="resource-row">
@@ -112,8 +113,8 @@
                 <strong>다중 선형 회귀로 허리둘레를 예측해 보기</strong>
               </div>
               <div class="downloads">
-                <a class="download" href="./ch2-2/regression/선택활동2_다중_선형_회귀로_허리둘레를_예측해_보기.ipynb" download>노트북</a>
-                <a class="download csv" href="./ch2-2/regression/jeans.csv" download>CSV</a>
+                <a class="download" href="./ch2-2/2/선택활동2_다중_선형_회귀로_허리둘레를_예측해_보기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/2/jeans.csv" download>CSV</a>
               </div>
             </div>
             <div class="resource-row">
@@ -122,11 +123,87 @@
                 <strong>전복의 나이를 예측해 해양 생태계 보존하기</strong>
               </div>
               <div class="downloads">
-                <a class="download" href="./ch2-2/regression/선택활동3_전복의_나이를_예측해_해양_생태계_보존하기.ipynb" download>노트북</a>
-                <a class="download csv" href="./ch2-2/regression/abalone_original.csv" download>CSV</a>
+                <a class="download" href="./ch2-2/2/선택활동3_전복의_나이를_예측해_해양_생태계_보존하기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/2/abalone_original.csv" download>CSV</a>
               </div>
             </div>
           </section>
+          <section class="model-group" aria-labelledby="classification-title">
+            <h2 class="model-group-title" id="classification-title">분류</h2>
+            <div class="resource-row">
+              <div class="resource-title">
+                <span class="activity-label">간단 실습</span>
+                <strong>당도와 아삭함으로 과일인지 채소인지 분류하기</strong>
+              </div>
+              <div class="downloads">
+                <a class="download" href="./ch2-2/3/실습_당도와_아삭함으로_과일인지_채소인지_분류하기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/3/food.csv" download>CSV</a>
+              </div>
+            </div>
+            <div class="resource-row">
+              <div class="resource-title">
+                <span class="activity-label">실습 3</span>
+                <strong>펭귄 종 분류 모델 구현하기</strong>
+              </div>
+              <div class="downloads">
+                <a class="download" href="./ch2-2/3/실습3_펭귄_종_분류_모델_구현하기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/3/penguins_size.csv" download>CSV</a>
+              </div>
+            </div>
+            <div class="resource-row">
+              <div class="resource-title">
+                <span class="activity-label">선택 활동 4</span>
+                <strong>로지스틱 회귀와 kNN으로 펭귄 종 분류하기</strong>
+              </div>
+              <div class="downloads">
+                <a class="download" href="./ch2-2/3/선택활동4_로지스틱_회귀와_kNN으로_펭귄_종_분류하기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/3/penguins_size.csv" download>CSV</a>
+              </div>
+            </div>
+            <div class="resource-row">
+              <div class="resource-title">
+                <span class="activity-label">선택 활동 5</span>
+                <strong>항공사 고객 만족도 서비스 모델 만들기</strong>
+              </div>
+              <div class="downloads">
+                <a class="download" href="./ch2-2/3/선택활동5_항공사_고객_만족도_서비스_모델_만들기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/3/airline_passenger_satisfaction.csv" download>CSV</a>
+              </div>
+            </div>
+          </section>
+          <section class="model-group" aria-labelledby="clustering-title">
+            <h2 class="model-group-title" id="clustering-title">군집</h2>
+            <div class="resource-row">
+              <div class="resource-title">
+                <span class="activity-label">실습 4</span>
+                <strong>쇼핑몰 고객 군집 모델 구현하기</strong>
+              </div>
+              <div class="downloads">
+                <a class="download" href="./ch2-2/4/실습4_쇼핑몰_고객_군집_모델_구현하기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/4/Mall_Customers.csv" download>CSV</a>
+              </div>
+            </div>
+            <div class="resource-row">
+              <div class="resource-title">
+                <span class="activity-label">선택 활동 6</span>
+                <strong>당신의 취향에 맞는 카페 음료 추천하기</strong>
+              </div>
+              <div class="downloads">
+                <a class="download" href="./ch2-2/4/선택활동6_당신의_취향에_맞는_카페_음료_추천하기.ipynb" download>노트북</a>
+                <a class="download csv" href="./ch2-2/4/caffe_menu.csv" download>CSV</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+      <article class="chapter">
+        <div class="chapter-main">
+          <span class="number">2-3</span>
+          <span class="title">
+            <b>인공 신경망과 딥러닝</b>
+            <span>인공 신경망과 딥러닝의 원리 및 활용 분야 알아보기</span>
+          </span>
+          <a class="action" href="./ch2-3/">열기</a>
         </div>
       </article>
     </main>

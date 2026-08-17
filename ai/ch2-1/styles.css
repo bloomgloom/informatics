@@ -7,8 +7,15 @@
   --muted: #5c6b7d;
   --line: #d7e0ea;
   --blue: #2563eb;
+  --blue-sub: #4f7fca;
+  --blue-detail: #7189a8;
   --green: #159957;
+  --green-sub: #3fa873;
   --orange: #f28c28;
+  --orange-sub: #d98a3a;
+  --red: #c83449;
+  --red-sub: #e36b79;
+  --example-text: #5c6b7d;
   --violet: #2563eb;
   --shadow: 0 24px 70px rgba(26, 41, 61, 0.14);
 }
@@ -27,7 +34,7 @@ body {
   overflow: hidden;
   background: var(--bg);
   color: var(--ink);
-  font-family: "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  font-family: "Nanum Gothic", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
 }
 
 button { font: inherit; }
@@ -862,7 +869,8 @@ tbody td strong { color: var(--blue); }
   box-shadow: 0 10px 28px rgba(23, 32, 51, 0.06);
 }
 
-.process-figure img {
+.process-figure img,
+.process-figure object {
   display: block;
   width: min(100%, 1500px);
   height: auto;
@@ -2355,7 +2363,7 @@ tbody td strong { color: var(--blue); }
   top: 0;
   bottom: 0;
   z-index: 5;
-  width: 12cqw;
+  width: 50px;
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -2864,6 +2872,81 @@ h1 { font-size: 82px; }
   border: 2px solid var(--line);
   border-radius: 8px;
   background: #fff;
+}
+
+/* 5쪽 본문만 한 단계 확대 — 슬라이드 제목은 기존 크기 유지 */
+.slide[data-slide="5"] .collection-methods > h2,
+.slide[data-slide="5"] .selection-process > h2,
+.slide[data-slide="5"] .collection-checks > h2 {
+  font-size: 46px;
+}
+
+.slide[data-slide="5"] .method-number {
+  width: 64px;
+  height: 64px;
+  font-size: 32px;
+}
+
+.slide[data-slide="5"] .method-card h3 { font-size: 40px; }
+.slide[data-slide="5"] .method-card b { font-size: 27px; }
+
+.slide[data-slide="5"] .selection-flow section > span {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+}
+
+.slide[data-slide="5"] .selection-flow h3 { font-size: 36px; }
+.slide[data-slide="5"] .selection-flow b { font-size: 30px; }
+.slide[data-slide="5"] .selection-flow i { font-size: 38px; }
+
+/* 3쪽: 기계학습 모델 1/3, 적용 사례 2/3 */
+.slide[data-slide="3"] .case-connection {
+  grid-template-columns: minmax(0, calc(33.333333% - 64px)) 64px minmax(0, 66.666667%);
+}
+
+.slide[data-slide="3"] .type-combo {
+  gap: 8px;
+}
+
+.slide[data-slide="3"] .type-combo > span {
+  min-width: 0;
+  flex: 0 0 150px;
+  padding-inline: 8px;
+}
+
+.slide[data-slide="3"] .type-combo > i {
+  font-size: 30px;
+}
+
+.slide[data-slide="3"] .single-type > span {
+  flex-basis: 150px;
+}
+
+/* 5쪽 수집처 목록과 선정 단계 제목을 발표용 크기로 추가 확대 */
+.slide[data-slide="5"] .method-card b {
+  font-size: 34px;
+  line-height: 1.05;
+}
+
+.slide[data-slide="5"] .selection-flow h3 {
+  font-size: 42px;
+  line-height: 1;
+}
+
+/* 모든 페이지의 영역 제목 통일 — 슬라이드 대제목(h1)은 제외 */
+.slide h2 {
+  font-size: 64px !important;
+  line-height: 1.05;
+}
+.slide[data-slide="5"] .check-grid b { font-size: 33px; }
+.slide[data-slide="5"] .check-grid p { font-size: 29px; }
+
+/* 7쪽 검은색 Python API 코드만 한 단계 확대 */
+.slide[data-slide="7"] .notebook-result > code,
+.slide[data-slide="7"] .visual-code {
+  padding: 12px 16px;
+  font-size: 32px;
 }
 
 /* 7쪽: 세 영역을 같은 너비로, 시각화 그래프는 카드 안에서 축소 */
@@ -3536,4 +3619,1559 @@ h1 { font-size: 82px; }
   border-collapse: separate;
   border-spacing: 0;
   background: #fff;
+}
+
+/* 5쪽 본문 확대 최종 우선순위 */
+.slide[data-slide="5"] .collection-methods > h2,
+.slide[data-slide="5"] .selection-process > h2,
+.slide[data-slide="5"] .collection-checks > h2 { font-size: 46px; }
+.slide[data-slide="5"] .method-number { width: 64px; height: 64px; font-size: 32px; }
+.slide[data-slide="5"] .method-card h3 { font-size: 40px; }
+.slide[data-slide="5"] .method-card b { font-size: 27px; }
+.slide[data-slide="5"] .selection-flow section > span { width: 42px; height: 42px; font-size: 22px; }
+.slide[data-slide="5"] .selection-flow h3 { font-size: 36px; }
+.slide[data-slide="5"] .selection-flow b { font-size: 30px; }
+.slide[data-slide="5"] .selection-flow i { font-size: 38px; }
+.slide[data-slide="5"] .check-grid b { font-size: 33px; }
+.slide[data-slide="5"] .check-grid p { font-size: 29px; }
+
+/* 5쪽: 확대된 글자가 칸 안에 들어오도록 수집 방법·선정 과정만 압축 */
+.slide[data-slide="5"] .collection-methods {
+  gap: 8px;
+  padding: 14px;
+}
+
+.slide[data-slide="5"] .collection-methods > h2,
+.slide[data-slide="5"] .selection-process > h2 {
+  font-size: 44px;
+  line-height: 1.05;
+}
+
+.slide[data-slide="5"] .method-card {
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+.slide[data-slide="5"] .method-number {
+  width: 56px;
+  height: 56px;
+  font-size: 30px;
+}
+
+.slide[data-slide="5"] .method-card div { gap: 3px; }
+.slide[data-slide="5"] .method-card h3 { font-size: 37px; line-height: 1.05; }
+.slide[data-slide="5"] .method-card b { font-size: 26px; line-height: 1.15; }
+
+.slide[data-slide="5"] .selection-process {
+  gap: 8px;
+  padding: 14px;
+}
+
+.slide[data-slide="5"] .selection-flow { gap: 6px; }
+.slide[data-slide="5"] .selection-flow section { gap: 4px; padding: 9px; }
+.slide[data-slide="5"] .selection-flow section > span {
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+}
+.slide[data-slide="5"] .selection-flow h3 { font-size: 34px; line-height: 1.08; }
+.slide[data-slide="5"] .selection-flow b { margin-top: 6px; font-size: 28px; line-height: 1.15; }
+.slide[data-slide="5"] .selection-flow i { font-size: 34px; }
+
+/* 7쪽: 검정·회색 계열의 최소 크기 글자를 한 단계 확대 */
+.slide[data-slide="7"] .inspection-card header p { font-size: 30px; }
+.slide[data-slide="7"] .inspection-copy { font-size: 37px; }
+.slide[data-slide="7"] .notebook-result { gap: 16px; padding: 22px; }
+.slide[data-slide="7"] .notebook-result > div > span { font-size: 34px; }
+.slide[data-slide="7"] .stat-values { gap: 9px; }
+.slide[data-slide="7"] .stat-values span { padding: 10px 12px; font-size: 30px; }
+.slide[data-slide="7"] .penguin-counts b,
+.slide[data-slide="7"] .penguin-counts em { font-size: 27px; }
+.slide[data-slide="7"] .bias-note { padding: 12px 10px; font-size: 29px; }
+.slide[data-slide="7"] .visual-card .penguin-counts {
+  flex-basis: 340px;
+  min-height: 340px;
+}
+
+/* 5쪽 선정 과정: 번호와 단계 제목을 같은 행에 배치 */
+.slide[data-slide="5"] .selection-flow section {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 6px;
+}
+
+.slide[data-slide="5"] .selection-flow section > span {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.slide[data-slide="5"] .selection-flow h3 {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.slide[data-slide="5"] .selection-flow b {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  align-self: start;
+  margin-top: 2px;
+}
+
+/* 7쪽 세 카드의 핵심 설명 문장을 한 단계 더 확대 */
+.slide[data-slide="7"] .inspection-copy {
+  font-size: 42px;
+  line-height: 1.28;
+}
+
+/* 5쪽의 수집처·유형 목록·고려 사항 질문을 한 단계 확대 */
+.slide[data-slide="5"] .method-card b {
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.slide[data-slide="5"] .selection-flow b {
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.slide[data-slide="5"] .check-grid p {
+  font-size: 33px;
+  line-height: 1.1;
+}
+
+/* 5쪽: 글자 크기는 확대값으로 복원하고 간격만 압축 */
+.slide[data-slide="5"] .collection-methods {
+  gap: 5px;
+  padding: 10px;
+}
+
+.slide[data-slide="5"] .collection-methods > h2,
+.slide[data-slide="5"] .selection-process > h2 {
+  font-size: 46px;
+  line-height: 1;
+}
+
+.slide[data-slide="5"] .method-card {
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.slide[data-slide="5"] .method-number {
+  width: 64px;
+  height: 64px;
+  font-size: 32px;
+}
+
+.slide[data-slide="5"] .method-card div { gap: 2px; }
+.slide[data-slide="5"] .method-card h3 { font-size: 40px; line-height: 1; }
+.slide[data-slide="5"] .method-card b { font-size: 30px; line-height: 1.08; }
+
+.slide[data-slide="5"] .selection-process {
+  gap: 5px;
+  padding: 10px;
+}
+
+.slide[data-slide="5"] .selection-flow { gap: 4px; }
+.slide[data-slide="5"] .selection-flow section {
+  grid-template-columns: 42px minmax(0, 1fr);
+  column-gap: 6px;
+  row-gap: 3px;
+  padding: 6px;
+}
+
+.slide[data-slide="5"] .selection-flow section > span {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+}
+
+.slide[data-slide="5"] .selection-flow h3 { font-size: 36px; line-height: 1; }
+.slide[data-slide="5"] .selection-flow b {
+  margin-top: 0;
+  font-size: 32px;
+  line-height: 1.08;
+}
+.slide[data-slide="5"] .selection-flow i { font-size: 38px; }
+
+/* 발표용 최소 글자 기준: 부제 36px, 설명·예시 본문 36px 이상 */
+.subtitle,
+.first-title .subtitle {
+  font-size: 36px;
+}
+
+.slide[data-slide="1"] .comparison tbody th,
+.slide[data-slide="1"] .comparison tbody td,
+.slide[data-slide="1"] .flow,
+.slide[data-slide="2"] .problem-list p,
+.slide[data-slide="2"] .problem-list article > b,
+.slide[data-slide="3"] .case-connection article p,
+.slide[data-slide="4"] .branch-header div p,
+.slide[data-slide="4"] .attribute-types section > p,
+.slide[data-slide="4"] .format-types section > p,
+.slide[data-slide="4"] .numeric-children span,
+.slide[data-slide="4"] .numeric-children em,
+.slide[data-slide="4"] .category-examples span,
+.slide[data-slide="4"] .iris-example figcaption,
+.slide[data-slide="5"] .method-card b,
+.slide[data-slide="5"] .selection-flow b,
+.slide[data-slide="5"] .check-grid b,
+.slide[data-slide="5"] .check-grid p,
+.slide[data-slide="7"] .inspection-card header p,
+.slide[data-slide="7"] .notebook-result > div > span,
+.slide[data-slide="7"] .stat-values span,
+.slide[data-slide="7"] .penguin-counts b,
+.slide[data-slide="7"] .penguin-counts em,
+.slide[data-slide="7"] .bias-note,
+.slide[data-slide="8"] .preprocess-card > p,
+.slide[data-slide="8"] .missing-result,
+.slide[data-slide="8"] .minmax-summary > p:not(.minmax-formula),
+.slide[data-slide="9"] .feature-review li p {
+  font-size: 36px;
+}
+
+/* 2쪽: 긴 항목명은 한 줄로 유지하고 설명·예시 공간도 확보 */
+.slide[data-slide="2"] .problem-list article {
+  grid-template-columns: 58px 340px minmax(0, 1fr) 430px;
+}
+
+.slide[data-slide="2"] .problem-list h2 {
+  white-space: nowrap;
+}
+
+.slide[data-slide="2"] .problem-list p,
+.slide[data-slide="2"] .problem-list article > b {
+  line-height: 1.15;
+}
+
+/* 1쪽: 비교 영역은 원래 위치에서 높이를 확보하고, 오른쪽 그림은 앞으로 표시 */
+.slide[data-slide="1"] .comparison {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 480px;
+  margin-top: 0;
+}
+
+.slide[data-slide="1"] .first-slide-header {
+  z-index: 2;
+}
+
+.slide[data-slide="1"] .concept-popup {
+  position: relative;
+  z-index: 3;
+  width: 658px;
+  height: 429px;
+  justify-self: end;
+  transform: translate(-76px, 32px);
+}
+
+/* 3쪽 모델 유형도 발표용 본문 최소 크기 적용 */
+.slide[data-slide="3"] .type-combo > span {
+  font-size: 36px;
+}
+
+/* 4·5쪽의 3단계 제목 크기 통일 */
+.slide[data-slide="4"] .attribute-types h3,
+.slide[data-slide="4"] .format-types h3,
+.slide[data-slide="5"] .method-card h3,
+.slide[data-slide="5"] .selection-flow h3,
+.slide[data-slide="5"] .check-grid b,
+.slide[data-slide="8"] .outlier-item > h3,
+.slide[data-slide="8"] .minmax-summary h3 {
+  font-size: 56px;
+  line-height: 1.05;
+}
+
+.slide[data-slide="8"] .outlier-item {
+  grid-template-columns: 250px minmax(0, 1fr);
+}
+
+/* 4쪽: 커진 제목·본문에 맞춰 카드 높이와 내부 공간을 다시 배분 */
+.slide[data-slide="4"] .data-map {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.slide[data-slide="4"] .data-branches {
+  height: auto;
+  min-height: 0;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+.slide[data-slide="4"] .data-branch {
+  height: auto;
+  min-height: 0;
+  gap: 14px;
+  padding: 18px;
+}
+
+.slide[data-slide="4"] .branch-header {
+  min-height: 0;
+  flex: 0 0 auto;
+  padding-bottom: 12px;
+}
+
+.slide[data-slide="4"] .attribute-types,
+.slide[data-slide="4"] .format-types {
+  height: auto;
+  min-height: 0;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+.slide[data-slide="4"] .attribute-types section,
+.slide[data-slide="4"] .format-types section {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  align-content: stretch;
+  gap: 12px;
+  padding: 18px;
+}
+
+.slide[data-slide="4"] .attribute-types h3,
+.slide[data-slide="4"] .format-types h3 {
+  align-self: start;
+  margin: 0;
+}
+
+.slide[data-slide="4"] .attribute-types section > p,
+.slide[data-slide="4"] .format-types section > p {
+  align-self: start;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.slide[data-slide="4"] .numeric-children {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.slide[data-slide="4"] .numeric-children > div {
+  justify-content: space-evenly;
+  padding: 12px 14px;
+}
+
+.slide[data-slide="4"] .numeric-children b {
+  font-size: 44px;
+  line-height: 1;
+}
+
+.slide[data-slide="4"] .category-examples {
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  margin-top: 0;
+}
+
+.slide[data-slide="4"] .category-examples span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+}
+
+.slide[data-slide="4"] .iris-example {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
+  margin-top: 0;
+}
+
+.slide[data-slide="4"] .iris-example img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 4px;
+  object-fit: contain;
+}
+
+/* 5쪽 수집 방법: 제목 기본 여백을 제거해 본문이 잘리지 않도록 압축 */
+.slide[data-slide="5"] .method-card div {
+  gap: 0;
+}
+
+.slide[data-slide="5"] .method-card h3,
+.slide[data-slide="5"] .method-card b {
+  margin: 0;
+}
+
+.slide[data-slide="5"] .method-card h3 {
+  line-height: 1;
+}
+
+.slide[data-slide="5"] .method-card b {
+  line-height: 1.05;
+}
+
+/* 영역 색과 제목 위계: 상위 제목은 진한색, 하위 제목은 같은 계열의 밝은색 */
+.slide[data-slide="4"] .attribute-branch .branch-header h2 {
+  color: var(--blue);
+}
+
+.slide[data-slide="4"] .attribute-branch .attribute-types h3 {
+  color: var(--blue-sub);
+}
+
+.slide[data-slide="4"] .format-branch .branch-header h2 {
+  color: var(--green);
+}
+
+.slide[data-slide="4"] .format-branch .format-types h3 {
+  color: var(--green-sub);
+}
+
+.slide[data-slide="5"] .collection-methods > h2,
+.slide[data-slide="5"] .selection-process > h2 {
+  color: var(--blue);
+}
+
+.slide[data-slide="5"] .method-card h3,
+.slide[data-slide="5"] .selection-flow h3 {
+  color: var(--blue-sub);
+}
+
+.slide[data-slide="5"] .collection-checks > h2 {
+  color: var(--red);
+}
+
+.slide[data-slide="5"] .check-grid b {
+  color: var(--red-sub);
+}
+
+/* 7쪽과 8쪽은 1 파랑 · 2 주황 · 3 초록으로 통일 */
+.slide[data-slide="7"] .inspection-card:nth-child(1),
+.slide[data-slide="8"] .preprocess-card:nth-child(1) {
+  border-top-color: var(--blue);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(2),
+.slide[data-slide="8"] .preprocess-card:nth-child(2) {
+  border-top-color: var(--orange);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(3),
+.slide[data-slide="8"] .preprocess-card:nth-child(3) {
+  border-top-color: var(--green);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(1) header > span,
+.slide[data-slide="8"] .preprocess-card:nth-child(1) header > span {
+  background: var(--blue);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(2) header > span,
+.slide[data-slide="8"] .preprocess-card:nth-child(2) header > span {
+  background: var(--orange);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(3) header > span,
+.slide[data-slide="8"] .preprocess-card:nth-child(3) header > span {
+  background: var(--green);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(1) h2,
+.slide[data-slide="8"] .preprocess-card:nth-child(1) h2 {
+  color: var(--blue);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(2) h2,
+.slide[data-slide="8"] .preprocess-card:nth-child(2) h2 {
+  color: #c66b0d;
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(3) h2,
+.slide[data-slide="8"] .preprocess-card:nth-child(3) h2 {
+  color: var(--green);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(1) header p,
+.slide[data-slide="8"] .preprocess-card:nth-child(1) > p {
+  color: var(--blue-sub);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(2) header p,
+.slide[data-slide="8"] .preprocess-card:nth-child(2) > p {
+  color: var(--orange-sub);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(3) header p,
+.slide[data-slide="8"] .preprocess-card:nth-child(3) > p {
+  color: var(--green-sub);
+}
+
+/* 4쪽 정형·비정형: 같은 행 높이로 그림 상자 크기를 좌우 동일하게 유지 */
+.slide[data-slide="4"] .format-types section {
+  grid-template-rows: 60px 96px minmax(0, 1fr);
+}
+
+.slide[data-slide="4"] .iris-example figcaption {
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+/* 4쪽 4단계 제목: 3단계 제목보다 작고 옅게 구분 */
+.slide[data-slide="4"] .numeric-children b {
+  color: var(--blue-detail);
+  font-size: 44px;
+}
+
+/* 전 페이지 예시 텍스트는 제목색을 쓰지 않고 같은 중립색으로 통일 */
+.slide[data-slide="1"] .comparison tbody tr:last-child td,
+.slide[data-slide="2"] .problem-list article > b,
+.slide[data-slide="3"] .case-connection article p,
+.slide[data-slide="4"] .numeric-children em,
+.slide[data-slide="4"] .category-examples span,
+.slide[data-slide="4"] .category-examples b,
+.slide[data-slide="4"] .iris-example figcaption,
+.slide[data-slide="5"] .method-card b,
+.slide[data-slide="5"] .selection-flow b,
+.slide[data-slide="7"] .notebook-result > div,
+.slide[data-slide="7"] .stat-values span,
+.slide[data-slide="7"] .penguin-counts b,
+.slide[data-slide="7"] .penguin-counts em,
+.slide[data-slide="7"] .bias-note,
+.slide[data-slide="8"] .missing-result {
+  color: var(--example-text);
+}
+
+/* 5쪽 선정 과정: 단계 제목의 기본 여백을 제거해 내용을 위로 배치 */
+.slide[data-slide="5"] .selection-flow section {
+  row-gap: 0;
+}
+
+.slide[data-slide="5"] .selection-flow h3,
+.slide[data-slide="5"] .selection-flow b {
+  margin: 0;
+}
+
+.slide[data-slide="5"] .selection-flow b {
+  align-self: start;
+}
+
+/* 5쪽: 수집 방법과 선정 과정의 제목·내용 묶음을 카드 중앙에 균형 배치 */
+.slide[data-slide="5"] .method-card div {
+  justify-content: center;
+  gap: 12px;
+}
+
+.slide[data-slide="5"] .selection-flow section {
+  grid-template-rows: auto auto;
+  align-content: center;
+  row-gap: 14px;
+}
+
+.slide[data-slide="5"] .selection-flow b {
+  align-self: auto;
+}
+
+/* 5쪽: 내용 카드는 필요한 높이만 사용하고 영역 제목과 적당히 분리 */
+.slide[data-slide="5"] .collection-methods {
+  grid-template-rows: auto repeat(3, 175px);
+  align-content: start;
+  gap: 10px;
+}
+
+.slide[data-slide="5"] .selection-process {
+  gap: 12px;
+}
+
+.slide[data-slide="5"] .selection-flow {
+  min-height: 0;
+  flex: 0 0 270px;
+}
+
+.slide[data-slide="5"] .collection-methods > h2,
+.slide[data-slide="5"] .selection-process > h2 {
+  margin: 0 0 4px;
+  padding-block: 4px;
+}
+
+/* 5쪽: 4쪽과 같은 영역 번호 체계와 영역별 색 구분 */
+.slide[data-slide="5"] .collection-layout {
+  grid-template-rows: 400px 342px;
+}
+
+.slide[data-slide="5"] .section-heading {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding-block: 4px;
+}
+
+.slide[data-slide="5"] .section-number {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.slide[data-slide="5"] .section-title-text {
+  min-width: 0;
+}
+
+.slide[data-slide="5"] .collection-methods > h2 {
+  color: var(--blue);
+}
+
+.slide[data-slide="5"] .collection-methods .section-number,
+.slide[data-slide="5"] .method-number {
+  background: var(--blue);
+}
+
+.slide[data-slide="5"] .method-card h3 {
+  color: var(--blue-sub);
+}
+
+.slide[data-slide="5"] .selection-process > h2 {
+  color: var(--green);
+}
+
+.slide[data-slide="5"] .selection-process .section-number,
+.slide[data-slide="5"] .selection-flow section > span {
+  background: var(--green);
+}
+
+.slide[data-slide="5"] .selection-flow section {
+  border-color: #bbf7d0;
+  background: #f2fbf6;
+}
+
+.slide[data-slide="5"] .selection-flow h3 {
+  color: var(--green-sub);
+}
+
+.slide[data-slide="5"] .selection-flow i {
+  color: var(--green);
+}
+
+.slide[data-slide="5"] .collection-checks > h2 {
+  color: var(--red);
+}
+
+.slide[data-slide="5"] .collection-checks .section-number {
+  background: var(--red);
+}
+
+/* 왼쪽 카드의 남는 높이는 카드 사이 간격으로 분배하고 번호는 제목에 맞춤 */
+.slide[data-slide="5"] .collection-methods {
+  grid-template-rows: auto repeat(3, 175px);
+  align-content: space-between;
+  gap: 0;
+}
+
+.slide[data-slide="5"] .method-card {
+  align-content: center;
+  align-items: start;
+}
+
+/* 선정 과정의 내부 박스가 바깥 테두리에 닿지 않도록 높이를 확보 */
+.slide[data-slide="5"] .selection-process {
+  overflow: hidden;
+}
+
+.slide[data-slide="5"] .selection-flow {
+  flex-basis: 270px;
+}
+
+/* 7쪽 그래프 레이블은 4쪽 붓꽃 이미지 설명과 동일한 크기 */
+.slide[data-slide="7"] .penguin-counts b,
+.slide[data-slide="7"] .penguin-counts em {
+  font-size: 30px;
+}
+
+/* 5쪽: 큰 영역 번호만 남기고 내부 항목은 제목 중심으로 정리 */
+.slide[data-slide="5"] .method-card {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.slide[data-slide="5"] .selection-flow section {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  row-gap: 14px;
+}
+
+.slide[data-slide="5"] .selection-flow h3 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.slide[data-slide="5"] .selection-flow b {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+/* 2쪽: 각 항목의 번호·왼쪽 선·제목을 동일한 색 계열로 통일 */
+.slide[data-slide="2"] .problem-list article:nth-child(1) > span {
+  background: #eef5ff;
+  color: var(--blue);
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(1) h2 {
+  color: var(--blue);
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(2) > span {
+  background: #ecf9f2;
+  color: var(--green);
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(2) h2 {
+  color: var(--green);
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(3) > span {
+  background: #fff4e8;
+  color: #c66b0d;
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(3) h2 {
+  color: #c66b0d;
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(4) > span {
+  background: #fff0f2;
+  color: var(--red);
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(4) h2 {
+  color: var(--red);
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(5) > span {
+  background: #f3efff;
+  color: #6c5ce7;
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(5) h2 {
+  color: #6c5ce7;
+}
+
+/* 6쪽: 가로형 벡터 도식을 슬라이드 너비에 가깝게 확대 */
+.slide[data-slide="6"] .process-overview {
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+}
+
+.slide[data-slide="6"] .process-figure {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 8px 12px;
+}
+
+.slide[data-slide="6"] .process-figure img,
+.slide[data-slide="6"] .process-figure object {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
+}
+
+/* 카드 강조 방식 통일: 왼쪽 띠 대신 위쪽 가로 띠 사용 */
+.slide[data-slide="5"] .method-card {
+  border: 2px solid var(--line);
+  border-top: 10px solid var(--blue);
+}
+
+.slide[data-slide="5"] .selection-flow section {
+  border: 2px solid var(--line);
+  border-top: 10px solid var(--green);
+}
+
+.slide[data-slide="5"] .check-grid section {
+  border: 2px solid var(--line);
+  border-top: 10px solid var(--red);
+}
+
+/* 5쪽: 초록 영역의 세로 여백을 줄이고 그 공간을 빨간 영역에 배분 */
+.slide[data-slide="5"] .collection-layout {
+  grid-template-rows: 360px 382px;
+}
+
+.slide[data-slide="5"] .section-title-text {
+  white-space: nowrap;
+  letter-spacing: -2px;
+}
+
+.slide[data-slide="5"] .selection-flow {
+  flex-basis: 230px;
+}
+
+.slide[data-slide="5"] .selection-flow section {
+  padding-block: 4px;
+}
+
+.slide[data-slide="5"] .check-grid section {
+  justify-content: center;
+  padding-block: 12px;
+}
+
+/* 1쪽 비교표도 다른 카드와 같은 흰 배경·위쪽 강조 띠 체계로 통일 */
+.slide[data-slide="1"] .comparison {
+  border: 2px solid var(--line);
+  border-top: 10px solid var(--blue);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.slide[data-slide="1"] .comparison-title {
+  color: var(--blue);
+}
+
+/* 2·4·5쪽 영역 번호: 진한 영역색 배경과 흰 숫자로 통일 */
+.slide[data-slide="2"] .problem-list article:nth-child(1) > span {
+  background: var(--blue);
+  color: #fff;
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(2) > span {
+  background: var(--green);
+  color: #fff;
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(3) > span {
+  background: var(--orange);
+  color: #fff;
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(4) > span {
+  background: var(--red);
+  color: #fff;
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(5) > span {
+  background: #6c5ce7;
+  color: #fff;
+}
+
+/* 01·02 형식의 영역 번호는 연한 배경과 진한 숫자로 통일 */
+.slide[data-slide="2"] .problem-list article:nth-child(1) > span,
+.slide[data-slide="4"] .attribute-branch .branch-number,
+.slide[data-slide="5"] .collection-methods .section-number {
+  background: #eef5ff;
+  color: var(--blue);
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(2) > span,
+.slide[data-slide="4"] .format-branch .branch-number,
+.slide[data-slide="5"] .selection-process .section-number {
+  background: #ecf9f2;
+  color: var(--green);
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(3) > span {
+  background: #fff4e8;
+  color: #c66b0d;
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(4) > span,
+.slide[data-slide="5"] .collection-checks .section-number {
+  background: #fff0f2;
+  color: var(--red);
+}
+
+.slide[data-slide="2"] .problem-list article:nth-child(5) > span {
+  background: #f3efff;
+  color: #6c5ce7;
+}
+
+/* 3쪽 결과 제목은 복수 유형을 포함하므로 분류색 대신 중립색 사용 */
+.slide[data-slide="3"] .case-connection article h2 {
+  color: var(--ink);
+}
+
+/* 7쪽 막대그래프: 세 막대와 레이블 간격을 동일한 그리드로 고정 */
+.slide[data-slide="7"] .penguin-counts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 28px;
+  padding-inline: 28px;
+}
+
+.slide[data-slide="7"] .penguin-counts > div {
+  width: 100%;
+  grid-template-rows: minmax(0, 1fr) 34px 34px;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.slide[data-slide="7"] .penguin-counts div > span {
+  align-self: end;
+}
+
+.slide[data-slide="7"] .penguin-counts b,
+.slide[data-slide="7"] .penguin-counts em {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* 8쪽 이상치 그림 제목은 결측치 결과와 같은 본문 위계로 표시 */
+.slide[data-slide="8"] .outlier-item {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+}
+
+.slide[data-slide="8"] .outlier-item > h3 {
+  display: block;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--example-text);
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: left;
+}
+
+/* 8쪽 정규화: 요약 영역은 압축하고 수식·교과서 그림에 공간 배분 */
+.slide[data-slide="8"] .normalize-card {
+  gap: 10px;
+  padding: 20px;
+}
+
+.slide[data-slide="8"] .normalize-card .minmax-summary {
+  flex: 0 0 auto;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  gap: 4px;
+  padding: 8px 12px;
+}
+
+.slide[data-slide="8"] .normalize-card .minmax-summary h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 40px;
+  line-height: 1.05;
+}
+
+.slide[data-slide="8"] .normalize-card .minmax-summary > p:not(.minmax-formula) {
+  margin: 0;
+  line-height: 1.15;
+}
+
+.slide[data-slide="8"] .normalize-card .minmax-formula {
+  margin: 0;
+  padding: 0;
+  font-size: 36px;
+  line-height: 1;
+}
+
+.slide[data-slide="8"] .normalization-capture {
+  min-height: 300px;
+  flex: 1 1 300px;
+}
+
+.slide[data-slide="8"] .normalization-capture img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 7쪽 막대그래프: 막대 폭을 고정하고 남는 가로 공간을 정확히 균등 분배 */
+.slide[data-slide="7"] .penguin-counts {
+  grid-template-columns: repeat(3, 125px);
+  justify-content: space-between;
+  column-gap: 0;
+}
+
+.slide[data-slide="7"] .penguin-counts > div {
+  width: 125px;
+  min-width: 0;
+}
+
+.slide[data-slide="7"] .penguin-counts div > span {
+  width: 125px;
+}
+
+/* 8쪽 이상치: 각 항목 내부에서 글자 1 : 그림 2의 좌우 비율 */
+.slide[data-slide="8"] .outlier-item {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 12px;
+}
+
+.slide[data-slide="8"] .outlier-item > h3 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 8·9쪽 API 코드는 7쪽과 같은 검정 코드 라벨 규격 사용 */
+.slide[data-slide="8"] .missing-code-row code,
+.slide[data-slide="8"] .outlier-code-row code,
+.slide[data-slide="8"] .normalize-code,
+.slide[data-slide="9"] .structured-tools code {
+  width: max-content;
+  max-width: 100%;
+  border-radius: 6px;
+  padding: 12px 16px;
+  background: #172033;
+  color: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: left;
+}
+
+/* 9쪽 세 영역은 파랑 · 주황 · 초록으로 구분 */
+.slide[data-slide="9"] .feature-review {
+  border-top-color: var(--blue);
+}
+
+.slide[data-slide="9"] .feature-review > h2 {
+  color: var(--blue);
+}
+
+.slide[data-slide="9"] .structured-feature {
+  border-top-color: var(--orange);
+}
+
+.slide[data-slide="9"] .structured-feature > h2 {
+  color: #c66b0d;
+}
+
+.slide[data-slide="9"] .unstructured-feature {
+  border-top-color: var(--green);
+}
+
+.slide[data-slide="9"] .unstructured-feature > h2 {
+  color: var(--green);
+}
+
+/* 5쪽 강조 띠는 내부 내용 카드가 아니라 세 영역의 바깥 칸에 표시 */
+.slide[data-slide="5"] .collection-methods {
+  border-top: 10px solid var(--blue);
+}
+
+.slide[data-slide="5"] .selection-process {
+  border-top: 10px solid var(--green);
+}
+
+.slide[data-slide="5"] .collection-checks {
+  border-top: 10px solid var(--red);
+}
+
+.slide[data-slide="5"] .method-card,
+.slide[data-slide="5"] .selection-flow section,
+.slide[data-slide="5"] .check-grid section {
+  border-top: 2px solid var(--line);
+}
+
+/* 1쪽 비교표: 강조 띠를 제거하고 위로 이동해 마지막 행까지 표시 */
+.slide[data-slide="1"] .comparison {
+  flex: 0 0 500px;
+  margin-top: -24px;
+  gap: 8px;
+  border-top: 2px solid var(--line);
+  padding: 12px 18px 14px;
+}
+
+.slide[data-slide="1"] .comparison th,
+.slide[data-slide="1"] .comparison td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  line-height: 1.1;
+}
+
+/* 1쪽 비교표: 전통적 프로그래밍은 중립색, 기계학습의 핵심만 파랑 */
+.slide[data-slide="1"] .comparison thead th:nth-child(2) {
+  border-bottom-color: #cbd5e1;
+  background: #f6f8fb;
+  color: var(--ink);
+}
+
+.slide[data-slide="1"] .comparison thead th:nth-child(3) {
+  border-bottom-color: #93b9f6;
+  background: #eef5ff;
+  color: var(--blue);
+}
+
+.slide[data-slide="1"] .comparison tbody td:nth-child(2) strong {
+  color: var(--ink);
+}
+
+.slide[data-slide="1"] .comparison tbody td:nth-child(3) strong {
+  color: var(--blue);
+}
+
+.slide[data-slide="1"] .comparison tbody td:nth-child(2) .flow {
+  background: #f6f8fb;
+  color: var(--ink);
+}
+
+.slide[data-slide="1"] .comparison tbody td:nth-child(3) .flow {
+  background: #eef5ff;
+  color: var(--blue);
+}
+
+/* 전통적 프로그래밍의 대응 강조는 파랑보다 밝은 중간 회색 사용 */
+.slide[data-slide="1"] .comparison thead th:nth-child(2),
+.slide[data-slide="1"] .comparison tbody td:nth-child(2) strong,
+.slide[data-slide="1"] .comparison tbody td:nth-child(2) .flow {
+  color: #64748b;
+}
+
+.slide[data-slide="1"] .comparison thead th:nth-child(2),
+.slide[data-slide="1"] .comparison tbody td:nth-child(2) .flow {
+  background: #fafbfc;
+}
+
+/* 4쪽 데이터 속성·유형 영역에도 동일한 위쪽 강조 띠 적용 */
+.slide[data-slide="4"] .attribute-branch {
+  border-top: 10px solid var(--blue);
+}
+
+.slide[data-slide="4"] .format-branch {
+  border-top: 10px solid var(--green);
+}
+
+/* 3쪽 적용 사례 결과 카드의 왼쪽 강조 띠 제거 */
+.slide[data-slide="3"] .case-connection article {
+  border-left: 2px solid var(--line);
+}
+
+/* 7·8쪽 영역 번호는 01·02·03과 연한 배경 형식으로 통일 */
+.slide[data-slide="7"] .inspection-card:nth-child(1) header > span,
+.slide[data-slide="8"] .preprocess-card:nth-child(1) header > span {
+  background: #eef5ff;
+  color: var(--blue);
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(2) header > span,
+.slide[data-slide="8"] .preprocess-card:nth-child(2) header > span {
+  background: #fff4e8;
+  color: #c66b0d;
+}
+
+.slide[data-slide="7"] .inspection-card:nth-child(3) header > span,
+.slide[data-slide="8"] .preprocess-card:nth-child(3) header > span {
+  background: #ecf9f2;
+  color: var(--green);
+}
+
+/* 9쪽은 내부 단계 번호를 제거하고 세 영역 제목에만 01·02·03 표시 */
+.slide[data-slide="9"] .section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slide[data-slide="9"] .section-number {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.slide[data-slide="9"] .feature-review .section-number {
+  background: #eef5ff;
+  color: var(--blue);
+}
+
+.slide[data-slide="9"] .structured-feature .section-number {
+  background: #fff4e8;
+  color: #c66b0d;
+}
+
+.slide[data-slide="9"] .unstructured-feature .section-number {
+  background: #ecf9f2;
+  color: var(--green);
+}
+
+.slide[data-slide="9"] .feature-review li {
+  gap: 0;
+}
+
+/* 정형 데이터 API 코드는 각 예시 그림의 가로 중앙에 배치 */
+.slide[data-slide="9"] .structured-tools code {
+  align-self: center;
+  text-align: center;
+}
+
+/* 9쪽 전체 좌우 비율: 방법 35% · 데이터 예시 65% */
+.slide[data-slide="9"] .feature-layout {
+  grid-template-columns: minmax(0, 3.5fr) minmax(0, 6.5fr);
+}
+
+/* 8쪽 이상치 예시: 두 항목은 좌우, 각 그림은 제목 아래에 배치 */
+.slide[data-slide="8"] .outlier-figures {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.slide[data-slide="8"] .outlier-item {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 84px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.slide[data-slide="8"] .outlier-item > h3 {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 7쪽 시각화: 그래프 높이를 줄여 결과 박스까지 카드 내부에 배치 */
+.slide[data-slide="7"] .visual-card .penguin-counts {
+  flex: 0 0 250px;
+  min-height: 250px;
+}
+
+/* 8쪽 이상치 예시: 두 그림을 하나의 결과 박스로 묶고 제목·그림을 중앙 정렬 */
+.slide[data-slide="8"] .outlier-figures {
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+}
+
+.slide[data-slide="8"] .outlier-item > h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide[data-slide="8"] .outlier-item figure {
+  width: 100%;
+  justify-self: center;
+}
+
+.slide[data-slide="8"] .outlier-item img {
+  object-position: center center;
+}
+
+/* 7쪽 결과 위계: API 코드는 바깥에, 실제 출력은 얇은 선의 흰 박스 안에 배치 */
+.slide[data-slide="7"] .notebook-result {
+  gap: 16px;
+  padding: 0;
+  background: transparent;
+}
+
+.slide[data-slide="7"] .notebook-result > div {
+  display: grid;
+  flex: 1 1 auto;
+  min-height: 0;
+  align-content: center;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  padding: 22px;
+  background: #fff;
+}
+
+.slide[data-slide="7"] .stat-values span {
+  background: transparent;
+}
+
+.slide[data-slide="7"] .visual-result {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+  gap: 12px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+}
+
+.slide[data-slide="7"] .visual-result .penguin-counts {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* 4쪽: 데이터 속성은 청회색, 데이터 유형은 같은 농도의 녹회색으로 구분 */
+.slide[data-slide="4"] .format-types section {
+  background: #f6fbf8;
+}
+
+/* 4쪽 예시 영역은 테두리 없이 순백색 배경으로 표시 */
+.slide[data-slide="4"] .numeric-children > div,
+.slide[data-slide="4"] .iris-example {
+  border: 0;
+  background: #fff;
+}
+
+/* 5쪽: 각 영역의 강조색을 같은 농도의 연한 배경색으로 확장 */
+.slide[data-slide="5"] .collection-methods {
+  background: #f6f8fb;
+}
+
+.slide[data-slide="5"] .selection-process {
+  background: #f6fbf8;
+}
+
+.slide[data-slide="5"] .collection-checks {
+  background: #fbf6f8;
+}
+
+/* 5쪽 내부 내용은 테두리 없이 순백색 카드로 통일 */
+.slide[data-slide="5"] .method-card,
+.slide[data-slide="5"] .selection-flow section,
+.slide[data-slide="5"] .check-grid section {
+  border: 0;
+  background: #fff;
+}
+
+/* 5쪽의 수집처·유형 목록·고려사항 질문은 같은 예시 텍스트 색 사용 */
+.slide[data-slide="5"] .check-grid p {
+  color: var(--example-text);
+}
+
+/* 5쪽: 번호가 붙은 바깥 영역은 흰 바탕과 상단 색 띠를 사용 */
+.slide[data-slide="5"] .collection-methods,
+.slide[data-slide="5"] .selection-process,
+.slide[data-slide="5"] .collection-checks {
+  background: #fff;
+}
+
+/* 5쪽: 내부 항목 카드에 각 영역색의 연한 배경을 적용 */
+.slide[data-slide="5"] .method-card {
+  background: #f6f8fb;
+}
+
+.slide[data-slide="5"] .selection-flow section {
+  background: #f6fbf8;
+}
+
+.slide[data-slide="5"] .check-grid section {
+  background: #fbf6f8;
+}
+
+/* 8·9쪽 내부 박스도 앞 페이지와 같은 계열·농도로 통일 */
+.slide[data-slide="8"] .normalize-card .minmax-summary {
+  background: #f6fbf8;
+}
+
+.slide[data-slide="9"] .feature-review li {
+  background: #f6f8fb;
+}
+
+/* 5쪽 전체 열 비율: 데이터 수집 방법 30% · 선정 과정/고려사항 70% */
+.slide[data-slide="5"] .collection-layout {
+  grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
+}
+
+/* 5쪽: 01·02·03 세 영역을 한 행에 가로 배치 */
+.slide[data-slide="5"] .collection-layout {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.slide[data-slide="5"] .collection-methods,
+.slide[data-slide="5"] .selection-process,
+.slide[data-slide="5"] .collection-checks {
+  height: 100%;
+  grid-row: 1;
+}
+
+.slide[data-slide="5"] .collection-methods {
+  grid-column: 1;
+  grid-template-rows: auto repeat(3, minmax(0, 1fr));
+  align-content: stretch;
+  gap: 12px;
+}
+
+.slide[data-slide="5"] .selection-process {
+  grid-column: 2;
+}
+
+.slide[data-slide="5"] .collection-checks {
+  grid-column: 3;
+}
+
+.slide[data-slide="5"] .section-title-text {
+  white-space: normal;
+}
+
+/* 좁아진 각 열 안에서는 단계와 고려사항을 세로로 읽도록 배치 */
+.slide[data-slide="5"] .selection-flow {
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 6px;
+}
+
+.slide[data-slide="5"] .selection-flow i {
+  align-self: center;
+  justify-self: center;
+  transform: rotate(90deg);
+  line-height: 1;
+}
+
+.slide[data-slide="5"] .selection-flow section {
+  padding: 12px;
+}
+
+.slide[data-slide="5"] .check-grid {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+/* 5쪽 글자 위계와 세 영역의 시작선을 최종 통일 */
+.slide[data-slide="5"] .collection-methods,
+.slide[data-slide="5"] .selection-process,
+.slide[data-slide="5"] .collection-checks {
+  gap: 14px;
+  padding: 18px;
+}
+
+.slide[data-slide="5"] .section-heading {
+  height: 150px;
+  min-height: 150px;
+  flex: 0 0 150px;
+  align-items: center;
+  padding: 0;
+  font-size: 64px !important;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.slide[data-slide="5"] .method-card h3,
+.slide[data-slide="5"] .selection-flow h3,
+.slide[data-slide="5"] .check-grid b {
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.slide[data-slide="5"] .method-card b,
+.slide[data-slide="5"] .selection-flow b,
+.slide[data-slide="5"] .check-grid p {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+/* 전 페이지의 모든 글자 굵기를 Nanum Gothic 700으로 통일 */
+body,
+body * {
+  font-weight: 700 !important;
+}
+
+/* 5쪽도 공통 영역 순서인 파랑 · 주황 · 초록으로 통일 */
+.slide[data-slide="5"] .collection-methods {
+  border-top-color: var(--blue);
+}
+
+.slide[data-slide="5"] .selection-process {
+  border-top-color: var(--orange);
+}
+
+.slide[data-slide="5"] .collection-checks {
+  border-top-color: var(--green);
+}
+
+.slide[data-slide="5"] .collection-methods > h2 {
+  color: var(--blue);
+}
+
+.slide[data-slide="5"] .selection-process > h2 {
+  color: #c66b0d;
+}
+
+.slide[data-slide="5"] .collection-checks > h2 {
+  color: var(--green);
+}
+
+.slide[data-slide="5"] .collection-methods .section-number {
+  background: #eef5ff;
+  color: var(--blue);
+}
+
+.slide[data-slide="5"] .selection-process .section-number {
+  background: #fff4e8;
+  color: #c66b0d;
+}
+
+.slide[data-slide="5"] .collection-checks .section-number {
+  background: #ecf9f2;
+  color: var(--green);
+}
+
+.slide[data-slide="5"] .method-card {
+  background: #f6f8fb;
+}
+
+.slide[data-slide="5"] .selection-flow section {
+  background: #fbf8f6;
+}
+
+.slide[data-slide="5"] .check-grid section {
+  background: #f6fbf8;
+}
+
+.slide[data-slide="5"] .method-card h3 {
+  color: var(--blue-sub);
+}
+
+.slide[data-slide="5"] .selection-flow h3,
+.slide[data-slide="5"] .selection-flow i {
+  color: var(--orange-sub);
+}
+
+.slide[data-slide="5"] .check-grid b {
+  color: var(--green-sub);
+}
+
+/* 5쪽 영역 제목은 다른 카드형 페이지와 같은 여백·번호 규격 사용 */
+.slide[data-slide="5"] .collection-methods,
+.slide[data-slide="5"] .selection-process,
+.slide[data-slide="5"] .collection-checks {
+  gap: 18px;
+  padding: 22px;
+}
+
+.slide[data-slide="5"] .section-heading {
+  height: 76px;
+  min-height: 76px;
+  flex: 0 0 76px;
+  gap: 12px;
+  padding: 0;
+}
+
+.slide[data-slide="5"] .section-number {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  font-size: 24px;
+}
+
+.slide[data-slide="5"] .section-title-text {
+  white-space: nowrap;
+  letter-spacing: -2px;
 }

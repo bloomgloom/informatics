@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1760 650" role="img" aria-labelledby="title desc">
+  <title id="title">기계학습을 위한 데이터 탐색과 전처리 과정</title>
+  <desc id="desc">수집한 데이터가 데이터 살펴보기, 데이터 전처리, 핵심 속성 추출을 거쳐 준비 완료되는 흐름</desc>
+
+  <defs>
+    <style>
+      text {
+        font-family: sans-serif;
+        font-weight: 700 !important;
+        fill: #172033;
+      }
+      .stage-title { font-size: 34px; font-weight: 800; }
+      .stage-item { font-size: 34px; font-weight: 800; fill: #5c6b7d; }
+      .step { font-size: 24px; font-weight: 800; }
+      .endpoint { font-size: 38px; font-weight: 800; }
+      .caption { font-size: 30px; font-weight: 800; fill: #5c6b7d; }
+      .flow-arrow { font-size: 68px; font-weight: 800; fill: #344054; }
+      .tone-blue { fill: #2563eb; }
+      .tone-orange { fill: #c66b0d; }
+      .tone-green { fill: #159957; }
+    </style>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#172033" flood-opacity="0.10" />
+    </filter>
+  </defs>
+
+  <rect x="256" y="62" width="1250" height="500" rx="34" fill="#ffffff" stroke="#9aa4b2" stroke-width="3" stroke-dasharray="10 10" />
+
+  <g aria-label="수집한 데이터" filter="url(#shadow)">
+    <rect x="38" y="244" width="164" height="146" fill="#f58bb8" />
+    <ellipse cx="120" cy="244" rx="82" ry="28" fill="#f58bb8" />
+    <ellipse cx="120" cy="390" rx="82" ry="28" fill="#e878aa" />
+    <path d="M38 244v146c0 16 37 28 82 28s82-12 82-28V244" fill="none" stroke="#e878aa" stroke-width="4" />
+    <text class="endpoint" x="120" y="307" text-anchor="middle">수집한</text>
+    <text class="endpoint" x="120" y="355" text-anchor="middle">데이터</text>
+  </g>
+
+  <text class="flow-arrow" x="251" y="351" text-anchor="middle">→</text>
+
+  <g aria-label="01 데이터 살펴보기" filter="url(#shadow)">
+    <rect x="280" y="116" width="360" height="390" rx="24" fill="#ffffff" stroke="#dfe5ec" stroke-width="3" />
+    <path d="M304 121 H616" fill="none" stroke="#2563eb" stroke-width="10" stroke-linecap="round" />
+    <circle cx="331" cy="179" r="29" fill="#eef5ff" />
+    <text class="step tone-blue" x="331" y="188" text-anchor="middle">01</text>
+    <text class="stage-title tone-blue" x="376" y="190">데이터 살펴보기</text>
+    <line x1="312" y1="230" x2="608" y2="230" stroke="#dfe5ec" stroke-width="3" />
+    <text class="stage-item" x="322" y="300">• 확인하기</text>
+    <text class="stage-item" x="322" y="365">• 통계 요약</text>
+    <text class="stage-item" x="322" y="430">• 시각화</text>
+  </g>
+
+  <text class="flow-arrow" x="670" y="351" text-anchor="middle">→</text>
+
+  <g aria-label="02 데이터 전처리" filter="url(#shadow)">
+    <rect x="700" y="116" width="360" height="390" rx="24" fill="#ffffff" stroke="#dfe5ec" stroke-width="3" />
+    <path d="M724 121 H1036" fill="none" stroke="#f28c28" stroke-width="10" stroke-linecap="round" />
+    <circle cx="751" cy="179" r="29" fill="#fff4e8" />
+    <text class="step tone-orange" x="751" y="188" text-anchor="middle">02</text>
+    <text class="stage-title tone-orange" x="796" y="190">데이터 전처리</text>
+    <line x1="732" y1="230" x2="1028" y2="230" stroke="#dfe5ec" stroke-width="3" />
+    <text class="stage-item" x="742" y="300">• 이상치 제거</text>
+    <text class="stage-item" x="742" y="365">• 결측치 제거</text>
+    <text class="stage-item" x="742" y="430">• 정규화</text>
+  </g>
+
+  <text class="flow-arrow" x="1090" y="351" text-anchor="middle">→</text>
+
+  <g aria-label="03 핵심 속성 추출" filter="url(#shadow)">
+    <rect x="1120" y="116" width="360" height="390" rx="24" fill="#ffffff" stroke="#dfe5ec" stroke-width="3" />
+    <path d="M1144 121 H1456" fill="none" stroke="#159957" stroke-width="10" stroke-linecap="round" />
+    <circle cx="1171" cy="179" r="29" fill="#ecf9f2" />
+    <text class="step tone-green" x="1171" y="188" text-anchor="middle">03</text>
+    <text class="stage-title tone-green" x="1216" y="190">핵심 속성 추출</text>
+    <line x1="1152" y1="230" x2="1448" y2="230" stroke="#dfe5ec" stroke-width="3" />
+    <text class="stage-item" x="1162" y="330">• 상관관계 분석</text>
+    <text class="stage-item" x="1162" y="410">• 속성 검토</text>
+  </g>
+
+  <text class="flow-arrow" x="1535" y="351" text-anchor="middle">→</text>
+
+  <g aria-label="준비 완료">
+    <rect x="1590" y="263" width="146" height="134" rx="26" fill="#eef5ff" stroke="#bdd2ed" stroke-width="3" />
+    <text class="endpoint tone-blue" x="1663" y="318" text-anchor="middle">준비</text>
+    <text class="endpoint tone-blue" x="1663" y="365" text-anchor="middle">완료</text>
+  </g>
+
+  <text class="caption" x="880" y="624" text-anchor="middle">[그림 Ⅱ-12] 기계학습을 위한 데이터 탐색과 전처리 과정</text>
+</svg>

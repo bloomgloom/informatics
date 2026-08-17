@@ -10,11 +10,7 @@ const DESIGN_WIDTH = 1920;
 const DESIGN_HEIGHT = 1080;
 
 function fitDeckToViewport() {
-  const scale = Math.min(
-    window.innerWidth / DESIGN_WIDTH,
-    window.innerHeight / DESIGN_HEIGHT,
-  );
-
+  const scale = Math.min(window.innerWidth / DESIGN_WIDTH, window.innerHeight / DESIGN_HEIGHT);
   deck.style.setProperty("--deck-scale", String(scale));
 }
 
@@ -37,15 +33,8 @@ totalSlides.textContent = String(slides.length);
 
 function showSlide(index) {
   activeIndex = (index + slides.length) % slides.length;
-
-  slides.forEach((slide, slideIndex) => {
-    slide.classList.toggle("active", slideIndex === activeIndex);
-  });
-
-  dotButtons.forEach((dot, dotIndex) => {
-    dot.classList.toggle("active", dotIndex === activeIndex);
-  });
-
+  slides.forEach((slide, slideIndex) => slide.classList.toggle("active", slideIndex === activeIndex));
+  dotButtons.forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === activeIndex));
   currentSlide.textContent = String(activeIndex + 1);
 }
 
@@ -54,7 +43,6 @@ function prevSlide() { showSlide(activeIndex - 1); }
 
 prevButton.addEventListener("click", prevSlide);
 nextButton.addEventListener("click", nextSlide);
-
 document.addEventListener("keydown", (event) => {
   if (event.target.matches("input, textarea")) return;
   if (event.key === "ArrowRight" || event.key === " ") nextSlide();

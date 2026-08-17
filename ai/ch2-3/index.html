@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>인공 신경망과 딥러닝</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p><p class="page-ref">p.126</p>
+          <h1>딥러닝은 왜 특별할까?</h1>
+          <p class="subtitle">딥러닝 전후에는 <strong>데이터에서 핵심 속성을 찾는 방법</strong>에 차이가 있다.</p>
+        </div>
+        <div class="before-after">
+          <article>
+            <header><span>딥러닝 이전</span><h2>기계학습</h2></header>
+            <div class="process-line"><b>데이터 입력</b><i>→</i><b class="human">사람이 속성 추출</b><i>→</i><b>분류 알고리즘</b><i>→</i><strong>판단</strong></div>
+            <div class="face-features"><span>눈 사이의 거리</span><span>귀의 크기</span><span>얼굴의 형태</span></div>
+            <p>성별을 분류하기 위한 속성을 <strong>사람이 직접 결정</strong>한다.</p>
+          </article>
+          <div class="versus">VS</div>
+          <article>
+            <header><span>딥러닝</span><h2>심층 신경망</h2></header>
+            <div class="process-line deep"><b>데이터 입력</b><i>→</i><b class="machine">속성 추출 + 분류</b><i>→</i><strong>판단</strong></div>
+            <div class="feature-layers"><span></span><i></i><span></span><i></i><span></span></div>
+            <p>대량의 이미지를 학습하며 핵심 속성을 <strong>컴퓨터가 스스로 찾는다.</strong></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p><p class="page-ref">p.127</p>
+          <h1>인공 신경망</h1>
+          <p class="subtitle">인간의 뇌가 정보를 인식하고 학습하는 방식을 모방한 <strong>인공지능 모델</strong></p>
+        </div>
+        <div class="network-compare">
+          <article>
+            <h2>인간 신경망</h2>
+            <div class="bio-network"><div class="neuron"><i></i><i></i><i></i><b>뉴런</b><em></em></div><span>시냅스</span><div class="neuron second"><i></i><i></i><i></i><b>뉴런</b><em></em></div></div>
+            <p>수많은 신경 세포인 <strong>뉴런</strong>이 <strong>시냅스</strong>로 연결되어 정보를 처리하고 전달한다.</p>
+          </article>
+          <div class="mapping"><span>구조와 작동 원리를 모방</span><b>→</b></div>
+          <article>
+            <h2>인공 신경망</h2>
+            <div class="artificial-network"><div><b>입력</b><b>입력</b><b>입력</b></div><i></i><strong>인공 뉴런</strong><i></i><em>출력</em></div>
+            <p>입력 신호에 <strong>가중치</strong>를 적용하고 계산한 출력 신호를 다음 인공 뉴런에 전달한다.</p>
+          </article>
+        </div>
+        <div class="definition"><b>인공 신경망(ANN)</b><span>Artificial Neural Network</span><p>인공적으로 인간의 뇌 신경망을 모방하여 구성한 신경망</p></div>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p><p class="page-ref">p.127</p>
+          <h1>퍼셉트론</h1>
+          <p class="subtitle">다수의 입력 신호를 받아 계산한 뒤 <strong>하나의 신호로 출력</strong>하는 인공 신경망의 기본 구성 요소</p>
+        </div>
+        <div class="perceptron-layout">
+          <article class="perceptron-diagram">
+            <div class="inputs"><span>x₁</span><span>x₂</span><span>x₃</span><span>xₙ</span></div>
+            <div class="weights"><span>× w₁</span><span>× w₂</span><span>× w₃</span><span>× wₙ</span></div>
+            <i class="merge">→</i><div class="weighted-sum"><b>가중합</b><span>Σ(x × w) + b</span></div><i>→</i><div class="activation"><b>활성화 함수</b><span>임곗값과 비교</span></div><i>→</i><div class="output"><b>출력</b><span>0 또는 1</span></div>
+          </article>
+          <aside class="term-list">
+            <section><b>w</b><div><h2>가중치</h2><p>각 입력 신호가 출력에 미치는 중요도</p></div></section>
+            <section><b>b</b><div><h2>편향</h2><p>출력을 조정하여 활성화 함수의 임곗값을 이동</p></div></section>
+            <section><b>f</b><div><h2>활성화 함수</h2><p>가중합을 변환하여 최종 출력 신호를 결정</p></div></section>
+          </aside>
+        </div>
+        <div class="threshold"><span>가중합이 임곗값을 넘으면</span><strong>1 출력</strong><i>·</i><span>넘지 못하면</span><strong>0 출력</strong></div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p><p class="page-ref">p.128</p>
+          <h1>다층 신경망</h1>
+          <p class="subtitle">입력층과 출력층 사이에 <strong>은닉층</strong>을 추가하여 여러 퍼셉트론이 상호 작용한다.</p>
+        </div>
+        <div class="mlp-compare">
+          <article><h2>퍼셉트론</h2><div class="linear-plot"><span class="blue-dot d1"></span><span class="blue-dot d2"></span><span class="orange-dot d3"></span><span class="orange-dot d4"></span><i></i></div><strong>선형 문제 해결</strong><p>하나의 직선으로 나눌 수 있는 문제</p></article>
+          <i class="change">→</i>
+          <article><h2>다층 신경망(MLP)</h2><div class="layer-network small"><div><span></span><span></span></div><i></i><div class="hidden"><span></span><span></span><span></span></div><i></i><div><span></span></div></div><strong>비선형 문제 해결</strong><p>은닉층에서 입력을 비선형적으로 변환</p></article>
+        </div>
+        <div class="layer-roles"><section><b>입력층</b><p>데이터를 입력받는다.</p></section><section><b>은닉층</b><p>가중합을 활성화 함수로 변환하여 다음 층에 전달한다.</p></section><section><b>출력층</b><p>신경망의 최종 예측값을 출력한다.</p></section></div>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p><p class="page-ref">p.128</p>
+          <h1>심층 신경망과 딥러닝</h1>
+          <p class="subtitle">은닉층을 여러 개 쌓은 <strong>깊은 신경망</strong>으로 복잡한 패턴을 학습한다.</p>
+        </div>
+        <div class="deep-layout">
+          <article class="deep-network">
+            <div class="layer-column input"><h2>입력층</h2><span></span><span></span><span></span><span></span></div><i></i>
+            <div class="layer-column hidden"><h2>은닉층 1</h2><span></span><span></span><span></span><span></span><span></span></div><i></i>
+            <div class="layer-column hidden"><h2>은닉층 2</h2><span></span><span></span><span></span><span></span><span></span></div><i></i>
+            <div class="layer-column hidden"><h2>은닉층 3</h2><span></span><span></span><span></span><span></span><span></span></div><i></i>
+            <div class="layer-column output-layer"><h2>출력층</h2><span></span><span></span></div>
+          </article>
+          <aside class="deep-definitions"><section><span>DNN</span><div><h2>심층 신경망</h2><p>많은 수의 은닉층을 가진 신경망 구조</p></div></section><section><span>Deep</span><div><h2>딥러닝</h2><p>심층 신경망으로 입력 데이터의 복잡한 패턴을 학습하고 문제를 해결하는 분야</p></div></section></aside>
+        </div>
+        <div class="deep-note">은닉층이 많아질수록 신경망이 <strong>깊다(deep)</strong>고 표현하며, 더 복잡한 형태의 비선형 문제를 해결할 수 있다.</div>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <div class="slide-header">
+          <p class="unit">06</p><p class="page-ref">p.130~131</p>
+          <h1>딥러닝 활용 분야</h1>
+          <p class="subtitle">딥러닝은 이미지·언어·음성의 패턴을 학습하고 새로운 콘텐츠를 만드는 데 활용된다.</p>
+        </div>
+        <div class="application-grid">
+          <article class="vision"><span>01</span><h2>컴퓨터 비전</h2><p>이미지와 영상에서 객체를 식별하고 특성을 파악</p><div><b>얼굴 인식</b><b>자율주행 객체 분할</b><b>의료 영상 질병 탐지</b></div></article>
+          <article class="nlp"><span>02</span><h2>자연어 처리</h2><p>사람이 사용하는 언어를 컴퓨터가 이해하고 처리</p><div><b>인공지능 비서</b><b>기계 번역</b><b>인공지능 챗봇</b></div></article>
+          <article class="speech"><span>03</span><h2>음성 인식</h2><p>음성 입력을 텍스트로 변환하여 분석·이해·처리</p><div><b>인공지능 스피커</b><b>자동차 내비게이션</b><b>음성 보안 접근</b></div></article>
+          <article class="generation"><span>04</span><h2>생성</h2><p>텍스트·이미지·음성·영상 콘텐츠를 생성하거나 변환</p><div><b>이미지 생성</b><b>동영상 생성</b><b>텍스트 생성</b></div></article>
+        </div>
+      </section>
+    </main>
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드"><span></span></button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드"><span></span></button>
+    <div class="footer"><div class="dots" aria-label="슬라이드 위치"></div><p><span id="currentSlide">1</span> / <span id="totalSlides">1</span></p></div>
+    <script src="script.js"></script>
+  </body>
+</html>
