@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=83" />
+    <link rel="stylesheet" href="styles.css?v=93" />
   </head>
   <body>
     <main class="deck" aria-live="polite">
@@ -223,9 +223,10 @@
               <thead><tr><th colspan="2">특징</th><th>타깃</th></tr><tr><th>당도</th><th>아삭함</th><th>식품</th></tr></thead>
               <tbody><tr><td>10</td><td>1</td><td><b>과일</b></td></tr><tr><td>3</td><td>8</td><td><b>채소</b></td></tr><tr><td>7</td><td>2</td><td><b>과일</b></td></tr></tbody>
             </table>
-            <div class="boundary-types">
-              <section><i class="linear-boundary"></i><b>선형 분류</b><span>직선으로 영역 구분</span></section>
-              <section><i class="nonlinear-boundary"></i><b>비선형 분류</b><span>곡선으로 영역 구분</span></section>
+            <div class="textbook-boundaries">
+              <figure><img src="assets/classification-linear.png" alt="과일과 채소의 선형 분류 그래프" /><figcaption>⬆ 선형 분류</figcaption></figure>
+              <p>아삭함과 당도로 과일과 채소를 분류하는 경계는 어디일까?</p>
+              <figure><img src="assets/classification-nonlinear.png" alt="과일과 채소의 비선형 분류 그래프" /><figcaption>⬆ 비선형 분류</figcaption></figure>
             </div>
           </article>
           <article class="classification-core" data-tone="orange">
@@ -251,19 +252,22 @@
         <div class="classification-algorithms">
           <article class="algorithm-card decision-tree-card" data-tone="blue">
             <header class="section-heading"><span class="section-number">01</span><h2>결정트리</h2></header>
-            <div class="penguin-tree"><b>날개 길이 ＞ 205?</b><i>예</i><i>아니요</i><strong>젠투펭귄</strong><em>부리 길이로 다시 분할</em></div>
+            <figure class="textbook-algorithm-figure"><img src="assets/algorithm-decision-tree.png" alt="날개 길이와 부리 길이로 펭귄 종을 분류하는 결정트리" /></figure>
             <p>특징의 <b>분할 기준</b>에 따라 데이터를 나누는 과정을 반복한다.</p>
             <small>특징값을 기준으로 분할하므로 정규화가 필요 없다.</small>
           </article>
           <article class="algorithm-card logistic-card" data-tone="orange">
             <header class="section-heading"><span class="section-number">02</span><h2>로지스틱 회귀</h2></header>
-            <div class="logistic-curve"><span>0</span><i>확률</i><b>S</b><em>0.5</em><span>1</span></div>
+            <figure class="textbook-algorithm-figure"><img src="assets/algorithm-logistic.png" alt="점수에 따른 합격과 불합격을 나타낸 로지스틱 회귀 그래프" /></figure>
             <p>로지스틱 함수로 각 클래스에 속할 <b>확률</b>을 예측한다.</p>
             <small>예: 확률 0.5를 기준으로 합격과 불합격 분류</small>
           </article>
           <article class="algorithm-card knn-card" data-tone="green">
             <header class="section-heading"><span class="section-number">03</span><h2>k-최근접 이웃</h2></header>
-            <div class="neighbor-vote"><b>●</b><b>●</b><em>●</em><em>●</em><strong>?</strong><i>k = 3</i></div>
+            <figure class="textbook-algorithm-figure knn-textbook-figure">
+              <img src="assets/algorithm-knn-chart.png" alt="k가 3일 때 최근접 이웃을 표시한 특징 그래프" />
+              <img src="assets/algorithm-knn-legend.png" alt="초록색, 주황색, 파란색 클래스와 빨간색 예측 데이터 범례" />
+            </figure>
             <p>가장 가까운 <b>k개 데이터의 다수 레이블</b>로 클래스를 정한다.</p>
             <small>데이터 사이의 거리는 유클리디언 거리 등을 이용한다.</small>
           </article>
@@ -282,13 +286,17 @@
             <div class="accuracy-formula"><strong>예측값과 실제값이 같은 데이터 수</strong><i>전체 데이터 수</i></div>
             <p>전체 데이터 중 모델이 <b>올바르게 분류한 데이터의 비율</b></p>
             <div class="metric-tags"><span>정확도</span><span>정밀도</span><span>재현율</span></div>
+            <div class="accuracy-calculation" aria-label="42 더하기 18 더하기 36을 42 더하기 2 더하기 3 더하기 18 더하기 36으로 나누면 0.95">
+              <span><b>42 + 18 + 36</b><i>42 + 2 + 3 + 18 + 36</i></span><strong>= 0.95</strong>
+            </div>
           </article>
           <article class="penguin-matrix-panel" data-tone="orange">
             <div class="section-heading"><span class="section-number">02</span><h2>펭귄 종 분류 모델의 혼동 행렬</h2></div>
             <p>실제 클래스와 예측 클래스를 비교하여 어떤 클래스를 혼동했는지 확인한다.</p>
             <div class="penguin-matrix">
-              <span class="matrix-corner">실제값 ↓<br />예측값 →</span><b>아델리</b><b>턱끈</b><b>젠투</b>
-              <strong>아델리</strong><em>42</em><i>2</i><i>0</i>
+              <span class="matrix-top-blank"></span><span class="matrix-predicted">예측값</span>
+              <span class="matrix-side-blank"></span><b>펭귄 종</b><b>아델리</b><b>턱끈</b><b>젠투</b>
+              <strong class="matrix-actual">실제값</strong><strong>아델리</strong><em>42</em><i>2</i><i>0</i>
               <strong>턱끈</strong><i>3</i><em>18</em><i>0</i>
               <strong>젠투</strong><i>0</i><i>0</i><em>36</em>
             </div>
