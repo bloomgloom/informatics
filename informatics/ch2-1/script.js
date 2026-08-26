@@ -47,6 +47,9 @@ function showSlide(index) {
   });
 
   currentSlide.textContent = String(activeIndex + 1);
+  const url = new URL(window.location.href);
+  url.searchParams.set("slide", String(activeIndex + 1));
+  window.history.replaceState(null, "", url);
 }
 
 function nextSlide() {

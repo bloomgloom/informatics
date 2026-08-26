@@ -136,7 +136,7 @@
         <div class="slide-header">
           <p class="unit">04</p>
           <p class="page-ref">p.96</p>
-          <h1>선형 회귀 모델</h1>
+          <h1>회귀 모델</h1>
           <p class="subtitle">입력 속성과 예측값 사이의 관계를 가장 잘 나타내는 <strong>직선 또는 평면</strong>을 찾는다.</p>
         </div>
 
@@ -169,7 +169,7 @@
         <div class="slide-header">
           <p class="unit">05</p>
           <p class="page-ref">p.97~98</p>
-          <h1>선형 회귀 모델의 성능 평가</h1>
+          <h1>회귀 모델 성능 평가</h1>
           <p class="subtitle"><strong>오차 함수</strong>와 <strong>결정계수(R²)</strong>로 모델의 예측 성능과 설명력을 확인한다.</p>
         </div>
 
@@ -195,8 +195,7 @@
           <article class="metrics-panel" data-tone="orange">
             <div class="section-heading"><span class="section-number">02</span><h2>결정계수(R²)</h2></div>
             <section class="r2-summary">
-              <div class="r2-heading"><h3>범위 해석</h3><strong>0 ~ 1</strong></div>
-              <p>모델이 데이터를 얼마나 잘 설명하는지를 나타내며, <br /><b>1에 가까울수록</b> 설명력이 높다.</p>
+              <p>모델이 데이터를 얼마나 잘 설명하는지를 나타내며, <b>1에 가까울수록</b> 설명력이 높다.</p>
               <div class="r2-interpretation" aria-label="결정계수 범위 해석">
                 <p><b>R² = 0</b><span>예측력 없음</span></p>
                 <p><b>0.0 &lt; R² &lt; 0.3</b><span>약한 설명력</span></p>
@@ -217,7 +216,7 @@
         </div>
         <div class="classification-overview">
           <article class="food-model-card" data-tone="blue">
-            <div class="section-heading"><span class="section-number">01</span><h2>식품 분류 데이터</h2></div>
+            <div class="section-heading"><span class="section-number">01</span><h2>분류 모델 예시</h2></div>
             <table class="food-table">
               <colgroup><col /><col /><col /></colgroup>
               <thead><tr><th colspan="2">특징</th><th>타깃</th></tr><tr><th>당도</th><th>아삭함</th><th>식품</th></tr></thead>
@@ -231,14 +230,14 @@
           </article>
           <article class="classification-core" data-tone="orange">
             <div class="section-heading"><span class="section-number">02</span><h2>분류의 핵심 개념</h2></div>
-            <div class="classification-goal"><span>분류 모델의 핵심 목표</span><strong>클래스 영역의 경계 찾기</strong></div>
+            <p class="classification-goal">목표: <strong>클래스 영역의 경계 찾기</strong></p>
             <dl class="classification-terms">
               <div><dt>특징</dt><dd>타깃을 예측하는 데 사용하는 속성</dd></div>
               <div><dt>타깃</dt><dd>분류 모델이 예측하려는 속성</dd></div>
               <div><dt>클래스</dt><dd>타깃의 범주 · 과일, 채소</dd></div>
               <div><dt>레이블</dt><dd>타깃의 실제 값</dd></div>
             </dl>
-            <div class="classification-examples"><b>분류의 예</b><span>정상 메일 ↔ 스팸 메일</span><span>플라스틱 · 종이류 · 유리류</span></div>
+            <div class="classification-examples"><span>예: 정상 메일 ↔ 스팸 메일, 플라스틱·종이류·유리류</span></div>
           </article>
         </div>
       </section>
@@ -246,7 +245,7 @@
       <section class="slide" data-slide="7">
         <div class="slide-header">
           <p class="unit">07</p><p class="page-ref">p.107~108</p>
-          <h1>분류 알고리즘</h1>
+          <h1>분류 모델 알고리즘</h1>
           <p class="subtitle">분류 모델을 만드는 대표적인 세 가지 방법의 <strong>판단 원리</strong>를 비교한다.</p>
         </div>
         <div class="classification-algorithms">
@@ -308,31 +307,25 @@
       <section class="slide" data-slide="9">
         <div class="slide-header">
           <p class="unit">09</p><p class="page-ref">p.118</p>
-          <h1>군집 모델과 k-평균 군집화</h1>
+          <h1>군집 모델</h1>
           <p class="subtitle">정답 없이 <strong>유사한 데이터끼리 묶어</strong> 각 집단의 특징을 파악한다.</p>
         </div>
         <div class="cluster-overview">
           <article class="cluster-concept-card" data-tone="blue">
-            <div class="section-heading"><span class="section-number">01</span><h2>군집</h2></div>
-            <div class="cluster-definition"><p>서로 <b>비슷한 특성을 가진 데이터끼리</b> 묶는 비지도학습 방법</p></div>
-            <div class="music-clusters">
-              <span class="axis-label-y">에너지</span><span class="axis-label-x">템포</span>
-              <b class="music-c1" style="--x:18%;--y:22%"></b><b class="music-c1" style="--x:28%;--y:31%"></b><b class="music-c1" style="--x:37%;--y:18%"></b>
-              <b class="music-c2" style="--x:58%;--y:24%"></b><b class="music-c2" style="--x:69%;--y:36%"></b><b class="music-c2" style="--x:77%;--y:19%"></b>
-              <b class="music-c3" style="--x:55%;--y:70%"></b><b class="music-c3" style="--x:67%;--y:82%"></b><b class="music-c3" style="--x:79%;--y:67%"></b>
-              <em class="music-label label-c1">C1</em><em class="music-label label-c2">C2</em><em class="music-label label-c3">C3</em>
-            </div>
+            <div class="section-heading"><span class="section-number">01</span><h2>군집 모델 예시</h2></div>
+            <figure class="music-clusters"><img src="assets/textbook-music-clusters.png" alt="음악을 템포와 에너지에 따라 세 개 군집으로 나눈 그래프" /></figure>
+            <div class="cluster-definition"><p>기분에 맞는 음악을 찾기 위해 <b>템포와 에너지</b>를 기준으로 음악을 3개 군집으로 나눈다.</p></div>
             <div class="cluster-examples"><b>활용</b><span>고객 세분화</span><span>질병 진단</span><span>소셜 네트워크 분석</span></div>
           </article>
           <article class="kmeans-intro-card" data-tone="orange">
-            <header class="section-heading"><span class="section-number">02</span><div><small>대표 알고리즘</small><h2>k-평균 군집화</h2></div></header>
-            <p>주어진 데이터를 <b>k개의 군집</b>으로 묶는다.</p>
-            <ol class="kmeans-intro-steps">
-              <li><span>01</span><div><b>군집의 개수 k 결정</b><small>k는 만들 군집의 수</small></div></li>
-              <li><span>02</span><div><b>각 군집의 중심점 계산</b><small>중심점은 군집 데이터의 평균점</small></div></li>
-              <li><span>03</span><div><b>가장 가까운 중심점에 할당</b><small>주로 유클리디언 거리 사용</small></div></li>
-            </ol>
-            <div class="kmeans-key"><strong>k</strong><span>군집 개수</span><i>+</i><strong>평균</strong><span>각 군집의 중심</span></div>
+            <header class="section-heading"><span class="section-number">02</span><h2>k-평균 군집화</h2></header>
+            <p>주어진 데이터를 k개의 군집으로 묶는다.</p>
+            <ul class="kmeans-intro-steps">
+              <li><b>군집의 개수 k 결정</b></li>
+              <li><b>초기 중심점 설정</b></li>
+              <li><b>가장 가까운 중심점에 데이터 할당</b></li>
+              <li><b>데이터 할당과 중심점 갱신 반복</b></li>
+            </ul>
           </article>
         </div>
       </section>

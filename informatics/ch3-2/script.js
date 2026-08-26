@@ -40,6 +40,9 @@ function showSlide(index) {
   slides.forEach((slide, slideIndex) => slide.classList.toggle("active", slideIndex === activeIndex));
   dotButtons.forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === activeIndex));
   currentSlide.textContent = String(activeIndex + 1);
+  const url = new URL(window.location.href);
+  url.searchParams.set("slide", String(activeIndex + 1));
+  window.history.replaceState(null, "", url);
 }
 
 function syncScrollPosition(source, target) {
