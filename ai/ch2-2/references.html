@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기계학습 모델 구현 절차 일반화 — 회귀 · 분류 · 군집</title>
+<meta name="description" content="회귀 · 분류 · 군집 실습에 쓰는 scikit-learn 코드 패턴 정리표">
+<!-- 글꼴은 인터넷이 없으면 시스템 글꼴로 자동 대체됩니다 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --paper:#F3F5F3; --surface:#fff; --ink:#17212B; --muted:#5B6A74; --line:#DBE1DF;
+  --reg:#17607F; --cls:#6B4A9C; --clu:#87641A; --shared:#4A5860;
+  --lw:250px; --bar:60px;
+  --sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"D2Coding",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:calc(var(--bar) + 74px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:1360px;margin:0 auto;padding:0 20px 80px}
+
+/* ---------- 머리말 ---------- */
+.hero{padding:50px 0 24px}
+.hero h1{margin:0;font-size:clamp(24px,3.4vw,38px);line-height:1.25;letter-spacing:-.02em;
+  font-weight:700;word-break:keep-all;text-wrap:balance}
+
+/* ---------- 고정 막대 ---------- */
+.bar{position:sticky;top:0;z-index:30;display:flex;flex-wrap:nowrap;gap:0 22px;
+  align-items:center;height:var(--bar);margin-bottom:2px;
+  background:var(--paper);
+  background:color-mix(in srgb,var(--paper) 92%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.chips{display:flex;gap:6px;flex:none}
+.chip{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;padding:5px 13px;
+  border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted)}
+.chip.is-on{background:var(--tone,var(--ink));border-color:var(--tone,var(--ink));color:#fff}
+.chip:focus-visible,.copy:focus-visible,a:focus-visible{outline:2px solid var(--reg);outline-offset:2px}
+.jump{display:flex;flex-wrap:nowrap;gap:4px;font-size:13px;min-width:0;
+  overflow-x:auto;scrollbar-width:none}
+.jump::-webkit-scrollbar{display:none}
+.jump a{white-space:nowrap}
+.jump a{display:flex;gap:6px;align-items:baseline;color:var(--muted);text-decoration:none;
+  padding:4px 9px;border-radius:6px}
+.jump a:hover{background:var(--surface);color:var(--ink)}
+.jump b{font-variant-numeric:tabular-nums;color:var(--ink)}
+
+/* ---------- 표 ---------- */
+.table{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);
+  border-radius:10px;overflow:clip}
+.table.filter-all{grid-template-columns:var(--lw) repeat(3,minmax(0,1fr))}
+.table:not(.filter-all){grid-template-columns:var(--lw) minmax(0,1fr)}
+.table.filter-all .span2{grid-column:span 2}
+.table.filter-all .span3{grid-column:span 3}
+.table.filter-reg [data-types]:not([data-types~=reg]),
+.table.filter-cls [data-types]:not([data-types~=cls]),
+.table.filter-clu [data-types]:not([data-types~=clu]){display:none}
+
+.colhead{position:sticky;top:var(--bar);z-index:20;background:var(--surface);padding:13px 16px;
+  box-shadow:0 1px 0 var(--line),0 6px 10px -8px rgba(23,33,43,.28)}
+.colhead h3{margin:0;font-size:15.5px;font-weight:700;color:var(--tone);display:flex;
+  align-items:baseline;gap:8px}
+.colhead .en{font-size:11.5px;font-weight:500;color:var(--muted);letter-spacing:.01em}
+.colhead .source{margin:3px 0 0;font-size:11.5px;color:var(--muted)}
+.corner{background:var(--paper)}
+
+.stage{grid-column:1/-1;background:var(--ink);color:#fff;display:flex;align-items:baseline;
+  gap:12px;padding:9px 16px}
+.stage-num{font-variant-numeric:tabular-nums;font-size:12px;font-weight:700;
+  color:#fff;opacity:.55}
+.stage h2{margin:0;font-size:14.5px;font-weight:600;letter-spacing:.01em}
+
+.label{background:#FAFBFA;padding:15px 16px}
+.step{margin:0;font-weight:650;font-size:14.5px;display:flex;gap:8px;align-items:baseline}
+.step-num{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12.5px;font-weight:600;
+  flex:none;min-width:2.1em}
+.qualifier,.pattern{display:block;margin-top:5px;margin-left:calc(2.1em + 8px)}
+.qualifier{font-size:12.5px;color:var(--muted)}
+.pattern{font-family:var(--mono);font-size:11.5px;color:var(--muted);word-break:break-all}
+
+.cell{background:var(--surface);padding:14px 16px;min-width:0}
+.badge{margin:0 0 9px;font-size:11.5px;font-weight:650;color:var(--tone)}
+.badge::before{content:"";display:inline-block;width:16px;height:1px;
+  background:currentColor;vertical-align:middle;margin-right:7px}
+
+.subhead{margin:14px 0 6px;font-size:12.5px;font-weight:650;color:var(--tone)}
+.badge + .subhead,.cell > .subhead:first-child{margin-top:0}
+.subhead + .code-wrap{margin-top:0}
+.code-wrap{position:relative}
+.note + .code-wrap,.code-wrap + .code-wrap{margin-top:11px}
+.code{margin:0;padding:11px 13px;overflow-x:auto;font-family:var(--mono);
+  font-size:12.4px;line-height:1.62;border-radius:7px;min-width:0;
+  background:#F7F8F8; border-left:2px solid var(--line);
+  background:color-mix(in srgb,var(--tone) 5%,#fff);
+  border-left:2px solid color-mix(in srgb,var(--tone) 40%,#fff)}
+.code code{white-space:pre}
+.t-com{color:var(--muted);font-style:normal}
+.t-str{color:#8A4B12}
+.t-kw{color:var(--tone);font-weight:600}
+.t-num{color:#8A4B12}
+.t-fn{color:var(--ink);font-weight:600}
+
+.copy{position:absolute;top:6px;right:6px;font:inherit;font-size:11px;font-weight:600;
+  padding:3px 9px;border-radius:5px;cursor:pointer;background:var(--surface);
+  color:var(--muted);border:1px solid var(--line);opacity:0;transition:opacity .12s}
+.code-wrap:hover .copy,.copy:focus-visible{opacity:1}
+.copy.done{color:var(--tone);border-color:var(--tone)}
+
+.note{margin:10px 0 0;font-size:12.6px;color:var(--muted);line-height:1.6;word-break:keep-all}
+.note-line{display:block;padding-left:1.1em}
+
+/* ---------- 좁은 화면 ---------- */
+@media (max-width:920px){
+  :root{--bar:94px}
+  html{scroll-padding-top:calc(var(--bar) + 16px)}
+  .bar{flex-direction:column;align-items:stretch;gap:8px;height:var(--bar)}
+  .jump{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .jump::-webkit-scrollbar{display:none}
+  .jump a{white-space:nowrap}
+  .table,.table.filter-all,.table:not(.filter-all){display:block;border-radius:0;
+    border-left:0;border-right:0;background:var(--surface)}
+  .wrap{padding-left:0;padding-right:0}
+  .hero{padding-left:16px;padding-right:16px}
+  .bar{padding:10px 16px}
+  .colhead{display:none}
+  .stage{position:sticky;top:var(--bar);z-index:10}
+  .label{border-top:1px solid var(--line);padding-bottom:4px}
+  .cell{padding-top:9px}
+  .table.filter-all .cell[data-ko]::before{
+    content:attr(data-ko);display:block;margin-bottom:7px;
+    font-size:11.5px;font-weight:650;color:var(--tone)}
+  .copy{opacity:1}
+}
+@media (max-width:520px){.code{font-size:11.6px}}
+
+/* ---------- 색 ---------- */
+.tone-reg{--tone:var(--reg)} .tone-cls{--tone:var(--cls)}
+.tone-clu{--tone:var(--clu)} .tone-shared{--tone:var(--shared)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- 인쇄 ---------- */
+@media print{
+  .bar,.copy{display:none}
+  body{background:#fff;font-size:10pt}
+  .table{display:grid!important;grid-template-columns:150px repeat(3,1fr)!important}
+  .table [data-types]{display:block!important}
+  .span2{grid-column:span 2!important} .span3{grid-column:span 3!important}
+  .colhead,.stage{position:static}
+  .stage{background:#eee;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cell,.label{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>기계학습 모델 구현 절차 일반화 — 회귀 · 분류 · 군집</h1>
+</header>
+
+<div class="bar">
+  <div class="chips"><button class="chip is-on" data-filter="all" type="button">전체</button>
+<button class="chip tone-reg" data-filter="reg" type="button">회귀</button>
+<button class="chip tone-cls" data-filter="cls" type="button">분류</button>
+<button class="chip tone-clu" data-filter="clu" type="button">군집</button></div>
+  <nav class="jump"><a href="#stage-1"><b>1</b>데이터 준비</a>
+<a href="#stage-2"><b>2</b>전처리</a>
+<a href="#stage-3"><b>3</b>모델 생성 · 학습</a>
+<a href="#stage-4"><b>4</b>평가</a>
+<a href="#stage-5"><b>5</b>시각화</a></nav>
+</div>
+
+<main class="table filter-all">
+<div class="colhead corner"></div>
+<div class="colhead tone-reg" data-types="reg"><h3>회귀<span class="en">Regression</span></h3><p class="source">실습2 · 선택활동2 · 선택활동3</p></div>
+<div class="colhead tone-cls" data-types="cls"><h3>분류<span class="en">Classification</span></h3><p class="source">실습3 · 선택활동4 · 선택활동5</p></div>
+<div class="colhead tone-clu" data-types="clu"><h3>군집<span class="en">Clustering</span></h3><p class="source">실습4 · 선택활동6</p></div>
+<div class="stage" id="stage-1"><span class="stage-num">1</span><h2>데이터 준비</h2></div>
+<div class="label"><p class="step"><span class="step-num">1-1</span>데이터 로드</p><code class="pattern">pd.<span class="t-fn">read_csv</span>()</code></div>
+<div class="cell span3 tone-shared" data-types="reg cls clu">
+<p class="badge">세 유형 공통</p>
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">import</span> pandas <span class="t-kw">as</span> pd
+
+df = pd.<span class="t-fn">read_csv</span>(<span class="t-str">'파일명.csv'</span>)       <span class="t-com"># csv 파일 → 데이터프레임</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="label"><p class="step"><span class="step-num">1-2</span>데이터 확인</p><code class="pattern">df.<span class="t-fn">head</span>() / .<span class="t-fn">info</span>() / .shape / .<span class="t-fn">describe</span>()</code></div>
+<div class="cell span3 tone-shared" data-types="reg cls clu">
+<p class="badge">세 유형 공통</p>
+<div class="code-wrap">
+<pre class="code"><code>df.<span class="t-fn">head</span>()            <span class="t-com"># 앞 5행 미리보기</span>
+df.<span class="t-fn">info</span>()            <span class="t-com"># 속성 수 · 자료형 · 결측치 여부</span>
+df.shape             <span class="t-com"># (행 수, 열 수)</span>
+df.<span class="t-fn">describe</span>()        <span class="t-com"># 평균 · 표준편차 등 통계 요약</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="label"><p class="step"><span class="step-num">1-3</span>새 속성 만들기</p><span class="qualifier">(필요한 경우)</span><code class="pattern">df[<span class="t-str">'새 열'</span>] = 기존 열에서 뽑아낸 값</code></div>
+<div class="cell span3 tone-shared" data-types="reg cls clu">
+<p class="badge">세 유형 공통</p>
+<div class="code-wrap">
+<pre class="code"><code><span class="t-com"># 날짜에서 연도만 뽑아내기 (선택활동1)</span>
+df[<span class="t-str">'연도'</span>] = pd.<span class="t-fn">to_datetime</span>(df[<span class="t-str">'시간'</span>]).dt.year
+
+<span class="t-com"># 문자열의 앞부분만 뽑아내기 (선택활동1)</span>
+df[<span class="t-str">'지역'</span>] = df[<span class="t-str">'위치'</span>].str[:<span class="t-num">3</span>]</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ .dt → 날짜 요소(year · month · day · hour)에 접근<span class="note-line">.str → 문자열 처리 기능에 접근</span></p>
+</div>
+<div class="stage" id="stage-2"><span class="stage-num">2</span><h2>전처리</h2></div>
+<div class="label"><p class="step"><span class="step-num">2-1</span>결측치 확인 및 제거</p><code class="pattern"><span class="t-fn">isnull</span>().<span class="t-fn">sum</span>() → <span class="t-fn">dropna</span>()</code></div>
+<div class="cell span3 tone-shared" data-types="reg cls clu">
+<p class="badge">세 유형 공통</p>
+<div class="code-wrap">
+<pre class="code"><code>df.<span class="t-fn">isnull</span>().<span class="t-fn">sum</span>()                   <span class="t-com"># 열별 결측치 개수 확인</span>
+df.<span class="t-fn">dropna</span>(axis=<span class="t-num">0</span>, inplace=<span class="t-kw">True</span>)     <span class="t-com"># 결측치가 있는 '행' 삭제</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ axis=0 : 행 단위 / inplace=True : 원본 df에 바로 반영</p>
+</div>
+<div class="label"><p class="step"><span class="step-num">2-2</span>이상치 확인 및 제거</p><code class="pattern">boxplot / <span class="t-fn">unique</span>() → <span class="t-fn">drop</span>()</code></div>
+<div class="cell span3 tone-shared" data-types="reg cls clu">
+<p class="badge">세 유형 공통</p>
+<div class="code-wrap">
+<pre class="code"><code>sns.<span class="t-fn">boxplot</span>(data=df, x=<span class="t-str">'수치형 열'</span>)    <span class="t-com"># 상자그림으로 크게 벗어난 값 확인</span>
+df[<span class="t-str">'범주형 열'</span>].<span class="t-fn">unique</span>()               <span class="t-com"># 잘못 입력된 값 확인 (예: '.')</span>
+
+df[df[<span class="t-str">'열'</span>] == <span class="t-str">'이상값'</span>]               <span class="t-com"># 해당 행의 인덱스 찾기</span>
+df.<span class="t-fn">drop</span>(인덱스, axis=<span class="t-num">0</span>, inplace=<span class="t-kw">True</span>)  <span class="t-com"># 그 행 삭제</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="label"><p class="step"><span class="step-num">2-3</span>정규화</p><code class="pattern"><span class="t-fn">MinMaxScaler</span>().<span class="t-fn">fit_transform</span>()</code></div>
+<div class="cell span3 tone-shared" data-types="reg cls clu">
+<p class="badge">세 유형 공통</p>
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.preprocessing <span class="t-kw">import</span> MinMaxScaler
+scaler = <span class="t-fn">MinMaxScaler</span>()</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="subhead">새 변수에 담기</p>
+<div class="code-wrap">
+<pre class="code"><code>X_scaled = scaler.<span class="t-fn">fit_transform</span>(X)   <span class="t-com"># 원본 df 는 그대로 두고 정규화된 값만 따로</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="subhead">원본 열에 덮어쓰기</p>
+<div class="code-wrap">
+<pre class="code"><code>df[[<span class="t-str">'열1'</span>, <span class="t-str">'열2'</span>, <span class="t-str">'열3'</span>]] = scaler.<span class="t-fn">fit_transform</span>(df[[<span class="t-str">'열1'</span>, <span class="t-str">'열2'</span>, <span class="t-str">'열3'</span>]])   <span class="t-com"># 고른 열만 0~1 로 바뀜</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ 정규화한 값을 쓰려면 다음 단계에 그 결과를 넣어야 함<span class="note-line">새 변수에 담았으면 → X_scaled 를 사용</span><span class="note-line">원본에 덮어썼으면  → df 에서 뽑은 X 가 이미 정규화된 상태</span></p>
+<p class="note">※ 속성마다 값의 크기 차이가 클 때 필요 (예: 부리 깊이 17 vs 체질량 4200)<span class="note-line">사용 여부 →  회귀: 사용 안 함  |  분류(kNN·로지스틱): 사용  |  군집: 사용(거리 기반)</span></p>
+</div>
+<div class="label"><p class="step"><span class="step-num">2-4</span>데이터 마련</p><span class="qualifier">(X, y 선정)</span><code class="pattern">X = 입력 / y = 정답</code></div>
+<div class="cell span2 tone-shared" data-types="reg cls">
+<p class="badge">회귀 · 분류 공통</p>
+<div class="code-wrap">
+<pre class="code"><code>X = df[[<span class="t-str">'열1'</span>, <span class="t-str">'열2'</span>, ...]]           <span class="t-com"># 여러 개 선택</span>
+y = df[<span class="t-str">'정답 열'</span>]</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ 용어만 다르고 코드는 같음<span class="note-line">회귀 → X: 독립변수, y: 종속변수(연속적인 수)</span><span class="note-line">분류 → X: 특징,     y: 타깃(범주 · 클래스)</span></p>
+</div>
+<div class="cell span1 tone-clu" data-types="clu">
+<div class="code-wrap">
+<pre class="code"><code>data = df[[<span class="t-str">'열1'</span>, <span class="t-str">'열2'</span>]]     <span class="t-com"># 사용할 특징만 선택</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ 비지도학습이므로 정답(y)을 만들지 않음</p>
+</div>
+<div class="label"><p class="step"><span class="step-num">2-5</span>분할</p><code class="pattern"><span class="t-fn">train_test_split</span>(X, y, test_size=<span class="t-num">0.3</span>)</code></div>
+<div class="cell span2 tone-shared" data-types="reg cls">
+<p class="badge">회귀 · 분류 공통</p>
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.model_selection <span class="t-kw">import</span> train_test_split
+X_train, X_test, y_train, y_test = <span class="t-fn">train_test_split</span>(
+    X, y, test_size=<span class="t-num">0.3</span>, random_state=<span class="t-num">42</span>)</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ 추가 옵션<span class="note-line">random_state=42 → 실행할 때마다 같은 분할 결과 (회귀·분류 공통)</span><span class="note-line">stratify=y      → 클래스 비율을 원본과 같게 유지 (분류에서만 사용)</span></p>
+</div>
+<div class="cell span1 tone-clu" data-types="clu">
+<p class="note">※ 분할 단계 없음 (정답이 없으므로 전체 데이터로 학습)</p>
+</div>
+<div class="stage" id="stage-3"><span class="stage-num">3</span><h2>모델 생성 · 학습</h2></div>
+<div class="label"><p class="step"><span class="step-num">3-1</span>모델 생성 및 학습</p><code class="pattern">model = 알고리즘() → model.<span class="t-fn">fit</span>()</code></div>
+<div class="cell span1 tone-reg" data-types="reg">
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.linear_model <span class="t-kw">import</span> LinearRegression
+
+model = <span class="t-fn">LinearRegression</span>()
+model.<span class="t-fn">fit</span>(X_train, y_train)</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="cell span1 tone-cls" data-types="cls">
+<p class="subhead">결정트리</p>
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.tree <span class="t-kw">import</span> DecisionTreeClassifier
+
+model = <span class="t-fn">DecisionTreeClassifier</span>()
+model.<span class="t-fn">fit</span>(X_train, y_train)</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="subhead">로지스틱 회귀</p>
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.linear_model <span class="t-kw">import</span> LogisticRegression
+
+model = <span class="t-fn">LogisticRegression</span>()
+model.<span class="t-fn">fit</span>(X_train, y_train)</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="subhead">kNN</p>
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.neighbors <span class="t-kw">import</span> KNeighborsClassifier
+
+model = <span class="t-fn">KNeighborsClassifier</span>(n_neighbors=<span class="t-num">5</span>)
+model.<span class="t-fn">fit</span>(X_train, y_train)</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="cell span1 tone-clu" data-types="clu">
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.cluster <span class="t-kw">import</span> KMeans
+
+model = <span class="t-fn">KMeans</span>(n_clusters=k)   <span class="t-com"># 군집 개수 k 지정</span>
+model.<span class="t-fn">fit</span>(data)                <span class="t-com"># 정답(y) 없이 학습</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="label"><p class="step"><span class="step-num">3-2</span>모델 내부 값 확인</p><code class="pattern">model.속성_</code></div>
+<div class="cell span1 tone-reg" data-types="reg">
+<div class="code-wrap">
+<pre class="code"><code>model.coef_        <span class="t-com"># 회귀계수(기울기)</span>
+model.intercept_   <span class="t-com"># 절편</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">→ 회귀식  ŷ = coef_ × x + intercept_</p>
+</div>
+<div class="cell span1 tone-cls" data-types="cls">
+<div class="code-wrap">
+<pre class="code"><code>model.classes_          <span class="t-com"># 분류할 클래스 목록</span>
+model.coef_             <span class="t-com"># 특징별 계수(로지스틱)</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="cell span1 tone-clu" data-types="clu">
+<div class="code-wrap">
+<pre class="code"><code>model.labels_           <span class="t-com"># 각 데이터의 군집 번호</span>
+model.cluster_centers_  <span class="t-com"># 각 군집의 중심값</span>
+
+df[<span class="t-str">'cluster'</span>] = model.labels_</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="stage" id="stage-4"><span class="stage-num">4</span><h2>평가</h2></div>
+<div class="label"><p class="step"><span class="step-num">4-1</span>예측</p><code class="pattern">model.<span class="t-fn">predict</span>()</code></div>
+<div class="cell span2 tone-shared" data-types="reg cls">
+<p class="badge">회귀 · 분류 공통</p>
+<div class="code-wrap">
+<pre class="code"><code>pred = model.<span class="t-fn">predict</span>(X_test)    <span class="t-com"># 테스트 데이터로 예측</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ 회귀 → 연속적인 수를 예측  |  분류 → 클래스(범주)를 예측</p>
+</div>
+<div class="cell span1 tone-clu" data-types="clu">
+<div class="code-wrap">
+<pre class="code"><code>pred = model.<span class="t-fn">predict</span>(data)
+<span class="t-com"># 각 데이터가 속한 군집 번호</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="label"><p class="step"><span class="step-num">4-2</span>평가</p><code class="pattern">model.<span class="t-fn">score</span>() / 평가 지표 함수</code></div>
+<div class="cell span2 tone-shared" data-types="reg cls">
+<p class="badge">회귀 · 분류 공통</p>
+<div class="code-wrap">
+<pre class="code"><code>model.<span class="t-fn">score</span>(X_test, y_test)</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ 같은 코드지만 결과의 의미가 다름<span class="note-line">회귀 → 결정계수 R²  (1에 가까울수록 잘 설명)</span><span class="note-line">분류 → 분류 정확도  (맞힌 비율)</span></p>
+<div class="code-wrap">
+<pre class="code"><code><span class="t-com"># 분류는 혼동행렬로 오답 패턴까지 확인</span>
+<span class="t-kw">from</span> sklearn.metrics <span class="t-kw">import</span> confusion_matrix
+conf = <span class="t-fn">confusion_matrix</span>(y_test, pred)</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="cell span1 tone-clu" data-types="clu">
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.metrics <span class="t-kw">import</span> silhouette_score
+<span class="t-fn">silhouette_score</span>(data, model.labels_)</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">→ 실루엣 점수 (1에 가까울수록 잘 분리)</p>
+<p class="note">※ 정답이 없어 score() 사용 불가</p>
+</div>
+<div class="stage" id="stage-5"><span class="stage-num">5</span><h2>시각화</h2></div>
+<div class="label"><p class="step"><span class="step-num">5</span>시각화</p><code class="pattern">plt / sns 로 결과 확인</code></div>
+<div class="cell span1 tone-reg" data-types="reg">
+<div class="code-wrap">
+<pre class="code"><code>plt.<span class="t-fn">scatter</span>(X_test, y_test, color=<span class="t-str">'blue'</span>)   <span class="t-com"># 실젯값</span>
+plt.<span class="t-fn">plot</span>(X_test, pred, color=<span class="t-str">'red'</span>)         <span class="t-com"># 예측선</span>
+plt.<span class="t-fn">show</span>()</code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="cell span1 tone-cls" data-types="cls">
+<div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.tree <span class="t-kw">import</span> plot_tree
+<span class="t-fn">plot_tree</span>(model, feature_names=X.columns,
+          filled=<span class="t-kw">True</span>)                <span class="t-com"># 결정트리 구조</span>
+
+sns.<span class="t-fn">heatmap</span>(conf, annot=<span class="t-kw">True</span>, cmap=<span class="t-str">'Blues'</span>)  <span class="t-com"># 혼동행렬</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+<div class="cell span1 tone-clu" data-types="clu">
+<div class="code-wrap">
+<pre class="code"><code>sns.<span class="t-fn">scatterplot</span>(x=<span class="t-str">'열1'</span>, y=<span class="t-str">'열2'</span>, hue=<span class="t-str">'cluster'</span>,
+                data=df, palette=<span class="t-str">'bright'</span>)
+plt.<span class="t-fn">scatter</span>(model.cluster_centers_[:, <span class="t-num">0</span>],
+            model.cluster_centers_[:, <span class="t-num">1</span>],
+            marker=<span class="t-str">'*'</span>, s=<span class="t-num">300</span>, color=<span class="t-str">'black'</span>)   <span class="t-com"># 중심점</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+</div>
+</main>
+
+</div>
+<script>
+(function(){
+  var table = document.querySelector('.table');
+  var chips = document.querySelectorAll('.chip');
+  var ko = {reg:'회귀', cls:'분류', clu:'군집'};
+
+  document.querySelectorAll('.cell').forEach(function(c){
+    var t = c.dataset.types.split(' ');
+    if (t.length === 1) c.dataset.ko = ko[t[0]];
+  });
+
+  chips.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      chips.forEach(function(c){ c.classList.toggle('is-on', c === btn); });
+      table.className = 'table filter-' + btn.dataset.filter;
+    });
+  });
+
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var code = btn.parentNode.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(function(){
+        btn.textContent = '복사됨';
+        btn.classList.add('done');
+        setTimeout(function(){ btn.textContent = '복사'; btn.classList.remove('done'); }, 1400);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
