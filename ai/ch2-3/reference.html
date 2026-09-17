@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>신경망 · 합성곱 신경망 구현 절차 참고표</title>
+<meta name="description" content="식품·손글씨·도로 균열 분류 실습으로 비교하는 신경망과 합성곱 신경망 구현 절차">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--paper:#f3f5f3;--surface:#fff;--ink:#17212b;--muted:#5b6a74;--line:#dbe1df;--food:#6b4a9c;--mnist:#8a5a36;--cnn:#17607f;--shared:#4a5860;--bar:60px;--label:235px;--sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"D2Coding",monospace}
+*{box-sizing:border-box}
+html{scroll-padding-top:calc(var(--bar) + 70px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+.wrap{max-width:1280px;margin:auto;padding:0 20px 70px}
+.hero{padding:44px 0 22px}
+.hero h1{margin:0;font-size:clamp(24px,3.4vw,38px);line-height:1.25;word-break:keep-all}
+.hero p{margin:10px 0 0;color:var(--muted)}
+.bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:20px;min-height:var(--bar);background:var(--paper);border-bottom:1px solid var(--line)}
+.chips{display:flex;gap:6px;flex:none}
+.chip{font:inherit;font-size:13px;font-weight:650;cursor:pointer;padding:5px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted)}
+.chip.is-on{background:var(--tone,var(--ink));border-color:var(--tone,var(--ink));color:#fff}
+.chip:focus-visible,.copy:focus-visible,a:focus-visible{outline:2px solid var(--cnn);outline-offset:2px}
+.jump{display:flex;gap:4px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.jump a{white-space:nowrap;padding:5px 8px;border-radius:6px;color:var(--muted);font-size:13px;text-decoration:none}
+.jump a:hover{background:var(--surface);color:var(--ink)}
+.jump b{color:var(--ink);margin-right:5px}
+.table{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:clip}
+.table.filter-all{grid-template-columns:var(--label) repeat(3,minmax(0,1fr))}
+.table.filter-ann{grid-template-columns:var(--label) repeat(2,minmax(0,1fr))}
+.table.filter-cnn{grid-template-columns:var(--label) minmax(0,1fr)}
+.table.filter-all .span3{grid-column:span 3}
+.table.filter-ann .span3{grid-column:span 2}
+.table.filter-ann [data-types]:not([data-types~=ann]),.table.filter-cnn [data-types]:not([data-types~=cnn]){display:none}
+.colhead{position:sticky;top:var(--bar);z-index:20;background:var(--surface);padding:13px 16px;box-shadow:0 1px 0 var(--line)}
+.colhead h2{margin:0;font-size:16px;color:var(--tone)}
+.colhead small{font-size:11px;font-weight:500;color:var(--muted)}
+.colhead p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.corner{background:var(--paper)}
+.stage{grid-column:1/-1;background:var(--ink);color:#fff;padding:9px 16px;font-weight:650;font-size:14px}
+.stage b{opacity:.6;margin-right:12px}
+.label{background:#fafbfa;padding:15px 16px}
+.label strong{display:block;font-size:14px}
+.label small{display:block;margin-top:5px;color:var(--muted);font-size:12px}
+.cell{background:var(--surface);padding:14px 16px;min-width:0}
+.badge{margin:0 0 8px;font-size:12px;font-weight:700;color:var(--tone)}
+.subhead{margin:14px 0 6px;font-size:13px;color:var(--tone)}
+.badge+.subhead{margin-top:0}
+.code-wrap{position:relative}
+.code{margin:0;padding:12px 13px;overflow-x:auto;border-radius:7px;border-left:2px solid color-mix(in srgb,var(--tone) 40%,#fff);background:color-mix(in srgb,var(--tone) 5%,#fff);font:12.5px/1.65 var(--mono)}
+.code code{white-space:pre}
+.copy{position:absolute;top:6px;right:6px;font:600 11px var(--sans);padding:4px 8px;border:1px solid var(--line);border-radius:5px;background:#fff;color:var(--muted);cursor:pointer;opacity:0}
+.code-wrap:hover .copy,.copy:focus-visible{opacity:1}
+.note{margin:9px 0 0;color:var(--muted);font-size:12.5px;word-break:keep-all}
+.tone-food{--tone:var(--food)}.tone-mnist{--tone:var(--mnist)}.tone-cnn{--tone:var(--cnn)}.tone-shared{--tone:var(--shared)}
+@media(max-width:850px){
+ :root{--bar:94px}html{scroll-padding-top:calc(var(--bar) + 16px)}
+ .bar{height:var(--bar);flex-direction:column;align-items:stretch;justify-content:center;gap:5px;padding:8px 16px}
+ .wrap{padding-left:0;padding-right:0}.hero{padding-left:16px;padding-right:16px}
+ .table,.table.filter-all,.table.filter-ann,.table.filter-cnn{display:block;border-radius:0;border-left:0;border-right:0}
+ .colhead{display:none}.stage{position:sticky;top:var(--bar);z-index:10}
+ .label{border-top:1px solid var(--line);padding-bottom:5px}.cell{padding-top:9px}
+ .table.filter-all .cell[data-ko]::before,.table.filter-ann .cell[data-ko]::before{content:attr(data-ko);display:block;margin-bottom:6px;font-size:12px;font-weight:700;color:var(--tone)}
+ .copy{opacity:1}
+}
+@media print{.bar,.copy{display:none}body{background:#fff}.table{display:grid!important;grid-template-columns:150px repeat(3,1fr)!important}.table [data-types]{display:block!important}.span3{grid-column:span 3!important}.colhead,.stage{position:static}.cell,.label{break-inside:avoid}}
+</style>
+</head>
+<body><div class="wrap">
+<header class="hero"><h1>신경망 · 합성곱 신경망 구현 절차</h1><p>식품(정형 데이터) · MNIST(이미지 데이터) · 도로 균열(이미지 데이터) 분류 비교</p></header>
+<div class="bar"><div class="chips" aria-label="모델 선택"><button class="chip is-on" data-filter="all" type="button">전체</button><button class="chip tone-food" data-filter="ann" type="button">신경망</button><button class="chip tone-cnn" data-filter="cnn" type="button">합성곱 신경망</button></div><nav class="jump" aria-label="단계 이동"><a href="#stage-1"><b>1</b>데이터</a><a href="#stage-2"><b>2</b>전처리</a><a href="#stage-3"><b>3</b>설계</a><a href="#stage-4"><b>4</b>학습</a><a href="#stage-5"><b>5</b>평가 · 예측</a><a href="#stage-6"><b>6</b>시각화</a></nav></div>
+<main class="table filter-all">
+<div class="colhead corner"></div>
+<div class="colhead tone-food" data-types="ann"><h2>신경망 · 정형 데이터</h2><p>예제: 식품 분류</p></div>
+<div class="colhead tone-mnist" data-types="ann"><h2>신경망 · 비정형 데이터</h2><p>실습5: 손글씨 숫자 분류</p></div>
+<div class="colhead tone-cnn" data-types="cnn"><h2>합성곱 신경망</h2><p>실습6: 도로 균열 이미지 분류</p></div>
+<div class="stage" id="stage-1"><b>1</b>문제 정의 · 데이터 수집</div>
+<div class="label"><strong>1-1 분류할 대상</strong><small>입력 특징(X)과 정답(y)</small></div>
+<div class="cell tone-food" data-types="ann" data-ko="신경망 · 정형 데이터"><p class="badge">수치형 특징 2개</p><p class="note">당도(sweet), 아삭함(crunchy) → 과일·단백질·채소 3종</p></div>
+<div class="cell tone-mnist" data-types="ann" data-ko="신경망 · 비정형 데이터"><p class="badge">28×28 픽셀</p><p class="note">흑백 손글씨 이미지 → 숫자 0~9, 총 10종</p></div>
+<div class="cell tone-cnn" data-types="cnn" data-ko="합성곱 신경망"><p class="badge">도로 이미지</p><p class="note">균열 없음(Negative) · 균열 있음(Positive), 총 2종</p></div>
+<div class="label"><strong>1-2 데이터 불러오기</strong><small></small></div>
+<div class="cell tone-food" data-types="ann" data-ko="신경망 · 정형 데이터"><div class="code-wrap"><pre class="code"><code>import pandas as pd
+df = pd.read_csv(&#x27;food_nn.csv&#x27;)
+X = df[[&#x27;sweet&#x27;, &#x27;crunchy&#x27;]].to_numpy()
+y = df[&#x27;class&#x27;].to_numpy()</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">이 예제는 분할 없이 전체 데이터로 구현 절차를 연습한다.</p></div>
+<div class="cell tone-mnist" data-types="ann" data-ko="신경망 · 비정형 데이터"><div class="code-wrap"><pre class="code"><code>from tensorflow import keras
+(X_train, y_train), (X_test, y_test) = keras.datasets.mnist.load_data()</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">훈련 이미지 60,000장, 테스트 이미지 10,000장으로 제공된다.</p></div>
+<div class="cell tone-cnn" data-types="cnn" data-ko="합성곱 신경망"><div class="code-wrap"><pre class="code"><code>from pathlib import Path
+data_dir = Path(&#x27;crack&#x27;)
+# crack/train/Negative, crack/train/Positive
+# crack/test/Negative,  crack/test/Positive</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">실습 데이터: 훈련 300장, 테스트 80장. Colab에서는 data_dir을 드라이브의 crack 폴더로 바꾼다.</p></div>
+<div class="stage" id="stage-2"><b>2</b>데이터 전처리</div>
+<div class="label"><strong>2-1 모델 입력 준비</strong><small>이미지는 픽셀값을 0~1로 변환</small></div>
+<div class="cell tone-food" data-types="ann" data-ko="신경망 · 정형 데이터"><div class="code-wrap"><pre class="code"><code>loss_name = &#x27;sparse_categorical_crossentropy&#x27;</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">sweet·crunchy 두 열을 그대로 입력한다. 정답은 0·1·2의 정수 레이블이다.</p></div>
+<div class="cell tone-mnist" data-types="ann" data-ko="신경망 · 비정형 데이터"><div class="code-wrap"><pre class="code"><code>X_train = X_train / 255.0
+X_test = X_test / 255.0
+loss_name = &#x27;sparse_categorical_crossentropy&#x27;</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">각 이미지의 28×28 모양은 유지한다. 정답은 0~9의 정수 레이블이다.</p></div>
+<div class="cell tone-cnn" data-types="cnn" data-ko="합성곱 신경망"><div class="code-wrap"><pre class="code"><code>from tensorflow.keras.preprocessing.image import ImageDataGenerator
+generator = ImageDataGenerator(rescale=1 / 255)
+train_set = generator.flow_from_directory(
+    data_dir / &#x27;train&#x27;, target_size=(224, 224),
+    class_mode=&#x27;categorical&#x27;)
+test_set = generator.flow_from_directory(
+    data_dir / &#x27;test&#x27;, target_size=(224, 224),
+    class_mode=&#x27;categorical&#x27;, shuffle=False)
+loss_name = &#x27;categorical_crossentropy&#x27;</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">train·test에 같은 픽셀 변환을 적용한다. 테스트 순서는 예측 결과와 실제 레이블을 맞추기 위해 유지한다.</p></div>
+<div class="stage" id="stage-3"><b>3</b>모델 설계</div>
+<div class="label"><strong>3-1 모델과 계층</strong><small>출력 노드 수 = 클래스 수</small></div>
+<div class="cell tone-food" data-types="ann" data-ko="신경망 · 정형 데이터"><p class="badge">2 → 32 → 16 → 3</p><div class="code-wrap"><pre class="code"><code>from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense
+model = Sequential([
+    Dense(32, activation=&#x27;relu&#x27;, input_shape=(2,)),
+    Dense(16, activation=&#x27;relu&#x27;),
+    Dense(3, activation=&#x27;softmax&#x27;)
+])</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">두 입력값을 완전 연결 계층(Dense)에 바로 넣는다.</p></div>
+<div class="cell tone-mnist" data-types="ann" data-ko="신경망 · 비정형 데이터"><p class="badge">28×28 → 784 → 128 → 64 → 10</p><div class="code-wrap"><pre class="code"><code>from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Flatten, Dense
+model = Sequential([
+    Flatten(input_shape=(28, 28)),
+    Dense(128, activation=&#x27;relu&#x27;),
+    Dense(64, activation=&#x27;relu&#x27;),
+    Dense(10, activation=&#x27;softmax&#x27;)
+])</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">Flatten이 2차원 픽셀을 784개 값으로 펼친다.</p></div>
+<div class="cell tone-cnn" data-types="cnn" data-ko="합성곱 신경망"><p class="badge">VGG16 → 펼치기 → 64 → 2</p><div class="code-wrap"><pre class="code"><code>from tensorflow.keras.applications import VGG16
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Flatten, Dense
+vgg = VGG16(weights=&#x27;imagenet&#x27;, include_top=False,
+            input_shape=(224, 224, 3))
+vgg.trainable = False
+model = Sequential([vgg, Flatten(),
+                    Dense(64, activation=&#x27;relu&#x27;),
+                    Dense(2, activation=&#x27;softmax&#x27;)])</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">고정한 VGG16이 이미지 특징을 추출하고, 새 Dense 계층이 분류한다.</p></div>
+<div class="stage" id="stage-4"><b>4</b>환경 설정 · 학습</div>
+<div class="label"><strong>4-1 compile()</strong><small>세 모델 공통 호출</small></div>
+<div class="cell span3 tone-shared" data-types="ann cnn"><p class="badge">세 모델 공통</p><div class="code-wrap"><pre class="code"><code>model.compile(optimizer=&#x27;adam&#x27;, loss=loss_name, metrics=[&#x27;accuracy&#x27;])</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">최적화 함수와 평가 지표는 동일하다. 손실함수는 앞 단계에서 정답 레이블 형태에 맞게 지정했다.</p></div>
+<div class="label"><strong>4-2 fit()</strong><small>반복 학습 횟수(epochs)</small></div>
+<div class="cell tone-food" data-types="ann" data-ko="신경망 · 정형 데이터"><div class="code-wrap"><pre class="code"><code>history = model.fit(X, y, epochs=500)</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">작은 식품 데이터 전체로 학습한다.</p></div>
+<div class="cell tone-mnist" data-types="ann" data-ko="신경망 · 비정형 데이터"><div class="code-wrap"><pre class="code"><code>history = model.fit(X_train, y_train, epochs=10)</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">훈련 데이터 60,000장으로 학습한다.</p></div>
+<div class="cell tone-cnn" data-types="cnn" data-ko="합성곱 신경망"><div class="code-wrap"><pre class="code"><code>history = model.fit(train_set, epochs=5)</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">VGG16 가중치는 유지하고 새 분류 계층을 학습한다.</p></div>
+<div class="stage" id="stage-5"><b>5</b>평가 · 예측</div>
+<div class="label"><strong>5-1 evaluate()</strong><small>손실(loss)과 정확도(accuracy)</small></div>
+<div class="cell tone-food" data-types="ann" data-ko="신경망 · 정형 데이터"><div class="code-wrap"><pre class="code"><code>loss, accuracy = model.evaluate(X, y)</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">학습 데이터로 평가하므로 새 식품에 대한 성능으로 해석하지 않는다.</p></div>
+<div class="cell tone-mnist" data-types="ann" data-ko="신경망 · 비정형 데이터"><div class="code-wrap"><pre class="code"><code>loss, accuracy = model.evaluate(X_test, y_test)</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">학습에 쓰지 않은 테스트 데이터로 확인한다.</p></div>
+<div class="cell tone-cnn" data-types="cnn" data-ko="합성곱 신경망"><div class="code-wrap"><pre class="code"><code>loss, accuracy = model.evaluate(test_set)</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">훈련 정확도와 테스트 정확도를 비교한다.</p></div>
+<div class="label"><strong>5-2 predict()</strong><small>클래스별 확률에서 최댓값 찾기</small></div>
+<div class="cell tone-food" data-types="ann" data-ko="신경망 · 정형 데이터"><div class="code-wrap"><pre class="code"><code>import numpy as np
+probabilities = model.predict(X)
+predicted = np.argmax(probabilities, axis=1)</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">식품마다 과일·단백질·채소 확률 3개가 나온다.</p></div>
+<div class="cell tone-mnist" data-types="ann" data-ko="신경망 · 비정형 데이터"><div class="code-wrap"><pre class="code"><code>import numpy as np
+probabilities = model.predict(X_test)
+predicted = np.argmax(probabilities, axis=1)
+print(predicted[0], y_test[0])</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">숫자마다 0~9 확률 10개가 나온다.</p></div>
+<div class="cell tone-cnn" data-types="cnn" data-ko="합성곱 신경망"><div class="code-wrap"><pre class="code"><code>import numpy as np
+probabilities = model.predict(test_set)
+predicted = np.argmax(probabilities, axis=1)
+print(train_set.class_indices)</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">Negative=0, Positive=1. 예측 확률 2개 중 큰 값의 클래스를 고른다.</p></div>
+<div class="stage" id="stage-6"><b>6</b>시각화</div>
+<div class="label"><strong>6-1 결과 그리기</strong><small>학습 곡선 · 예측 이미지 · 혼동 행렬</small></div>
+<div class="cell tone-food" data-types="ann" data-ko="신경망 · 정형 데이터"><div class="code-wrap"><pre class="code"><code>import matplotlib.pyplot as plt
+plt.plot(history.history[&#x27;loss&#x27;])
+plt.xlabel(&#x27;Epoch&#x27;)
+plt.ylabel(&#x27;Loss&#x27;)
+plt.show()</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">반복 학습에 따라 손실이 어떻게 변했는지 확인한다. 식품 노트북에는 별도 시각화 단계가 없어 학습 기록을 그래프로 나타냈다.</p></div>
+<div class="cell tone-mnist" data-types="ann" data-ko="신경망 · 비정형 데이터"><div class="code-wrap"><pre class="code"><code>import matplotlib.pyplot as plt
+plt.imshow(X_test[0], cmap=&#x27;gray&#x27;)
+plt.title(f&#x27;Actual: {y_test[0]} / Predicted: {predicted[0]}&#x27;)
+plt.axis(&#x27;off&#x27;)
+plt.show()</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">실습5처럼 손글씨 이미지를 표시하고 실제 숫자와 예측 숫자를 비교한다.</p></div>
+<div class="cell tone-cnn" data-types="cnn" data-ko="합성곱 신경망"><div class="code-wrap"><pre class="code"><code>from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+conf = confusion_matrix(test_set.classes, predicted)
+sns.heatmap(conf, annot=True, fmt=&#x27;d&#x27;, cmap=&#x27;Blues&#x27;,
+            xticklabels=[&#x27;Negative&#x27;, &#x27;Positive&#x27;],
+            yticklabels=[&#x27;Negative&#x27;, &#x27;Positive&#x27;])
+plt.xlabel(&#x27;Predicted&#x27;)
+plt.ylabel(&#x27;Actual&#x27;)
+plt.show()</code></pre><button class="copy" type="button" aria-label="코드 복사">복사</button></div><p class="note">혼동 행렬로 어떤 종류의 오분류가 있었는지 확인한다.</p></div>
+</main></div>
+<script>
+const table=document.querySelector('.table');
+const chips=document.querySelectorAll('.chip');
+chips.forEach(button=>button.addEventListener('click',()=>{chips.forEach(chip=>chip.classList.toggle('is-on',chip===button));table.className='table filter-'+button.dataset.filter}));
+document.querySelectorAll('.copy').forEach(button=>button.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(button.parentElement.querySelector('code').innerText);button.textContent='복사됨';setTimeout(()=>button.textContent='복사',1400)}catch{button.textContent='복사 실패'}}));
+</script></body></html>
