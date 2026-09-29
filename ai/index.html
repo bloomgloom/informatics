@@ -26,15 +26,30 @@
       .resource-title strong { overflow: hidden; color: #293449; font-size: 17px; text-overflow: ellipsis; white-space: nowrap; }
       .activity-label { flex: 0 0 auto; border-radius: 999px; padding: 5px 9px; background: #f1f5f9; color: #64748b; font-size: 13px; font-weight: 900; }
       .model-group { overflow: hidden; border: 1px solid #d8ccf8; border-radius: 12px; background: #faf8ff; }
+      .assessments { margin-bottom: 24px; }
       .model-group + .model-group { margin-top: 18px; }
       .model-group-title { margin: 0; padding: 15px 18px; border-bottom: 1px solid #d8ccf8; background: #ede9fe; color: #5b21b6; font-size: 22px; font-weight: 900; line-height: 1.2; }
       .model-group .resource-row { margin: 0 18px; }
       .model-group .resource-row:first-of-type { border-top: 0; }
       .downloads { display: flex; gap: 8px; }
-      .download { display: inline-flex; align-items: center; justify-content: center; min-width: 82px; border: 1px solid #d8ccf8; border-radius: 8px; padding: 9px 12px; background: #fff; color: #6d28d9; font-size: 14px; transition: border-color 160ms ease, background 160ms ease; }
+      .assessments .downloads { display: grid; grid-template-columns: 82px 82px; }
+      .download { display: inline-flex; align-items: center; justify-content: center; min-width: 82px; border: 1px solid #d8ccf8; border-radius: 8px; padding: 9px 12px; background: #fff; color: #6d28d9; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; transition: border-color 160ms ease, background 160ms ease; }
       .download:hover { border-color: #a78bfa; background: #faf8ff; }
       .download.csv { border-color: #b9e1d0; color: #047857; }
       .download.csv:hover { border-color: #6fc4a3; background: #f3fbf7; }
+      .viewer { width: min(880px, calc(100% - 48px)); }
+      .viewer article { margin-top: 28px; border: 2px solid #d7e0ea; border-radius: 12px; padding: clamp(24px, 5vw, 48px); background: #fff; box-shadow: 0 10px 30px rgba(23, 32, 51, 0.06); line-height: 1.7; }
+      .viewer h1 { margin: 0 0 28px; font-size: clamp(32px, 5vw, 52px); line-height: 1.2; }
+      .viewer h2 { margin: 32px 0 10px; font-size: 24px; }
+      .viewer table { width: 100%; border-collapse: collapse; }
+      .viewer th, .viewer td { border: 1px solid #d7e0ea; padding: 9px 12px; text-align: center; }
+      .viewer th { background: #f1f5f9; }
+      .viewer blockquote { margin: 16px 0; border-left: 4px solid #c4b5fd; padding-left: 18px; }
+      .viewer mark { border-radius: 4px; padding: 2px 4px; background: #fef08a; }
+      .worksheet-popover { width: min(420px, calc(100% - 32px)); border: 1px solid #d8ccf8; border-radius: 12px; padding: 22px; box-shadow: 0 18px 50px rgba(23, 32, 51, 0.2); }
+      .worksheet-popover h3 { margin: 0 0 14px; }
+      .worksheet-popover a { display: block; border-top: 1px solid #e5eaf0; padding: 12px 0; }
+      .error { color: #b91c1c; }
       a:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
       @media (max-width: 720px) {
         main { width: min(100% - 28px, 1120px); padding: 36px 0; }
@@ -53,6 +68,43 @@
     <main>
       <a class="back" href="../">← 정보 교과군</a>
       <h1>인공지능 기초</h1>
+      <section class="model-group assessments" aria-labelledby="assessment-title">
+        <h2 class="model-group-title" id="assessment-title">수행평가</h2>
+        <div class="resource-row">
+          <div class="resource-title">
+            <strong>인공지능 모델을 활용하여 데이터를 분석하는 프로그래밍하기</strong>
+          </div>
+          <div class="downloads">
+            <a class="download" href="?guide=programming">안내</a>
+          </div>
+        </div>
+        <div class="resource-row">
+          <div class="resource-title">
+            <strong>실생활 문제를 해결하는 인공지능 프로젝트 제작하기</strong>
+          </div>
+          <div class="downloads">
+            <a class="download" href="?guide=project">안내</a>
+            <button class="download" type="button" popovertarget="project-worksheets">활동지</button>
+            <div class="worksheet-popover" id="project-worksheets" popover>
+              <h3>프로젝트 활동지</h3>
+              <a href="./test/수행평가_프로젝트_활동지.ipynb" download>프로젝트 활동지</a>
+            </div>
+          </div>
+        </div>
+        <div class="resource-row">
+          <div class="resource-title">
+            <strong>진로 연계 인공지능 관련 도서를 읽고 인공지능 윤리를 분석하는 글쓰기</strong>
+          </div>
+          <div class="downloads">
+            <a class="download" href="?guide=career-reading">안내</a>
+            <button class="download" type="button" popovertarget="career-reading-worksheets">활동지</button>
+            <div class="worksheet-popover" id="career-reading-worksheets" popover>
+              <h3>진로독서 활동지</h3>
+              <a href="./test/수행평가_진로독서_활동지.ipynb" download>진로독서 활동지</a>
+            </div>
+          </div>
+        </div>
+      </section>
       <article class="chapter">
         <div class="chapter-main">
           <span class="number">2-1</span>
@@ -271,5 +323,30 @@
         </div>
       </article>
     </main>
+    <main class="viewer" id="viewer" hidden>
+      <a class="back" href="./index.html">← 인공지능 기초</a>
+      <article id="guide-content" aria-live="polite">안내를 불러오는 중입니다.</article>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/marked@18.0.7/lib/marked.umd.js"></script>
+    <script>
+      const guides = {
+        programming: "./test/수행평가_프로그래밍_안내.md",
+        project: "./test/수행평가_프로젝트_안내.md",
+        "career-reading": "./test/수행평가_진로독서_안내.md",
+      };
+
+      const guide = new URLSearchParams(location.search).get("guide");
+      if (guides[guide]) {
+        document.querySelector("main:not(.viewer)").hidden = true;
+        document.querySelector("#viewer").hidden = false;
+        fetch(guides[guide])
+          .then((response) => {
+            if (!response.ok) throw new Error(response.status);
+            return response.text();
+          })
+          .then((markdown) => document.querySelector("#guide-content").innerHTML = marked.parse(markdown))
+          .catch(() => document.querySelector("#guide-content").innerHTML = '<p class="error">안내를 불러오지 못했습니다.</p><p>로컬 파일이라면 이 폴더에서 <code>python3 -m http.server</code>를 실행한 뒤 다시 열어 주세요.</p>');
+      }
+    </script>
   </body>
 </html>
