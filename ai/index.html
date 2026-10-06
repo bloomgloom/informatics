@@ -46,9 +46,10 @@
       .viewer th { background: #f1f5f9; }
       .viewer blockquote { margin: 16px 0; border-left: 4px solid #c4b5fd; padding-left: 18px; }
       .viewer mark { border-radius: 4px; padding: 2px 4px; background: #fef08a; }
-      .worksheet-popover { width: min(420px, calc(100% - 32px)); border: 1px solid #d8ccf8; border-radius: 12px; padding: 22px; box-shadow: 0 18px 50px rgba(23, 32, 51, 0.2); }
+      .worksheet-popover { width: min(680px, calc(100% - 32px)); border: 1px solid #d8ccf8; border-radius: 12px; padding: 22px; box-shadow: 0 18px 50px rgba(23, 32, 51, 0.2); }
       .worksheet-popover h3 { margin: 0 0 14px; }
-      .worksheet-popover a { display: block; border-top: 1px solid #e5eaf0; padding: 12px 0; }
+      .worksheet-file { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; border-top: 1px solid #e5eaf0; padding: 12px 0; }
+      .worksheet-file strong { overflow-wrap: anywhere; font-size: 14px; }
       .error { color: #b91c1c; }
       a:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
       @media (max-width: 720px) {
@@ -76,6 +77,30 @@
           </div>
           <div class="downloads">
             <a class="download" href="?guide=programming">안내</a>
+            <button class="download" type="button" popovertarget="programming-worksheets">활동지</button>
+            <div class="worksheet-popover" id="programming-worksheets" popover>
+              <h3>인공지능 모델을 활용하여 데이터를 분석하는 프로그래밍하기</h3>
+              <div class="worksheet-file">
+                <strong>수행평가_프로그래밍_문제지_예시.ipynb</strong>
+                <a class="download" href="./test/수행평가_프로그래밍_문제지_예시.ipynb" download>노트북</a>
+              </div>
+              <div class="worksheet-file">
+                <strong>수행평가_프로그래밍_연습지_회귀.ipynb</strong>
+                <a class="download" href="./test/수행평가_프로그래밍_연습지_회귀.ipynb" download>노트북</a>
+              </div>
+              <div class="worksheet-file">
+                <strong>수행평가_프로그래밍_연습지_군집.ipynb</strong>
+                <a class="download" href="./test/수행평가_프로그래밍_연습지_군집.ipynb" download>노트북</a>
+              </div>
+              <div class="worksheet-file">
+                <strong>수행평가_프로그래밍_연습지_분류.ipynb</strong>
+                <a class="download" href="./test/수행평가_프로그래밍_연습지_분류.ipynb" download>노트북</a>
+              </div>
+              <div class="worksheet-file">
+                <strong>car_data.csv</strong>
+                <a class="download csv" href="./test/car_data.csv" download>CSV</a>
+              </div>
+            </div>
           </div>
         </div>
         <div class="resource-row">
@@ -86,8 +111,11 @@
             <a class="download" href="?guide=project">안내</a>
             <button class="download" type="button" popovertarget="project-worksheets">활동지</button>
             <div class="worksheet-popover" id="project-worksheets" popover>
-              <h3>프로젝트 활동지</h3>
-              <a href="./test/수행평가_프로젝트_활동지.ipynb" download>프로젝트 활동지</a>
+              <h3>실생활 문제를 해결하는 인공지능 프로젝트 제작하기</h3>
+              <div class="worksheet-file">
+                <strong>수행평가_프로젝트_활동지.ipynb</strong>
+                <a class="download" href="./test/수행평가_프로젝트_활동지.ipynb" download>노트북</a>
+              </div>
             </div>
           </div>
         </div>
@@ -99,8 +127,11 @@
             <a class="download" href="?guide=career-reading">안내</a>
             <button class="download" type="button" popovertarget="career-reading-worksheets">활동지</button>
             <div class="worksheet-popover" id="career-reading-worksheets" popover>
-              <h3>진로독서 활동지</h3>
-              <a href="./test/수행평가_진로독서_활동지.ipynb" download>진로독서 활동지</a>
+              <h3>진로 연계 인공지능 관련 도서를 읽고 인공지능 윤리를 분석하는 글쓰기</h3>
+              <div class="worksheet-file">
+                <strong>수행평가_진로독서_활동지.ipynb</strong>
+                <a class="download" href="./test/수행평가_진로독서_활동지.ipynb" download>노트북</a>
+              </div>
             </div>
           </div>
         </div>
