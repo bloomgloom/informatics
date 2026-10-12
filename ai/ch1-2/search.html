@@ -1,0 +1,1266 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>탐색 트리 시뮬레이터</title>
+<style>
+  :root {
+    --bg: #f5f7fb;
+    --paper: #ffffff;
+    --ink: #172033;
+    --muted: #5c6b7d;
+    --line: #d7e0ea;
+    --blue: #2563eb;
+    --blue-soft: #eaf1ff;
+    --orange: #e87b10;
+    --orange-soft: #fff1e2;
+    --green: #159957;
+    --green-soft: #e6f6ee;
+    --red: #d23b4f;
+    --red-soft: #ffe9ec;
+    --gray: #9aa7b6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+    font-size: 16px;
+  }
+  button, input, select { font: inherit; }
+
+  header {
+    display: flex; align-items: center; gap: 24px;
+    padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--paper);
+  }
+  header h1 { margin: 0; font-size: 22px; white-space: nowrap; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tab {
+    border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px;
+    background: #fff; color: var(--muted); font-weight: 700; cursor: pointer;
+  }
+  .tab.active { border-color: var(--blue); background: var(--blue); color: #fff; }
+
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 400px; min-height: 0; }
+  .stage-wrap { position: relative; min-width: 0; min-height: 0; display: grid; grid-template-rows: auto 1fr; }
+  .stage-tools {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 8px 14px; border-bottom: 1px solid var(--line); background: #fbfcfe;
+    font-size: 14px; color: var(--muted);
+  }
+  .stage-tools .spacer { flex: 1; }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; border: 2px solid; }
+  .stage { overflow: auto; position: relative; }
+  svg { display: block; }
+
+  aside {
+    min-height: 0; overflow-y: auto; border-left: 1px solid var(--line); background: var(--paper);
+    padding: 16px; display: flex; flex-direction: column; gap: 14px;
+  }
+  aside > * { flex-shrink: 0; }
+  .card { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  .card h2 { margin: 0 0 8px; font-size: 16px; }
+  .card p { margin: 6px 0; line-height: 1.5; color: var(--muted); font-size: 14px; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .btn {
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px;
+    background: #fff; color: var(--ink); font-weight: 700; cursor: pointer;
+  }
+  .btn:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .btn.small { padding: 5px 9px; font-size: 14px; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg label { padding: 7px 12px; cursor: pointer; font-weight: 700; color: var(--muted); }
+  .seg input { display: none; }
+  .seg label:has(input:checked) { background: var(--blue); color: #fff; }
+  select, input[type=text], input[type=number] { border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; background: #fff; }
+  input[type=text] { width: 120px; letter-spacing: 2px; }
+  input[type=number] { width: 64px; }
+
+  .message { border-radius: 10px; padding: 12px 14px; background: var(--blue-soft); line-height: 1.6; font-size: 15px; min-height: 60px; }
+  .message.ok { background: var(--green-soft); }
+  .message.warn { background: var(--orange-soft); }
+  .message.bad { background: var(--red-soft); animation: shake .3s; }
+  .message .ask { display: block; margin-top: 6px; font-weight: 800; color: var(--blue); }
+  .message.bad .ask { color: var(--red); }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  .score { font-size: 14px; color: var(--muted); }
+  .score b { color: var(--red); }
+
+  .frontier { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; min-height: 44px; }
+  .frontier .empty { color: var(--gray); font-size: 14px; }
+  .chip { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; border: 2px dashed var(--blue); border-radius: 8px; padding: 3px 4px; background: #fff; }
+  .chip .lbl { font-size: 11px; color: var(--muted); }
+  .chip .letter { font-weight: 800; font-size: 18px; padding: 2px 8px; }
+  .mini { display: grid; grid-template-columns: repeat(3, 12px); gap: 1px; }
+  .mini b { width: 12px; height: 12px; font-size: 10px; line-height: 12px; text-align: center; background: #eef2f7; border-radius: 2px; }
+  .mini b.blank { background: transparent; }
+  .fdir { font-size: 13px; color: var(--muted); }
+
+  table.stats { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.stats th, table.stats td { border-bottom: 1px solid var(--line); padding: 6px 4px; text-align: center; }
+  table.stats th:first-child, table.stats td:first-child { text-align: left; }
+  .order { font-size: 16px; line-height: 1.7; word-break: keep-all; }
+  .order b { color: var(--green); }
+
+  dl.terms { margin: 0; display: grid; gap: 8px; }
+  dl.terms dt { font-weight: 800; color: var(--blue); }
+  dl.terms dd { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+  /* 큰 퍼즐 (트리 만들기) */
+  .bigpuzzle { display: grid; grid-template-columns: repeat(3, 64px); gap: 6px; justify-content: center; margin: 8px 0; }
+  .bigpuzzle button {
+    width: 64px; height: 64px; border: 2px solid var(--line); border-radius: 10px;
+    background: #eef2f7; font-size: 28px; font-weight: 800; color: var(--ink); cursor: pointer;
+  }
+  .bigpuzzle button:hover { border-color: var(--blue); }
+  .bigpuzzle button.blank { background: #fff; border: 3px dashed var(--red); cursor: default; }
+  .bigpuzzle button.hint { border-color: var(--orange); box-shadow: 0 0 0 4px var(--orange-soft); }
+  .bigpuzzle button.wrong { border-color: var(--red); background: var(--red-soft); }
+  .dirs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; font-size: 13px; text-align: center; }
+  .dirs span { border-radius: 6px; padding: 5px 2px; background: #f1f3f6; color: var(--gray); }
+  .dirs span.done { background: var(--green-soft); color: var(--green); font-weight: 700; }
+  .dirs span.next { background: var(--orange-soft); color: var(--orange); font-weight: 800; }
+  .dirs span.no { text-decoration: line-through; }
+
+  /* SVG */
+  .n-box { fill: #fff; stroke: var(--line); stroke-width: 2; }
+  .n-cell { fill: #eef2f7; }
+  .n-cell.moved { fill: #ffe2bf; }
+  .n-cell.blank { fill: #fff; }
+  .n-blank-ring { fill: none; stroke: var(--red); stroke-width: 2; }
+  .n-num { font-size: 15px; font-weight: 800; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+  .edge { stroke: #a7b3c2; stroke-width: 2; fill: none; }
+  .edge.path { stroke: var(--green); stroke-width: 4; }
+  .edge-lbl { font-size: 13px; fill: var(--muted); text-anchor: middle; font-weight: 700; paint-order: stroke; stroke: var(--bg); stroke-width: 5px; }
+  .node { cursor: pointer; }
+  .node.hidden { opacity: .25; }
+  .node.frontier .n-box, .node.frontier .l-circle { stroke: var(--blue); stroke-dasharray: 6 4; stroke-width: 3; }
+  .node.current .n-box, .node.current .l-circle { stroke: var(--orange); stroke-width: 5; }
+  .node.tested .n-box, .node.tested .l-circle { fill: #f1f3f6; }
+  .node.path .n-box, .node.path .l-circle { stroke: var(--green); stroke-width: 4; }
+  .node.goal .n-box, .node.goal .l-circle { fill: var(--green-soft); stroke: var(--green); stroke-width: 5; }
+  .node.wrong .n-box, .node.wrong .l-circle { stroke: var(--red); stroke-width: 6; fill: var(--red-soft); }
+  .node.hint .n-box, .node.hint .l-circle { stroke: var(--orange); stroke-width: 6; fill: var(--orange-soft); }
+  .node.selected .n-box { stroke: var(--blue); stroke-width: 5; }
+  .node.excluded .l-circle { fill: #f6f7f9; stroke: #c9d1db; stroke-dasharray: 3 3; }
+  .node.excluded .l-text { fill: #7d8a99; }
+  .node.pending .l-circle { stroke: var(--gray); stroke-dasharray: 2 4; stroke-width: 3; fill: #fbfcfe; }
+  .x-line { stroke: var(--red); stroke-width: 4; stroke-linecap: round; }
+  .cost-box { fill: #fff; stroke: var(--blue); stroke-width: 1.5; }
+  .cost-t { font-size: 14px; font-weight: 800; fill: var(--blue); text-anchor: middle; dominant-baseline: central; }
+  .node.excluded .cost-box { stroke: #c9d1db; }
+  .node.excluded .cost-t { fill: #b7c0cc; text-decoration: line-through; }
+  .ucs-edge { stroke: #9fb3cc; stroke-width: 3; }
+  .ucs-edge.on { stroke: var(--green); stroke-width: 5; }
+  .ucs-w { font-size: 15px; font-weight: 800; fill: var(--ink); text-anchor: middle; dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 5px; }
+  .ucs-city { fill: #d8ecfb; stroke: #6aa7d8; stroke-width: 2; }
+  .ucs-city.closed { fill: #f1f3f6; stroke: #9aa7b6; }
+  .ucs-city.open { stroke: var(--blue); stroke-width: 3; stroke-dasharray: 5 3; }
+  .ucs-city.now { stroke: var(--orange); stroke-width: 4; }
+  .ucs-city-t { font-size: 17px; font-weight: 800; text-anchor: middle; dominant-baseline: central; fill: var(--ink); }
+  .ucs-tag { font-size: 12px; fill: var(--muted); text-anchor: middle; }
+  table.lists { width: 100%; border-collapse: collapse; font-size: 15px; }
+  table.lists th { background: #eef3fb; color: var(--blue); padding: 6px; border: 1px solid var(--line); font-size: 14px; }
+  table.lists td { padding: 8px 6px; border: 1px solid var(--line); text-align: center; vertical-align: top; line-height: 1.6; word-break: keep-all; }
+  .decide { display: grid; gap: 8px; }
+  .decide .item { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: grid; gap: 6px; }
+  .decide .item.done { background: #f7f9fc; }
+  .decide .calc { font-weight: 800; }
+  .decide .calc small { font-weight: 400; color: var(--muted); }
+  .decide .res { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .badge-c { fill: var(--orange); }
+  .badge-t { fill: #fff; font-size: 13px; font-weight: 800; text-anchor: middle; dominant-baseline: central; }
+  .cut-t { fill: var(--muted); font-size: 12px; text-anchor: middle; }
+  .goal-t { fill: var(--green); font-size: 13px; font-weight: 800; text-anchor: middle; }
+  .l-circle { fill: #fff; stroke: #a7b3c2; stroke-width: 2.5; }
+  .l-text { font-size: 22px; font-weight: 800; text-anchor: middle; dominant-baseline: central; fill: var(--ink); }
+  .depth-line { stroke: #e5eaf1; stroke-width: 1; stroke-dasharray: 4 6; }
+  .depth-t { font-size: 13px; fill: var(--muted); font-weight: 700; }
+
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; grid-template-rows: 55vh auto; }
+    aside { border-left: 0; border-top: 1px solid var(--line); }
+  }
+</style>
+<style>
+  header { flex-wrap: wrap; row-gap: 8px; }
+  .subtabs { display: flex; gap: 4px; flex-wrap: wrap; width: 100%; padding-left: 2px; }
+  .subtab {
+    border: 0; border-bottom: 3px solid transparent; background: transparent; padding: 6px 12px;
+    color: var(--muted); font-weight: 700; cursor: pointer; border-radius: 6px 6px 0 0;
+  }
+  .subtab:hover { color: var(--blue); }
+  .subtab.active { color: var(--blue); border-bottom-color: var(--blue); background: var(--blue-soft); }
+  .edge-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .edge-inputs label { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 13px; color: var(--muted); font-weight: 700; }
+  .edge-inputs input { width: 56px; text-align: center; padding: 5px; }
+  .warnline { color: var(--red); font-size: 13px; line-height: 1.5; }
+  .ftxt { fill: var(--blue); font-size: 12px; font-weight: 800; text-anchor: middle; }
+</style>
+</head>
+<body>
+<header>
+  <h1>탐색 트리 시뮬레이터</h1>
+  <nav class="tabs" id="groups"></nav>
+  <nav class="subtabs" id="subs"></nav>
+</header>
+
+<main>
+  <section class="stage-wrap">
+    <div class="stage-tools">
+      <div class="legend" id="legend"></div>
+      <span class="spacer"></span>
+      <button class="btn small" id="zoomOut" title="축소">－</button>
+      <button class="btn small" id="zoomFit">맞춤</button>
+      <button class="btn small" id="zoomIn" title="확대">＋</button>
+    </div>
+    <div class="stage" id="stage"><svg id="svg"></svg></div>
+  </section>
+  <aside id="side"></aside>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  /* =========================================================
+   * 공통 설명
+   * ========================================================= */
+  const ALGO = {
+    bfs: { name: "너비 우선 탐색", short: "너비 우선" },
+    dfs: { name: "깊이 우선 탐색", short: "깊이 우선" },
+    ucs: { name: "균일 비용 탐색", short: "균일 비용", val: "누적 비용", sym: "g" },
+    greedy: { name: "휴리스틱(탐욕) 탐색", short: "휴리스틱", val: "휴리스틱값", sym: "h" },
+    astar: { name: "A* 탐색", short: "A*", val: "f값(g+h)", sym: "f" },
+  };
+  const DESC = {
+    bfs: "트리의 <b>가로 방향</b>으로 먼저 진행해요. 같은 깊이를 왼쪽부터 모두 검사한 뒤 한 단계 아래로 내려가요. 대기 목록은 <b>큐</b>: 먼저 들어온 것을 먼저 꺼내요.",
+    dfs: "트리의 <b>세로 방향</b>으로 먼저 진행해요. 한 갈래를 끝까지 내려간 뒤 되돌아와요. 대기 목록은 <b>스택</b>: 나중에 들어온 것을 먼저 꺼내요. 끝없이 내려가지 않도록 <b>깊이 제한</b>을 둬요.",
+    ucs: "지금까지 온 비용, 즉 <b>누적 비용 g</b>가 가장 작은 상태를 먼저 골라요. 모든 간선 비용이 같으면 너비 우선 탐색과 같게 진행돼요.",
+    greedy: "목표까지 <b>남은 비용의 추정값(휴리스틱값) h</b>가 가장 작은 상태를 먼저 골라요. 빠르지만, 지금까지 온 비용을 보지 않아서 <b>최단 경로를 못 찾을 수도</b> 있어요.",
+    astar: "<b>f = g + h</b>, 즉 지금까지 온 비용과 남은 추정 비용의 합이 가장 작은 상태를 먼저 골라요. 휴리스틱값이 실제 남은 비용보다 크지 않으면 <b>최단 경로</b>를 찾아요.",
+  };
+
+  /* =========================================================
+   * 8퍼즐 규칙: 상태는 9글자 문자열('0' = 빈칸)
+   * ========================================================= */
+  const GOAL = "123804765";
+  const M = {
+    up: { key: "up", name: "위쪽", arrow: "↑", d: -3 },
+    down: { key: "down", name: "아래쪽", arrow: "↓", d: 3 },
+    left: { key: "left", name: "왼쪽", arrow: "←", d: -1 },
+    right: { key: "right", name: "오른쪽", arrow: "→", d: 1 },
+  };
+  const ORDERS = {
+    p29: { name: "위쪽 → 왼쪽 → 아래쪽 → 오른쪽 (p.29~31)", list: [M.up, M.left, M.down, M.right] },
+    p37: { name: "위쪽 → 아래쪽 → 왼쪽 → 오른쪽 (p.37)", list: [M.up, M.down, M.left, M.right] },
+  };
+  const PRESETS = [
+    { name: "교과서 예제 (p.29~31)", state: "283104765", order: "p29" },
+    { name: "A* 활동 (p.37)", state: "283164705", order: "p37" },
+    { name: "쉬운 문제 (깊이 2)", state: "123864750", order: "p29" },
+    { name: "깊이 우선이 헤매는 문제", state: "123845706", order: "p29" },
+  ];
+  let puzzleState = PRESETS[0].state;
+  let puzzleOrder = "p29";
+  const MOVES = () => ORDERS[puzzleOrder].list;
+  const orderText = () => MOVES().map((m) => m.name).join(" → ");
+
+  function applyMove(state, move) {
+    const i = state.indexOf("0");
+    const r = Math.floor(i / 3), c = i % 3;
+    if ((move.key === "left" && c === 0) || (move.key === "right" && c === 2) ||
+        (move.key === "up" && r === 0) || (move.key === "down" && r === 2)) return null;
+    const j = i + move.d;
+    const a = state.split("");
+    [a[i], a[j]] = [a[j], a[i]];
+    return { state: a.join(""), movedTo: i };
+  }
+  const misplaced = (s) => { let k = 0; for (let i = 0; i < 9; i++) if (s[i] !== "0" && s[i] !== GOAL[i]) k++; return k; };
+  function inversions(s) {
+    const t = s.replace("0", "").split("").map(Number);
+    let n = 0;
+    for (let i = 0; i < t.length; i++) for (let j = i + 1; j < t.length; j++) if (t[i] > t[j]) n++;
+    return n;
+  }
+  const solvable = (s) => inversions(s) % 2 === inversions(GOAL) % 2;
+  const validState = (s) => /^[0-8]{9}$/.test(s) && new Set(s).size === 9;
+
+  /* =========================================================
+   * 트리
+   * ========================================================= */
+  let nextId = 1;
+  const makeNode = (d) => Object.assign({ id: nextId++, children: [], parent: null, depth: 0, move: null, hidden: false, g: 0 }, d);
+
+  function buildLetterTree() {
+    nextId = 1;
+    const spec = { a: ["b", "c"], b: ["d", "e"], c: ["f"], d: [], e: [], f: [] };
+    const make = (label, parent) => {
+      const n = makeNode({ label, parent, depth: parent ? parent.depth + 1 : 0, hidden: !!parent });
+      n.children = spec[label].map((l) => make(l, n));
+      return n;
+    };
+    return make("a", null);
+  }
+  function puzzleRoot(state) { nextId = 1; return makeNode({ state, g: 0, h: misplaced(state) }); }
+  function puzzleOptions(node) {
+    return MOVES().map((m) => {
+      const r = applyMove(node.state, m);
+      if (!r) return { move: m, kind: "wall" };
+      if (node.parent && r.state === node.parent.state) return { move: m, kind: "back", result: r };
+      const made = node.children.find((c) => c.move.key === m.key);
+      return { move: m, kind: made ? "made" : "ok", result: r };
+    });
+  }
+  function addPuzzleChild(node, opt) {
+    const child = makeNode({ state: opt.result.state, parent: node, depth: node.depth + 1, move: opt.move,
+      movedTo: opt.result.movedTo, g: node.g + 1, h: misplaced(opt.result.state) });
+    node.children.push(child);
+    const L = MOVES();
+    node.children.sort((a, b) => L.indexOf(a.move) - L.indexOf(b.move));
+    return child;
+  }
+  const walk = (n, fn) => { fn(n); n.children.forEach((c) => walk(c, fn)); };
+  const pathTo = (n) => { const p = []; for (let x = n; x; x = x.parent) p.unshift(x); return p; };
+  const countNodes = (r) => { let k = 0; walk(r, () => k++); return k; };
+
+  /* =========================================================
+   * 배치와 그리기
+   * ========================================================= */
+  const geo = {
+    puzzle: { w: 78, h: 78, gapX: 18, gapY: 70, top: 46, left: 96 },
+    puzzlef: { w: 78, h: 78, gapX: 26, gapY: 84, top: 46, left: 96 },
+    letters: { w: 56, h: 56, gapX: 60, gapY: 70, top: 46, left: 96 },
+    city: { w: 56, h: 56, gapX: 54, gapY: 100, top: 46, left: 96 },
+  };
+  function layout(root, g) {
+    let cursor = 0;
+    const place = (n) => {
+      if (!n.children.length) { n.x = cursor; cursor += g.w + g.gapX; }
+      else { n.children.forEach(place); n.x = (n.children[0].x + n.children[n.children.length - 1].x) / 2; }
+      n.y = n.depth * (g.h + g.gapY);
+    };
+    place(root);
+    let maxD = 0;
+    walk(root, (n) => { n.x += g.left; n.y += g.top; maxD = Math.max(maxD, n.depth); });
+    return { width: Math.max(cursor + g.left + 40, 600), height: g.top + (maxD + 1) * (g.h + g.gapY) + 20, maxDepth: maxD };
+  }
+
+  const svg = document.getElementById("svg");
+  const stage = document.getElementById("stage");
+  const NS = "http://www.w3.org/2000/svg";
+  let zoom = 1;
+  let view = null;
+
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function drawPuzzle(g, n, x, y, size) {
+    const cell = (size - 12) / 3;
+    el("rect", { class: "n-box", x, y, width: size, height: size, rx: 8 }, g);
+    for (let i = 0; i < 9; i++) {
+      const cx = x + 6 + (i % 3) * cell, cy = y + 6 + Math.floor(i / 3) * cell;
+      const v = n.state[i];
+      el("rect", { class: v === "0" ? "n-cell blank" : (i === n.movedTo ? "n-cell moved" : "n-cell"), x: cx + 1, y: cy + 1, width: cell - 2, height: cell - 2, rx: 3 }, g);
+      if (v === "0") { if (n.parent) el("circle", { class: "n-blank-ring", cx: cx + cell / 2, cy: cy + cell / 2, r: cell / 2 - 3 }, g); }
+      else el("text", { class: "n-num", x: cx + cell / 2, y: cy + cell / 2 + 1 }, g).textContent = v;
+    }
+  }
+  function render() {
+    if (!view) return;
+    const g = geo[view.kind];
+    const box = layout(view.root, g);
+    svg.innerHTML = "";
+    svg.setAttribute("width", box.width * zoom);
+    svg.setAttribute("height", box.height * zoom);
+    svg.setAttribute("viewBox", `0 0 ${box.width} ${box.height}`);
+    for (let d = 0; d <= box.maxDepth; d++) {
+      const y = g.top + d * (g.h + g.gapY) + g.h / 2;
+      el("line", { class: "depth-line", x1: 70, y1: y, x2: box.width, y2: y }, svg);
+      el("text", { class: "depth-t", x: 10, y: y + 4 }, svg).textContent = `깊이 ${d}`;
+    }
+    const pathSet = new Set(view.path || []);
+    walk(view.root, (n) => {
+      if (!n.parent) return;
+      const p = n.parent;
+      const x1 = p.x + g.w / 2, y1 = p.y + g.h, x2 = n.x + g.w / 2, y2 = n.y;
+      el("path", {
+        class: "edge" + (pathSet.has(n) && pathSet.has(p) ? " path" : ""),
+        d: `M${x1},${y1} C${x1},${(y1 + y2) / 2} ${x2},${(y1 + y2) / 2} ${x2},${y2}`,
+        opacity: n.hidden ? 0.25 : 1,
+      }, svg);
+      if (n.move) el("text", { class: "edge-lbl", x: (x1 + x2) / 2, y: (y1 + y2) / 2 - 2 }, svg).textContent = n.move.name;
+    });
+    walk(view.root, (n) => {
+      const cls = ["node", ...(view.classOf ? view.classOf(n) : [])];
+      if (n.hidden) cls.push("hidden");
+      if (pathSet.has(n)) cls.push("path");
+      const grp = el("g", { class: cls.join(" ") }, svg);
+      if (view.kind.startsWith("puzzle")) drawPuzzle(grp, n, n.x, n.y, g.w);
+      else {
+        el("circle", { class: "l-circle", cx: n.x + g.w / 2, cy: n.y + g.h / 2, r: g.w / 2 }, grp);
+        el("text", { class: "l-text", x: n.x + g.w / 2, y: n.y + g.h / 2 + 1 }, grp).textContent = n.label;
+      }
+      const badge = view.badgeOf ? view.badgeOf(n) : null;
+      if (badge != null) {
+        el("circle", { class: "badge-c", cx: n.x + g.w - 2, cy: n.y + 2, r: 13 }, grp);
+        el("text", { class: "badge-t", x: n.x + g.w - 2, y: n.y + 3 }, grp).textContent = badge;
+      }
+      const note = view.noteOf ? view.noteOf(n) : null;
+      if (note) el("text", { class: note.cls, x: n.x + g.w / 2, y: n.y + g.h + 16 }, grp).textContent = note.text;
+      if (view.decorate) view.decorate(n, grp, g);
+      grp.addEventListener("click", (ev) => { ev.stopPropagation(); view.onNodeClick && view.onNodeClick(n); });
+    });
+  }
+  function scrollToNode(n) {
+    if (!n || !view) return;
+    const g = geo[view.kind];
+    const cx = (n.x + g.w / 2) * zoom, cy = (n.y + g.h / 2) * zoom;
+    const r = stage.getBoundingClientRect();
+    if (cx < stage.scrollLeft + 80 || cx > stage.scrollLeft + r.width - 80 || cy < stage.scrollTop + 80 || cy > stage.scrollTop + r.height - 80)
+      stage.scrollTo({ left: Math.max(0, cx - r.width / 2), top: Math.max(0, cy - r.height / 2), behavior: "smooth" });
+  }
+  document.getElementById("zoomIn").onclick = () => { zoom = Math.min(2, zoom + 0.15); render(); };
+  document.getElementById("zoomOut").onclick = () => { zoom = Math.max(0.25, zoom - 0.15); render(); };
+  document.getElementById("zoomFit").onclick = () => {
+    if (!view) return;
+    const box = layout(view.root, geo[view.kind]);
+    const r = stage.getBoundingClientRect();
+    zoom = Math.max(0.25, Math.min(1.4, (r.width - 20) / box.width, (r.height - 20) / box.height));
+    render();
+  };
+  function setLegend(items) {
+    document.getElementById("legend").innerHTML = items.map(([c, st, t]) => `<span><i style="border-color:${c};${st || ""}"></i>${t}</span>`).join("");
+  }
+  const side = document.getElementById("side");
+  const miniHTML = (s) => `<span class="mini">${s.split("").map((v) => v === "0" ? '<b class="blank"></b>' : `<b>${v}</b>`).join("")}</span>`;
+  const $ = (id) => document.getElementById(id);
+  function say(html, cls, ask) {
+    const m = $("msg");
+    if (!m) return;
+    m.className = "message";
+    void m.offsetWidth;
+    m.className = "message" + (cls ? " " + cls : "");
+    m.innerHTML = html + (ask ? `<span class="ask">${ask}</span>` : "");
+  }
+  const LEG_SEARCH = [["#2563eb", "border-style:dashed", "대기 목록"], ["#e87b10", "", "방금 검사"], ["#9aa7b6", "background:#f1f3f6", "검사 끝(숫자=순서)"], ["#159957", "background:#e6f6ee", "목표·경로"]];
+
+  /* =========================================================
+   * 탐색 엔진: bfs(큐) · dfs(스택) · ucs/greedy/astar(값이 가장 작은 것)
+   * 값이 같으면 먼저 대기 목록에 들어온 것을 고른다.
+   * ========================================================= */
+  function keyOf(algo, n) {
+    if (algo === "ucs") return n.g;
+    if (algo === "greedy") return n.h;
+    if (algo === "astar") return n.g + n.h;
+    return 0;
+  }
+  function createSearch({ root, algo, limit, isGoal, expand }) {
+    const s = { algo, limit, root, frontier: [root], tested: new Map(), current: null,
+      done: false, found: null, failed: false, generated: 1, maxFrontier: 1, cut: new Set(), lastKids: [] };
+    root.hidden = false;
+    s.peek = () => {
+      if (!s.frontier.length) return null;
+      if (algo === "bfs") return s.frontier[0];
+      if (algo === "dfs") return s.frontier[s.frontier.length - 1];
+      return s.frontier.reduce((m, n) => (keyOf(algo, n) < keyOf(algo, m) ? n : m), s.frontier[0]);
+    };
+    s.step = () => {
+      const n = s.peek();
+      s.frontier.splice(s.frontier.indexOf(n), 1);
+      s.current = n;
+      s.tested.set(n, s.tested.size + 1);
+      s.lastKids = [];
+      if (isGoal(n)) { s.done = true; s.found = n; return "goal"; }
+      if (algo === "dfs" && limit != null && n.depth >= limit) {
+        s.cut.add(n);
+        if (!s.frontier.length) { s.done = true; s.failed = true; }
+        return "cut";
+      }
+      const kids = expand(n);
+      s.lastKids = kids;
+      s.generated += kids.length;
+      if (algo === "dfs") s.frontier.push(...kids.slice().reverse());
+      else s.frontier.push(...kids);
+      s.maxFrontier = Math.max(s.maxFrontier, s.frontier.length);
+      if (!s.frontier.length) { s.done = true; s.failed = true; }
+      return "expanded";
+    };
+    return s;
+  }
+
+  /* =========================================================
+   * 직접 고르며 탐색하는 패널 (기본 트리 · 8퍼즐 공용)
+   * ========================================================= */
+  const results = {};
+
+  function searchPanelHTML(algo, problemHTML, extraHTML) {
+    const prio = ["ucs", "greedy", "astar"].includes(algo);
+    return `
+      <div class="message" id="msg"></div>
+      <div class="row">
+        <button class="btn" id="hintBtn">힌트</button>
+        <button class="btn" id="resetBtn">처음부터</button>
+        ${algo === "dfs" ? `<span class="row" style="gap:4px">깊이 제한 <input type="number" id="limit" min="1" max="10" value="5"></span>` : ""}
+        <span class="spacer" style="flex:1"></span>
+        <span class="score" id="score"></span>
+      </div>
+      <div class="card">
+        <h2>${ALGO[algo].name}</h2>
+        <p>${DESC[algo]}</p>
+        ${prio && problemHTML.includes("문제 고르기") ? `<p>8퍼즐에서는 타일을 한 번 움직이는 비용을 1로 봐요. 그래서 <b>g = 깊이</b>이고, 휴리스틱값 <b>h = 목표 상태와 위치가 다른 숫자 타일의 수</b>(빈칸 제외)예요. (p.37)</p>` : ""}
+      </div>
+      <div class="card">
+        <div class="row" style="justify-content:space-between">
+          <h2 style="margin:0">${algo === "bfs" ? "대기 목록 — 큐" : algo === "dfs" ? "대기 목록 — 스택" : "대기 목록 (오픈 리스트)"}</h2>
+          <label class="row" style="gap:4px; font-size:14px; color:var(--muted)"><input type="checkbox" id="showQueue"> 순서 보기</label>
+        </div>
+        <div class="fdir">${algo === "bfs" ? "왼쪽(앞)에서 꺼내고, 새로 만든 것은 오른쪽(뒤)에 넣어요." : algo === "dfs" ? "오른쪽(위)에서 꺼내고, 새로 만든 것도 오른쪽(위)에 넣어요." : `${ALGO[algo].val}이 가장 작은 것을 꺼내요. 값이 같으면 먼저 들어온 것부터 꺼내요.`}</div>
+        <div class="frontier" id="frontier"></div>
+      </div>
+      ${extraHTML || ""}
+      ${problemHTML}
+      <div class="card">
+        <h2>결과 비교</h2>
+        <table class="stats" id="stats"></table>
+        <p>같은 문제를 여러 방법으로 해 보고 비교해 보세요.</p>
+      </div>`;
+  }
+
+  function mountSearch(opt) {
+    // opt: kind, algo, algos(비교표), problemKey(), makeRoot(), isGoal, expand, chip, nameOf, kidsText, afterDraw
+    const algo = opt.algo;
+    const prio = ["ucs", "greedy", "astar"].includes(algo);
+    let s = null, mistakes = 0, hints = 0, wrongNode = null, hintNode = null;
+    const askText = () => `다음에 검사할 ${opt.kind === "letters" ? "노드" : "상태"}를 트리에서 클릭하세요.`;
+    const valText = (n) => algo === "ucs" ? `g=${n.g}` : algo === "greedy" ? `h=${n.h}` : `f=${n.g}+${n.h}=${n.g + n.h}`;
+
+    function explain(result, n) {
+      const no = s.tested.size;
+      const who = opt.nameOf(n, no);
+      if (result === "goal") {
+        return say(`<b>정답!</b> ${who}는 <b>목표 상태</b>예요. 탐색 끝!<br>깊이 ${n.depth}에서 찾았고, 초록색 선이 찾은 경로예요. 모두 ${no}번 검사했어요.`, "ok");
+      }
+      let html = `${who}는 목표 상태가 아니에요. `;
+      if (result === "cut") html += `깊이 제한(${s.limit})에 닿아서 자식을 만들지 않고 <b>되돌아가요</b>.`;
+      else if (s.lastKids.length) {
+        html += `자식 ${opt.kidsText(s.lastKids)}를 대기 목록${algo === "bfs" ? " <b>뒤</b>" : algo === "dfs" ? " <b>위</b>" : ""}에 넣어요.`;
+        if (prio) html += `<br>새로 만든 상태: ${s.lastKids.map((k) => `${k.move ? k.move.name : ""} ${valText(k)}`).join(", ")}`;
+      } else html += "만들 수 있는 자식이 없어요.";
+      if (s.failed) return say(html + "<br>더 검사할 것이 없어요. 깊이 제한 안에서 목표를 찾지 못했어요. 제한을 늘려 보세요.", "warn");
+      say(html, "", askText());
+    }
+
+    function reset() {
+      const root = opt.makeRoot();
+      s = createSearch({ root, algo, limit: algo === "dfs" ? Number($("limit").value) || 5 : null, isGoal: opt.isGoal, expand: opt.expand });
+      mistakes = 0; hints = 0; wrongNode = null; hintNode = null;
+      const r = s.step();
+      draw();
+      const start = opt.kind === "letters" ? `<b>${root.label}</b>에서 출발해요. ` : `<b>초기 상태</b>에서 출발해요${prio ? ` (${valText(root)})` : ""}. `;
+      if (r === "goal") say(start + "초기 상태가 바로 목표 상태예요!", "ok");
+      else say(`${start}${opt.nameOf(root, 1)}는 목표 상태가 아니에요. 자식 ${opt.kidsText(s.lastKids)}를 대기 목록에 넣어요.` +
+        (prio ? `<br>새로 만든 상태: ${s.lastKids.map((k) => `${k.move.name} ${valText(k)}`).join(", ")}` : ""), "", askText());
+      stage.scrollTo({ left: 0, top: 0 });
+    }
+
+    function draw() {
+      view = {
+        kind: opt.kind === "puzzle" && prio ? "puzzlef" : opt.kind, root: s.root,
+        path: s.found ? pathTo(s.found) : null,
+        classOf: (n) => {
+          const c = [];
+          if (n === wrongNode) c.push("wrong");
+          if (n === hintNode) c.push("hint");
+          if (s.found === n) c.push("goal");
+          else if (s.current === n) c.push("current");
+          if (s.tested.has(n)) c.push("tested");
+          else if (s.frontier.includes(n)) c.push("frontier");
+          return c;
+        },
+        badgeOf: (n) => s.tested.get(n) ?? null,
+        noteOf: (n) => {
+          if (s.cut.has(n)) return { cls: "cut-t", text: "깊이 제한" };
+          if (prio && !n.hidden) return { cls: "ftxt", text: valText(n) };
+          return null;
+        },
+        onNodeClick: choose,
+      };
+      render();
+      const showQ = $("showQueue").checked;
+      let list = s.frontier.slice();
+      if (prio && showQ) list = list.map((n, i) => [n, i]).sort((a, b) => keyOf(algo, a[0]) - keyOf(algo, b[0]) || a[1] - b[1]).map((x) => x[0]);
+      $("frontier").innerHTML = !list.length
+        ? '<span class="empty">비어 있음</span>'
+        : showQ
+          ? list.map((n) => `<span class="chip">${opt.chip(n)}<span class="lbl">${prio ? valText(n) : "깊이 " + n.depth}</span></span>`).join("")
+          : `<span class="empty">${list.length}개가 기다리고 있어요. 트리의 <b style="color:var(--blue)">파란 점선</b>이 대기 중인 것이에요. (스스로 생각해 본 뒤 '순서 보기'로 확인해요)</span>`;
+      $("score").innerHTML = `틀린 횟수 <b>${mistakes}</b> · 힌트 ${hints}`;
+      $("hintBtn").disabled = s.done;
+      if (s.done) {
+        const key = opt.problemKey();
+        results[key] = results[key] || {};
+        results[key][algo] = { found: !!s.found, depth: s.found ? s.found.depth : "-", tested: s.tested.size, maxF: s.maxFrontier, limit: s.limit, mistakes };
+      }
+      drawStats();
+      if (opt.afterDraw) opt.afterDraw(s);
+    }
+
+    function drawStats() {
+      const r = results[opt.problemKey()] || {};
+      $("stats").innerHTML = `<tr><th>방법</th><th>찾은 깊이</th><th>검사 수</th><th>대기 최대</th><th>틀린 횟수</th></tr>` +
+        opt.algos.map((k) => {
+          const v = r[k];
+          const name = ALGO[k].short + (k === "dfs" && v ? ` <small>(제한 ${v.limit})</small>` : "");
+          if (!v) return `<tr><td>${name}</td><td colspan="4" style="color:var(--gray)">아직 안 해 봤어요</td></tr>`;
+          return `<tr${k === algo ? ' style="background:#f6f9ff"' : ""}><td>${name}</td><td>${v.found ? v.depth : "못 찾음"}</td><td>${v.tested}</td><td>${v.maxF}</td><td>${v.mistakes}</td></tr>`;
+        }).join("");
+    }
+
+    function choose(n) {
+      if (!s || s.done) return;
+      const next = s.peek();
+      hintNode = null;
+      if (n === next) {
+        wrongNode = null;
+        if (countNodes(s.root) > 800) { s.done = true; s.failed = true; draw(); say("상태가 너무 많아져서 멈췄어요. 더 쉬운 문제로 해 보세요.", "warn"); return; }
+        const r = s.step();
+        draw();
+        explain(r, n);
+        scrollToNode(n);
+        return;
+      }
+      mistakes++;
+      wrongNode = n;
+      draw();
+      let why;
+      if (s.tested.has(n)) why = "이미 검사한 곳이에요. 대기 목록(파란 점선)에 있는 것 중에서 골라요.";
+      else if (!s.frontier.includes(n)) why = "아직 대기 목록에 들어오지 않았어요. 파란 점선으로 표시된 것 중에서 골라요.";
+      else if (prio) why = keyOf(algo, n) > keyOf(algo, next)
+        ? `${ALGO[algo].val}이 <b>더 작은</b> 상태가 있어요. (지금 고른 것: ${valText(n)})`
+        : `${ALGO[algo].val}이 같은 상태가 여러 개면, <b>먼저 대기 목록에 들어온 것</b>부터 골라요.`;
+      else if (algo === "bfs") why = n.depth > next.depth
+        ? "너비 우선은 <b>얕은 깊이부터</b> 모두 검사해요. 아직 위쪽 깊이에 남은 것이 있어요."
+        : "같은 깊이에서는 <b>왼쪽부터</b> 차례로 검사해요. 큐는 먼저 들어온 것을 먼저 꺼내요.";
+      else why = n.depth < next.depth
+        ? "깊이 우선은 <b>가장 최근에 만든(더 깊은)</b> 것부터 내려가요. 스택의 맨 위를 봐요."
+        : "같은 부모에서 나온 것 중에서는 <b>왼쪽(먼저 정한 간선)</b>부터 내려가요.";
+      say(`<b>틀렸어요.</b> ${why}`, "bad", askText());
+      setTimeout(() => { if (wrongNode === n) { wrongNode = null; render(); } }, 900);
+    }
+
+    function hint() {
+      if (!s || s.done) return;
+      hints++;
+      hintNode = s.peek();
+      draw();
+      const where = algo === "bfs" ? "큐의 맨 앞" : algo === "dfs" ? "스택의 맨 위" : `${ALGO[algo].val}이 가장 작은 것(${valText(hintNode)})`;
+      say(`주황색으로 표시된 곳이 다음에 검사할 ${opt.kind === "letters" ? "노드" : "상태"}예요. ${where}을 꺼내요.`, "warn", "주황색을 클릭해 보세요.");
+      scrollToNode(hintNode);
+    }
+
+    if ($("limit")) $("limit").onchange = reset;
+    $("resetBtn").onclick = reset;
+    $("hintBtn").onclick = hint;
+    $("showQueue").onchange = draw;
+    reset();
+    return { reset };
+  }
+
+  /* =========================================================
+   * 1. 기본 트리 (a–f)
+   * ========================================================= */
+  let goalLetter = "f";
+  function pageTree(algo) {
+    setLegend(LEG_SEARCH);
+    zoom = 1.3;
+    side.innerHTML = searchPanelHTML(algo, `
+      <div class="card">
+        <h2>기본 트리 (p.31)</h2>
+        <p>a에서 출발해서, <b>다음에 검사할 노드를 직접 클릭</b>해 보세요. 맞으면 설명이 나오고, 틀리면 이유를 알려 줘요.</p>
+        <div class="row">목표 노드
+          <select id="goalSel">${"bcdef".split("").map((l) => `<option ${l === goalLetter ? "selected" : ""}>${l}</option>`).join("")}</select>
+        </div>
+      </div>`,
+      `<div class="card"><h2>검사 순서</h2><div class="order" id="order">-</div>
+        <p>교과서: 너비 우선 a–b–c–d–e–f / 깊이 우선 a–b–d–e–c–f</p></div>`);
+    const ctl = mountSearch({
+      kind: "letters", algo, algos: ["bfs", "dfs"],
+      problemKey: () => "letters-" + goalLetter,
+      makeRoot: buildLetterTree,
+      isGoal: (n) => n.label === goalLetter,
+      expand: (n) => { n.children.forEach((c) => (c.hidden = false)); return n.children; },
+      chip: (n) => `<span class="letter">${n.label}</span>`,
+      nameOf: (n) => `<b>${n.label}</b>`,
+      kidsText: (kids) => kids.map((k) => `<b>${k.label}</b>`).join(", "),
+      afterDraw: (s) => {
+        const seq = [...s.tested.keys()].map((n) => (n === s.found ? `<b>${n.label}</b>` : n.label));
+        $("order").innerHTML = seq.join(" – ") || "-";
+      },
+    });
+    $("goalSel").onchange = (e) => { goalLetter = e.target.value; ctl.reset(); };
+  }
+
+  /* =========================================================
+   * 8퍼즐 문제 고르기 카드
+   * ========================================================= */
+  function problemCard() {
+    return `<div class="card">
+      <h2>문제 고르기</h2>
+      <div class="row" style="margin-bottom:8px">
+        <select id="pSel">${PRESETS.map((p, i) => `<option value="${i}">${p.name}</option>`).join("")}<option value="custom">직접 입력</option></select>
+      </div>
+      <div class="row" id="pRow" style="display:none; margin-bottom:8px">
+        <input type="text" id="pInput" maxlength="9" placeholder="283104765">
+        <button class="btn small" id="pApply">적용</button>
+      </div>
+      <div class="row" style="margin-bottom:6px; font-size:14px">간선 순서
+        <select id="oSel">${Object.entries(ORDERS).map(([k, o]) => `<option value="${k}" ${k === puzzleOrder ? "selected" : ""}>${o.name}</option>`).join("")}</select>
+      </div>
+      <p>목표 상태는 <b>1 2 3 / 8 □ 4 / 7 6 5</b>예요. 직접 입력할 때는 왼쪽 위부터 차례로, 빈칸은 0으로 써요. 교과서에서 p.29와 p.37의 간선 순서가 서로 달라서, 둘 다 고를 수 있게 했어요.</p>
+      <div class="row" style="gap:16px; align-items:flex-start">
+        <div>초기 상태<br><span id="pStart"></span></div>
+        <div>목표 상태<br>${miniHTML(GOAL)}</div>
+      </div>
+    </div>`;
+  }
+  function bindProblem(onApply) {
+    const sel = $("pSel"), row = $("pRow");
+    const show = () => ($("pStart").innerHTML = miniHTML(puzzleState));
+    const idx = PRESETS.findIndex((p) => p.state === puzzleState);
+    sel.value = idx >= 0 ? String(idx) : "custom";
+    row.style.display = idx >= 0 ? "none" : "";
+    if (idx < 0) $("pInput").value = puzzleState;
+    sel.onchange = () => {
+      if (sel.value === "custom") { row.style.display = ""; return; }
+      row.style.display = "none";
+      const p = PRESETS[Number(sel.value)];
+      puzzleState = p.state; puzzleOrder = p.order; $("oSel").value = p.order;
+      show(); onApply();
+    };
+    $("oSel").onchange = () => { puzzleOrder = $("oSel").value; onApply(); };
+    $("pApply").onclick = () => {
+      const v = $("pInput").value.trim();
+      if (!validState(v)) return alert("0부터 8까지 숫자를 한 번씩, 9자리로 입력해 주세요. (빈칸은 0)");
+      if (!solvable(v)) return alert("이 배치는 목표 상태로 만들 수 없는 배치예요. 두 타일의 위치를 바꿔 보세요.");
+      puzzleState = v; show(); onApply();
+    };
+    show();
+  }
+
+  /* =========================================================
+   * 2-1. 8퍼즐 트리 만들기 (타일을 직접 움직여 자식 상태 만들기)
+   * ========================================================= */
+  let buildTarget = 2;
+  let B = null;
+  function pageBuild() {
+    setLegend([["#2563eb", "", "지금 펼칠 상태"], ["#e87b10", "background:#ffe2bf", "움직인 타일"], ["#d23b4f", "border-radius:50%", "빈칸"], ["#159957", "background:#e6f6ee", "목표 상태"]]);
+    zoom = 1;
+    side.innerHTML = `
+      <div class="card">
+        <div class="row" style="justify-content:space-between">
+          <h2 id="bpTitle" style="margin:0">지금 펼칠 상태</h2>
+          <span class="row" style="gap:4px; font-size:14px">목표 깊이
+            <select id="targetSel">${[1, 2, 3].map((d) => `<option value="${d}" ${d === buildTarget ? "selected" : ""}>${d}</option>`).join("")}</select>
+          </span>
+        </div>
+        <div class="bigpuzzle" id="bigpuzzle"></div>
+        <div class="dirs" id="dirs"></div>
+      </div>
+      <div class="message" id="msg"></div>
+      <div class="row">
+        <button class="btn" id="bHint">힌트</button>
+        <button class="btn" id="bAnswer">정답 보기</button>
+        <button class="btn" id="bReset">처음부터</button>
+        <span style="flex:1"></span>
+        <span class="score" id="score"></span>
+      </div>
+      <div class="card">
+        <h2>8퍼즐 탐색 트리 만들기 (p.28~29)</h2>
+        <p>파란 테두리 상태의 <b>자식 상태</b>를 직접 만들어 보세요. 위 퍼즐에서 <b>빈칸 옆 타일</b>을 클릭하면 그 타일이 빈칸으로 미끄러져요.</p>
+        <p id="orderNote"></p>
+      </div>
+      <div class="card"><h2>깊이별 상태 수</h2><table class="stats" id="depthCount"></table></div>
+      ${problemCard()}
+      <div class="card">
+        <h2>용어</h2>
+        <dl class="terms">
+          <dt>상태</dt><dd>문제의 어느 한 순간의 모습. 8퍼즐에서는 숫자 타일의 배치 하나</dd>
+          <dt>간선</dt><dd>한 상태에서 다음 상태로 가는 조건이나 행동. 여기서는 빈칸의 이동 방향</dd>
+          <dt>자식 상태</dt><dd>하나의 상태에서 간선에 따라 만들어지는 상태</dd>
+          <dt>트리의 깊이</dt><dd>초기 상태에서 현재 상태까지 거쳐 온 상태의 수 (레벨)</dd>
+        </dl>
+      </div>`;
+    bindProblem(resetBuild);
+    $("targetSel").onchange = (e) => { buildTarget = Number(e.target.value); resetBuild(); };
+    $("bReset").onclick = resetBuild;
+    $("bHint").onclick = buildHint;
+    $("bAnswer").onclick = buildAnswer;
+    resetBuild();
+  }
+  function resetBuild() {
+    const root = puzzleRoot(puzzleState);
+    B = { root, queue: [root], parent: null, mistakes: 0, hints: 0, wrongTile: null, hintTile: null, done: false };
+    $("orderNote").innerHTML = `간선 순서는 빈칸을 <b>${orderText()}</b>으로 옮기는 순서예요. 이 순서를 모든 상태에서 똑같이 지켜요. 빈칸을 위쪽으로 옮기려면 <b>빈칸 바로 위 타일</b>을 클릭해요. 부모 상태로 되돌아가는 이동은 만들지 않아요.`;
+    nextParent(true);
+    stage.scrollTo({ left: 0, top: 0 });
+  }
+  function nextParent(first) {
+    while (B.queue.length) {
+      const p = B.queue[0];
+      if (p.depth >= buildTarget) { B.queue.shift(); continue; }
+      const left = puzzleOptions(p).filter((o) => o.kind === "ok");
+      if (!left.length) { B.queue.shift(); continue; }
+      B.parent = p;
+      drawBuild();
+      if (first) say(`<b>초기 상태</b>(깊이 0)부터 펼쳐요. 만들 수 있는 자식 상태는 <b>${left.length}개</b>예요.`, "", "다음 자식 상태를 만들려면 어느 타일을 움직여야 할까요?");
+      return;
+    }
+    B.parent = null; B.done = true;
+    drawBuild();
+    say(`<b>깊이 ${buildTarget}까지 탐색 트리를 완성했어요!</b>${puzzleState === PRESETS[0].state && buildTarget === 2 && puzzleOrder === "p29" ? " 교과서 p.29 그림과 비교해 보세요." : ""}<br>깊이가 하나 내려갈 때마다 상태 수가 어떻게 늘어나는지 아래 표를 보세요.`, "ok");
+  }
+  const expectedOpt = () => (B.parent ? puzzleOptions(B.parent).find((o) => o.kind === "ok") || null : null);
+  function moveForTile(state, t) {
+    const b = state.indexOf("0");
+    return MOVES().find((m) => applyMove(state, m) && b + m.d === t) || null;
+  }
+  function drawBuild() {
+    view = {
+      kind: "puzzle", root: B.root,
+      classOf: (n) => { const c = []; if (n === B.parent) c.push("selected"); if (n.state === GOAL) c.push("goal"); return c; },
+      noteOf: (n) => (n.state === GOAL ? { cls: "goal-t", text: "목표 상태!" } : null),
+      onNodeClick: () => {},
+    };
+    render();
+    const p = B.parent, bp = $("bigpuzzle"), dirs = $("dirs");
+    if (p) {
+      $("bpTitle").textContent = `지금 펼칠 상태 (깊이 ${p.depth})`;
+      bp.innerHTML = p.state.split("").map((v, i) => v === "0"
+        ? `<button class="blank" disabled></button>`
+        : `<button data-i="${i}" class="${i === B.wrongTile ? "wrong" : ""} ${i === B.hintTile ? "hint" : ""}">${v}</button>`).join("");
+      bp.querySelectorAll("button[data-i]").forEach((b) => (b.onclick = () => clickTile(Number(b.dataset.i))));
+      dirs.innerHTML = puzzleOptions(p).map((o) => o.kind === "made"
+        ? `<span class="done">${o.move.arrow} ${o.move.name}<br>완료</span>`
+        : `<span>${o.move.arrow} ${o.move.name}<br>?</span>`).join("");
+      scrollToNode(p);
+    } else { $("bpTitle").textContent = "완성!"; bp.innerHTML = ""; dirs.innerHTML = ""; }
+    $("score").innerHTML = `틀린 횟수 <b>${B.mistakes}</b> · 힌트 ${B.hints}`;
+    $("bHint").disabled = $("bAnswer").disabled = B.done;
+    const counts = {};
+    walk(B.root, (n) => (counts[n.depth] = (counts[n.depth] || 0) + 1));
+    $("depthCount").innerHTML = "<tr><th>깊이</th><th>상태 수</th></tr>" + Object.keys(counts).map((d) => `<tr><td>깊이 ${d}</td><td>${counts[d]}</td></tr>`).join("");
+  }
+  function clickTile(t) {
+    if (B.done) return;
+    const p = B.parent, exp = expectedOpt(), m = moveForTile(p.state, t);
+    B.hintTile = null;
+    if (!m) return wrongTile(t, "이 타일은 <b>빈칸 바로 옆</b>이 아니라서 움직일 수 없어요.");
+    const o = puzzleOptions(p).find((x) => x.move === m);
+    if (o.kind === "back") return wrongTile(t, `빈칸을 ${m.name}으로 옮기면 <b>부모 상태로 되돌아가요</b>. 이런 이동은 자식 상태로 만들지 않아요.`);
+    if (o.kind === "made") return wrongTile(t, `빈칸을 ${m.name}으로 옮긴 자식 상태는 <b>이미 만들었어요</b>.`);
+    if (o.move !== exp.move) return wrongTile(t, `이번 활동의 간선 순서는 <b>${orderText()}</b>이에요. ${m.name}보다 먼저 만들어야 할 방향이 있어요.`);
+    B.wrongTile = null;
+    const child = addPuzzleChild(p, o);
+    let html = `<b>정답!</b> 타일 <b>${p.state[t]}</b>를 움직여서 빈칸이 <b>${m.name}</b>으로 이동했어요 → 깊이 ${child.depth}의 자식 상태가 생겼어요.`;
+    if (child.state === GOAL) html += "<br><b>이 상태는 목표 상태예요!</b>";
+    const remain = puzzleOptions(p).filter((x) => x.kind === "ok").length;
+    if (remain) { drawBuild(); say(html + `<br>이 상태에서 만들 자식이 <b>${remain}개</b> 더 남았어요.`, "ok", "다음 자식 상태를 만들려면 어느 타일을 움직여야 할까요?"); }
+    else {
+      B.queue.shift(); B.queue.push(...p.children);
+      nextParent(false);
+      if (!B.done) say(html + `<br>이 상태의 자식을 모두 만들었어요. 이제 <b>다음 상태</b>(파란 테두리, 깊이 ${B.parent.depth})를 펼쳐요.`, "ok", "다음 자식 상태를 만들려면 어느 타일을 움직여야 할까요?");
+    }
+  }
+  function wrongTile(t, why) {
+    B.mistakes++; B.wrongTile = t; drawBuild();
+    say(`<b>틀렸어요.</b> ${why}`, "bad", "다음 자식 상태를 만들려면 어느 타일을 움직여야 할까요?");
+    setTimeout(() => { if (B && B.wrongTile === t) { B.wrongTile = null; drawBuild(); } }, 900);
+  }
+  function buildHint() {
+    const e = expectedOpt(); if (!e) return;
+    B.hints++; B.hintTile = B.parent.state.indexOf("0") + e.move.d; drawBuild();
+    say(`이번에는 빈칸을 <b>${e.move.name}</b>으로 옮길 차례예요. 빈칸의 ${e.move.name}에 있는 타일(주황색)을 클릭해요.`, "warn");
+  }
+  function buildAnswer() {
+    while (!B.done) {
+      const p = B.parent;
+      puzzleOptions(p).forEach((o) => { if (o.kind === "ok") addPuzzleChild(p, o); });
+      B.queue.shift(); B.queue.push(...p.children);
+      nextParent(false);
+    }
+  }
+
+  /* =========================================================
+   * 2-2. 8퍼즐 탐색 (너비·깊이·균일 비용·휴리스틱·A*)
+   * ========================================================= */
+  function pagePuzzleSearch(algo) {
+    setLegend(LEG_SEARCH);
+    zoom = ["ucs", "greedy", "astar"].includes(algo) ? 0.8 : 0.85;
+    side.innerHTML = searchPanelHTML(algo, problemCard());
+    const ctl = mountSearch({
+      kind: "puzzle", algo, algos: ["bfs", "dfs", "ucs", "greedy", "astar"],
+      problemKey: () => `puzzle-${puzzleState}-${puzzleOrder}`,
+      makeRoot: () => puzzleRoot(puzzleState),
+      isGoal: (n) => n.state === GOAL,
+      expand: (n) => puzzleOptions(n).filter((o) => o.kind === "ok").map((o) => addPuzzleChild(n, o)),
+      chip: (n) => miniHTML(n.state),
+      nameOf: (n, no) => `<b>${no}번째</b>로 검사한 상태`,
+      kidsText: (kids) => `상태 <b>${kids.length}개</b>(${kids.map((k) => k.move.name).join(", ")})`,
+    });
+    bindProblem(() => ctl.reset());
+  }
+
+  /* =========================================================
+   * 3. 도시 방문 경로 (p.32~35): 균일 비용 · 휴리스틱 · A*
+   * 오픈 리스트에서 값이 가장 작은 상태를 고르고,
+   * 자식 상태마다 오픈 리스트에 넣을지 제외할지 학생이 직접 판단한다.
+   * ========================================================= */
+  const CITY_POS = { a: [60, 120], b: [160, 30], c: [170, 210], d: [270, 190], e: [320, 100] };
+  const EDGE_KEYS = [["a", "b"], ["a", "c"], ["b", "c"], ["b", "d"], ["b", "e"], ["c", "d"], ["d", "e"]];
+  const CITY_PRESETS = [
+    { name: "교과서 (그림 Ⅰ-10·11)", w: { ab: 5, ac: 4, bc: 5, bd: 8, be: 9, cd: 3, de: 5 }, h: { a: 12, b: 9, c: 7, d: 5, e: 0 } },
+    { name: "c–d를 6으로 바꾼 지도", w: { ab: 5, ac: 4, bc: 5, bd: 8, be: 9, cd: 6, de: 5 }, h: { a: 12, b: 9, c: 7, d: 5, e: 0 } },
+  ];
+  let city = JSON.parse(JSON.stringify(CITY_PRESETS[0]));
+  let cityPreset = "0";
+  let U = null;
+
+  function cityNeighbors(x) {
+    const out = [];
+    EDGE_KEYS.forEach(([u, v]) => { const w = city.w[u + v]; if (u === x) out.push([v, w]); else if (v === x) out.push([u, w]); });
+    return out.sort((p, q) => p[0].localeCompare(q[0]));
+  }
+  function cityShortest() {
+    // 다익스트라: 각 도시에서 e까지 실제 최단 거리, a에서 e까지 최단 거리
+    const dist = (src) => {
+      const d = { a: Infinity, b: Infinity, c: Infinity, d: Infinity, e: Infinity }; d[src] = 0;
+      const done = new Set();
+      while (done.size < 5) {
+        const x = Object.keys(d).filter((k) => !done.has(k)).reduce((m, k) => (d[k] < d[m] ? k : m));
+        done.add(x);
+        cityNeighbors(x).forEach(([v, w]) => { if (d[x] + w < d[v]) d[v] = d[x] + w; });
+      }
+      return d;
+    };
+    return dist("e");
+  }
+  const cityKey = (n) => (U.algo === "ucs" ? n.g : U.algo === "greedy" ? n.h : n.g + n.h);
+  const cityVal = (n) => (U.algo === "ucs" ? `${n.g}` : U.algo === "greedy" ? `h=${n.h}` : `${n.g}+${n.h}=${n.g + n.h}`);
+  const cityName = (n) => `${n.label}(${cityVal(n)})`;
+
+  function pageCity(algo) {
+    setLegend([["#2563eb", "border-style:dashed", "오픈 리스트"], ["#e87b10", "", "방금 테스트"], ["#9aa7b6", "background:#f1f3f6", "닫힌 리스트(숫자=순서)"], ["#d23b4f", "", "제외"], ["#159957", "background:#e6f6ee", "목표·경로"]]);
+    zoom = 1.05;
+    const what = algo === "ucs" ? "누적 비용 g" : algo === "greedy" ? "휴리스틱값 h" : "f = g + h";
+    side.innerHTML = `
+      <div class="message" id="msg"></div>
+      <div class="row">
+        <button class="btn" id="uHint">힌트</button>
+        <button class="btn" id="uReset">처음부터</button>
+        <span style="flex:1"></span>
+        <span class="score" id="score"></span>
+      </div>
+      <div class="card" id="decideCard" style="display:none">
+        <h2>자식 상태를 오픈 리스트에 넣을까요?</h2>
+        <div class="decide" id="decide"></div>
+      </div>
+      <div class="card">
+        <table class="lists">
+          <tr><th>오픈 리스트</th><th>테스트가 끝난 닫힌 리스트</th></tr>
+          <tr><td id="openList"></td><td id="closedList"></td></tr>
+        </table>
+        <p>괄호 안은 ${algo === "ucs" ? "누적 비용 g" : algo === "greedy" ? "휴리스틱값 h" : "g + h = f"}예요. 이 값이 가장 작은 것부터 골라요.</p>
+      </div>
+      <div class="card">
+        <h2>${ALGO[algo].name}</h2>
+        <p>${DESC[algo]}</p>
+        <p>${algo === "ucs" ? "트리 아래 상자의 값은 누적 비용이에요." : algo === "greedy" ? "트리 아래 상자의 값은 그 도시에서 목적지 e까지의 직선거리(휴리스틱값)예요." : "트리 아래 상자의 값은 (지금까지 온 비용) + (e까지 직선거리) = f예요."}</p>
+      </div>
+      <div class="card">
+        <h2>도로망과 직선거리</h2>
+        <svg id="cityGraph" viewBox="0 0 380 250" width="100%"></svg>
+        <div class="row" style="margin:6px 0">지도 <select id="cityPresetSel">${CITY_PRESETS.map((p, i) => `<option value="${i}" ${String(i) === cityPreset ? "selected" : ""}>${p.name}</option>`).join("")}<option value="custom" ${cityPreset === "custom" ? "selected" : ""}>직접 바꾸기</option></select></div>
+        <p style="margin:4px 0"><b>간선 비용</b> (이동 시간)</p>
+        <div class="edge-inputs">${EDGE_KEYS.map(([u, v]) => `<label>${u}–${v}<input type="number" min="1" max="30" data-w="${u + v}" value="${city.w[u + v]}"></label>`).join("")}</div>
+        <p style="margin:8px 0 4px"><b>휴리스틱값 h</b> (e까지 직선거리)</p>
+        <div class="edge-inputs">${"abcd".split("").map((k) => `<label>h(${k})<input type="number" min="0" max="40" data-h="${k}" value="${city.h[k]}"></label>`).join("")}</div>
+        <div id="hWarn"></div>
+      </div>
+      <div class="card">
+        <h2>결과 비교</h2>
+        <table class="stats" id="stats"></table>
+        <p>같은 지도에서 세 방법을 모두 해 보고, <b>찾은 비용</b>과 <b>테스트 수</b>를 비교해 보세요.</p>
+      </div>
+      <div class="card">
+        <dl class="terms">
+          <dt>누적 비용 g</dt><dd>초기 상태에서 현재 상태까지 오는 경로의 비용을 모두 더한 값</dd>
+          <dt>휴리스틱값 h</dt><dd>현재 상태에서 목표 상태까지 남은 비용의 추정값. 여기서는 직선거리</dd>
+          <dt>오픈 리스트 / 닫힌 리스트</dt><dd>테스트할 후보를 보관하는 대기실 / 테스트가 끝난 상태를 옮겨 두는 곳</dd>
+        </dl>
+      </div>`;
+    U = { algo };
+    $("uReset").onclick = resetCity;
+    $("uHint").onclick = cityHint;
+    $("cityPresetSel").onchange = (e) => {
+      cityPreset = e.target.value;
+      if (cityPreset !== "custom") city = JSON.parse(JSON.stringify(CITY_PRESETS[Number(cityPreset)]));
+      pageCity(algo);
+    };
+    side.querySelectorAll("input[data-w], input[data-h]").forEach((inp) => (inp.onchange = () => {
+      const v = Math.max(inp.dataset.w ? 1 : 0, Math.round(Number(inp.value) || 0));
+      inp.value = v;
+      if (inp.dataset.w) city.w[inp.dataset.w] = v; else city.h[inp.dataset.h] = v;
+      cityPreset = "custom"; $("cityPresetSel").value = "custom";
+      checkH(); resetCity();
+    }));
+    checkH();
+    resetCity();
+  }
+
+  function checkH() {
+    const real = cityShortest();
+    const bad = "abcd".split("").filter((k) => city.h[k] > real[k]);
+    $("hWarn").innerHTML = bad.length
+      ? `<p class="warnline">주의: ${bad.map((k) => `h(${k})=${city.h[k]}이 실제 남은 최단 거리 ${real[k]}보다 커요`).join(", ")}. 이러면 A*도 최단 경로를 못 찾을 수 있어요.</p>`
+      : `<p style="font-size:13px; color:var(--muted); margin:6px 0 0">각 도시의 h는 실제로 e까지 남은 최단 거리(${"abcd".split("").map((k) => `${k} ${real[k]}`).join(", ")})보다 크지 않아요.</p>`;
+  }
+
+  const cityResultKey = () => JSON.stringify([city.w, city.h]);
+
+  function resetCity() {
+    nextId = 1;
+    const root = makeNode({ label: "a", g: 0, h: city.h.a, expr: "0" });
+    Object.assign(U, { root, open: [root], closed: [], tests: new Map(), current: null, pending: null, done: false, found: null,
+      mistakes: 0, hints: 0, wrongNode: null, hintNode: null });
+    drawCity();
+    say(`시작점 <b>a</b>를 오픈 리스트에 넣었어요. a의 값은 ${cityVal(root)}예요.`, "", "오픈 리스트에서 값이 가장 작은 상태를 트리에서 클릭하세요.");
+    stage.scrollTo({ left: 0, top: 0 });
+  }
+  const cityBest = () => U.open.reduce((m, n) => (cityKey(n) < cityKey(m) ? n : m), U.open[0]);
+
+  function drawCity() {
+    view = {
+      kind: "city", root: U.root,
+      path: U.found ? pathTo(U.found) : null,
+      classOf: (n) => {
+        const c = [];
+        if (n === U.wrongNode) c.push("wrong");
+        if (n === U.hintNode) c.push("hint");
+        if (n.excluded) c.push("excluded");
+        else if (n.pending) c.push("pending");
+        else if (U.found === n) c.push("goal");
+        else if (U.current === n) c.push("current");
+        if (U.tests.has(n)) c.push("tested");
+        else if (U.open.includes(n)) c.push("frontier");
+        return c;
+      },
+      badgeOf: (n) => U.tests.get(n) ?? null,
+      decorate: (n, grp, g) => {
+        const cx = n.x + g.w / 2, cy = n.y + g.h / 2, r = g.w / 2 - 6;
+        let text = U.algo === "ucs" ? (n.depth <= 1 ? `${n.g}` : `${n.expr}=${n.g}`) : cityVal(n);
+        if (n.pending) text = "?";
+        const w = Math.max(34, text.length * 9 + 14);
+        el("rect", { class: "cost-box", x: cx - w / 2, y: n.y + g.h + 6, width: w, height: 24, rx: 6 }, grp);
+        el("text", { class: "cost-t", x: cx, y: n.y + g.h + 18 }, grp).textContent = text;
+        if (n.excluded) {
+          el("line", { class: "x-line", x1: cx - r, y1: cy - r, x2: cx + r, y2: cy + r }, grp);
+          el("line", { class: "x-line", x1: cx + r, y1: cy - r, x2: cx - r, y2: cy + r }, grp);
+        }
+      },
+      onNodeClick: cityPick,
+    };
+    render();
+    $("openList").innerHTML = "[" + U.open.map(cityName).join(", ") + "]";
+    $("closedList").innerHTML = "[" + U.closed.map(cityName).join(", ") + "]";
+    $("score").innerHTML = `틀린 횟수 <b>${U.mistakes}</b> · 힌트 ${U.hints}`;
+    $("uHint").disabled = U.done;
+    drawDecide();
+    drawCityGraph();
+    drawCityStats();
+  }
+
+  function drawCityGraph() {
+    const g = $("cityGraph"); if (!g) return;
+    g.innerHTML = "";
+    const P = CITY_POS;
+    const on = new Set();
+    if (U.found) { const p = pathTo(U.found); for (let i = 1; i < p.length; i++) on.add([p[i - 1].label, p[i].label].sort().join("")); }
+    EDGE_KEYS.forEach(([u, v]) => {
+      el("line", { class: "ucs-edge" + (on.has(u + v) ? " on" : ""), x1: P[u][0], y1: P[u][1], x2: P[v][0], y2: P[v][1] }, g);
+      el("text", { class: "ucs-w", x: (P[u][0] + P[v][0]) / 2, y: (P[u][1] + P[v][1]) / 2 }, g).textContent = city.w[u + v];
+    });
+    const closedL = new Set(U.closed.map((n) => n.label)), openL = new Set(U.open.map((n) => n.label));
+    Object.entries(P).forEach(([k, [x, y]]) => {
+      let cls = "ucs-city";
+      if (U.current && U.current.label === k && !U.done) cls += " now";
+      else if (closedL.has(k)) cls += " closed";
+      else if (openL.has(k)) cls += " open";
+      el("circle", { class: cls, cx: x, cy: y, r: 18 }, g);
+      el("text", { class: "ucs-city-t", x, y: y + 1 }, g).textContent = k;
+      if (k !== "e") el("text", { class: "ucs-tag", x, y: y + 32 }, g).textContent = `h=${city.h[k]}`;
+    });
+    el("text", { class: "ucs-tag", x: P.a[0] - 34, y: P.a[1] + 4 }, g).textContent = "출발";
+    el("text", { class: "ucs-tag", x: P.e[0] + 2, y: P.e[1] - 26 }, g).textContent = "목적지";
+  }
+
+  function drawCityStats() {
+    const r = results[cityResultKey()] || {};
+    $("stats").innerHTML = `<tr><th>방법</th><th>찾은 경로</th><th>비용</th><th>테스트 수</th></tr>` +
+      ["ucs", "greedy", "astar"].map((k) => {
+        const v = r[k];
+        if (!v) return `<tr><td>${ALGO[k].short}</td><td colspan="3" style="color:var(--gray)">아직 안 해 봤어요</td></tr>`;
+        return `<tr${k === U.algo ? ' style="background:#f6f9ff"' : ""}><td>${ALGO[k].short}</td><td>${v.route}</td><td>${v.cost}${v.optimal ? "" : ' <small style="color:var(--red)">최단 아님</small>'}</td><td>${v.tests}</td></tr>`;
+      }).join("");
+  }
+
+  function cityPick(n) {
+    if (!U || U.done) return;
+    U.hintNode = null;
+    if (U.pending) return cityWrong(n, "먼저 오른쪽에서 <b>자식 상태를 오픈 리스트에 넣을지</b> 정해요.");
+    const best = cityBest();
+    if (n === best) { U.wrongNode = null; cityTest(n); return; }
+    let why;
+    if (n.excluded) why = "X 표시된 상태는 <b>제외된</b> 상태예요. 오픈 리스트에 없어요.";
+    else if (U.tests.has(n)) why = "이미 테스트가 끝나서 <b>닫힌 리스트</b>로 옮긴 상태예요.";
+    else if (cityKey(n) === cityKey(best)) why = "값이 같은 상태가 여러 개면, <b>먼저 오픈 리스트에 들어온 것</b>부터 골라요.";
+    else why = `오픈 리스트에서 <b>${ALGO[U.algo].val}이 더 작은</b> 상태가 있어요. ${cityName(n)}보다 작은 값을 찾아보세요.`;
+    cityWrong(n, why);
+  }
+  function cityWrong(n, why) {
+    U.mistakes++; U.wrongNode = n; drawCity();
+    say(`<b>틀렸어요.</b> ${why}`, "bad", U.pending ? "" : "오픈 리스트에서 값이 가장 작은 상태를 클릭하세요.");
+    setTimeout(() => { if (U && U.wrongNode === n) { U.wrongNode = null; drawCity(); } }, 900);
+  }
+  function cityTest(n) {
+    U.open.splice(U.open.indexOf(n), 1);
+    U.current = n;
+    U.tests.set(n, U.tests.size + 1);
+    const no = U.tests.size;
+    if (n.label === "e") {
+      U.closed.push(n); U.done = true; U.found = n;
+      const route = pathTo(n).map((x) => x.label).join(" → ");
+      const opt = cityShortest().a;
+      const optimal = n.g === opt;
+      results[cityResultKey()] = results[cityResultKey()] || {};
+      results[cityResultKey()][U.algo] = { route, cost: n.g, tests: no, optimal };
+      drawCity();
+      say(`<b>정답!</b> e는 <b>목적지(목표 상태)</b>예요. 탐색 끝!<br><b>${no}번</b>의 테스트로 경로를 찾았어요.<br>경로: <b>${route}</b> · 경로 비용: ${n.expr} = <b>${n.g}</b><br>` +
+        (optimal ? "이 경로가 실제로 <b>비용이 가장 작은 경로</b>예요." : `<b style="color:var(--red)">하지만 비용이 가장 작은 경로가 아니에요!</b> 실제 최단 비용은 ${opt}이에요. 남은 거리(h)만 보고 골랐기 때문이에요.`), optimal ? "ok" : "warn");
+      return;
+    }
+    const kids = cityNeighbors(n.label).filter(([v]) => !n.parent || v !== n.parent.label).map(([v, w]) => {
+      const child = makeNode({ label: v, parent: n, depth: n.depth + 1, g: n.g + w, h: city.h[v],
+        expr: n.depth === 0 ? `${w}` : `${n.expr}+${w}`, move: { name: String(w) }, pending: true });
+      n.children.push(child);
+      return child;
+    });
+    U.pending = { parent: n, kids, decided: new Map() };
+    drawCity();
+    scrollToNode(n);
+    say(`<b>정답!</b> ${no}번째로 ${cityName(n)}를 테스트해 보니 목적지가 아니에요. 자식 상태 ${kids.map((k) => `<b>${k.label}</b>`).join(", ")}를 만들었어요.`, "ok",
+      "오른쪽 위에서 자식 상태를 오픈 리스트에 넣을지, 제외할지 정하세요.");
+  }
+  // 같은 도시는 누적 비용 g가 더 작은 것만 남긴다 (교과서 p.32)
+  function cityJudge(k) {
+    if (U.closed.some((c) => c.label === k.label)) return { keep: false, why: `${k.label}는 이미 테스트가 끝난 상태(닫힌 리스트)라서 다시 넣지 않아요.` };
+    const same = U.open.find((o) => o.label === k.label);
+    if (same && same.g <= k.g) return { keep: false, why: `오픈 리스트에 이미 ${k.label}(누적 비용 ${same.g})가 있고, 새로 온 길(누적 비용 ${k.g})보다 작거나 같아서 기존 것만 남겨요.` };
+    if (same) return { keep: true, replace: same, why: `새로 온 길(누적 비용 ${k.g})이 오픈 리스트의 ${k.label}(누적 비용 ${same.g})보다 짧아서, 새 것을 넣고 기존 것은 제외해요.` };
+    return { keep: true, why: `${k.label}는 오픈 리스트에도, 닫힌 리스트에도 없는 새 상태라서 오픈 리스트에 넣어요.` };
+  }
+  function drawDecide() {
+    const card = $("decideCard"), box = $("decide");
+    if (!U.pending) { card.style.display = "none"; return; }
+    card.style.display = "";
+    const { parent, kids, decided } = U.pending;
+    box.innerHTML = kids.map((k, i) => {
+      const w = k.g - parent.g;
+      let calc = `누적 비용 ${parent.g} + ${w} = ${k.g}`;
+      if (U.algo === "greedy") calc += ` · h = ${k.h}`;
+      if (U.algo === "astar") calc += ` · f = ${k.g} + ${k.h} = ${k.g + k.h}`;
+      if (decided.has(k)) {
+        const d = decided.get(k);
+        return `<div class="item done"><div class="calc">${k.label} <small>${calc}</small> — ${d.keep ? "넣기" : "제외"}</div><div class="res">${d.why}</div></div>`;
+      }
+      return `<div class="item"><div class="calc">${parent.label} → ${k.label} <small>${calc}</small></div>
+        <div class="row"><button class="btn small" data-k="${i}" data-a="keep">오픈 리스트에 넣기</button><button class="btn small" data-k="${i}" data-a="drop">제외</button></div></div>`;
+    }).join("");
+    box.querySelectorAll("button[data-k]").forEach((b) => (b.onclick = () => cityDecide(kids[Number(b.dataset.k)], b.dataset.a === "keep")));
+  }
+  function cityDecide(k, keep) {
+    const j = cityJudge(k);
+    if (keep !== j.keep) {
+      U.mistakes++; drawCity();
+      const hint = keep
+        ? (U.closed.some((c) => c.label === k.label) ? "닫힌 리스트를 확인해 보세요." : "오픈 리스트에 같은 도시가 있는지, 누적 비용을 비교해 보세요.")
+        : "오픈 리스트와 닫힌 리스트에 같은 도시가 있는지 확인해 보세요.";
+      say(`<b>틀렸어요.</b> 이 ${k.label}는 ${keep ? "넣을 수 없어요" : "제외하면 안 돼요"}. ${hint}`, "bad");
+      return;
+    }
+    U.pending.decided.set(k, j);
+    k.pending = false;
+    if (j.keep) {
+      if (j.replace) { j.replace.excluded = true; U.open.splice(U.open.indexOf(j.replace), 1); }
+      U.open.push(k);
+    } else k.excluded = true;
+    const { parent, kids, decided } = U.pending;
+    if (decided.size === kids.length) {
+      U.closed.push(parent); U.pending = null; drawCity();
+      say(`<b>정답!</b> ${j.why}<br>${parent.label}는 테스트가 끝났으니 <b>닫힌 리스트</b>로 옮겨요.`, "ok", "오픈 리스트에서 값이 가장 작은 상태를 트리에서 클릭하세요.");
+    } else { drawCity(); say(`<b>정답!</b> ${j.why}`, "ok", "남은 자식 상태도 정해 보세요."); }
+  }
+  function cityHint() {
+    if (!U || U.done) return;
+    U.hints++;
+    if (U.pending) {
+      const k = U.pending.kids.find((x) => !U.pending.decided.has(x));
+      const j = cityJudge(k);
+      drawCity();
+      say(`${k.label}는 <b>${j.keep ? "오픈 리스트에 넣어요" : "제외해요"}</b>. ${j.why}`, "warn");
+      return;
+    }
+    U.hintNode = cityBest(); drawCity();
+    say(`오픈 리스트 [${U.open.map(cityName).join(", ")}] 중에서 값이 가장 작은 것은 <b>${cityName(U.hintNode)}</b>예요.`, "warn", "주황색을 클릭해 보세요.");
+    scrollToNode(U.hintNode);
+  }
+
+  /* =========================================================
+   * 메뉴 (2단계)
+   * ========================================================= */
+  const GROUPS = [
+    { id: "tree", name: "1. 기본 트리 (a–f)", subs: [["bfs", "너비 우선"], ["dfs", "깊이 우선"]], open: pageTree },
+    { id: "puzzle", name: "2. 8퍼즐", subs: [["build", "탐색 트리 만들기"], ["bfs", "너비 우선"], ["dfs", "깊이 우선"], ["ucs", "균일 비용"], ["greedy", "휴리스틱(탐욕)"], ["astar", "A*"]],
+      open: (a) => (a === "build" ? pageBuild() : pagePuzzleSearch(a)) },
+    { id: "city", name: "3. 도시 방문 경로", subs: [["ucs", "균일 비용"], ["greedy", "휴리스틱(탐욕)"], ["astar", "A*"]], open: pageCity },
+  ];
+  let curGroup = GROUPS[0], curSub = "bfs";
+  const lastSub = {};
+
+  function drawMenu() {
+    $("groups").innerHTML = GROUPS.map((g) => `<button class="tab ${g === curGroup ? "active" : ""}" data-g="${g.id}">${g.name}</button>`).join("");
+    $("subs").innerHTML = curGroup.subs.map(([k, n]) => `<button class="subtab ${k === curSub ? "active" : ""}" data-s="${k}">${n}</button>`).join("");
+    $("groups").querySelectorAll("[data-g]").forEach((b) => (b.onclick = () => {
+      lastSub[curGroup.id] = curSub;
+      curGroup = GROUPS.find((g) => g.id === b.dataset.g);
+      curSub = lastSub[curGroup.id] || curGroup.subs[0][0];
+      open();
+    }));
+    $("subs").querySelectorAll("[data-s]").forEach((b) => (b.onclick = () => { curSub = b.dataset.s; open(); }));
+  }
+  function open() { drawMenu(); curGroup.open(curSub); }
+  open();
+})();
+</script>
+</body>
+</html>
