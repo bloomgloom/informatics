@@ -1,0 +1,124 @@
+/* ch1-2에는 공통 디자인 토큰을 재정의하지 않고 단원별 배치만 둔다. */
+
+.problem-rows {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.problem-row {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.48fr) minmax(0, 1.52fr);
+  align-items: center;
+  gap: 24px;
+  border-top: 2px solid var(--line);
+  border-left: 10px solid var(--tone);
+}
+
+.problem-row .section-heading {
+  align-items: center;
+}
+
+.problem-row .section-heading > .section-number {
+  margin-top: 0;
+}
+
+.tree-figure {
+  flex: 1;
+}
+
+.blind-search-grid .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.blind-search-grid .section-heading {
+  min-height: 134px;
+}
+
+.search-summary {
+  margin: 0;
+}
+
+.method-list {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.method-list.single-method {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.search-method {
+  display: grid;
+  min-height: 0;
+  align-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.intelligent-search-grid .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.intelligent-search-grid .section-heading {
+  min-height: 134px;
+}
+
+.pros-cons {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.pros-cons .soft-box,
+.heuristic-definition,
+.astar-formula {
+  display: grid;
+  min-height: 0;
+  align-content: center;
+  gap: 12px;
+}
+
+.heuristic-definition {
+  flex: 1;
+}
+
+.astar-formula {
+  text-align: center;
+}
+
+.intelligent-search-grid .soft-box strong {
+  color: var(--tone-dark);
+}
+
+.problem-case-grid .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.case-details {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.case-details .soft-box {
+  display: grid;
+  min-height: 0;
+  align-content: center;
+  gap: 12px;
+}

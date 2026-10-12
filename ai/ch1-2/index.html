@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eef0f8" />
+    <title>인공지능과 탐색</title>
+    <link rel="stylesheet" href="../../common/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p><p class="page-ref">p.27</p>
+          <h1>문제 해결과 탐색</h1>
+          <p class="subtitle">현재 상태와 목표 상태의 차이를 해결하기 위해 <strong>가장 효율적인 경로</strong>를 탐색한다.</p>
+        </div>
+        <div class="problem-rows">
+          <article class="panel problem-row" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>문제</h2></header>
+            <p><strong>현재 상태</strong>와 <strong>목표 상태</strong> 사이에 차이가 있는 상황</p>
+          </article>
+          <article class="panel problem-row" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>문제 해결</h2></header>
+            <p>현재 상태에서 시도할 수 있는 다양한 선택 중 <strong>가장 효율적인 선택</strong>을 하여 최종적으로 <strong>목표 상태</strong>에 이르도록 하는 것</p>
+          </article>
+          <article class="panel problem-row" data-tone="green">
+            <header class="section-heading"><span class="section-number">03</span><h2>탐색</h2></header>
+            <p>주어진 상태에서 선택할 수 있는 경로를 빠르게 살펴보고 답에 이르는 <strong>최적의 길</strong>을 찾는 것</p>
+          </article>
+          <article class="panel problem-row" data-tone="blue">
+            <header class="section-heading"><span class="section-number">04</span><h2>경로 탐색</h2></header>
+            <p>초기 상태에서 목표 상태까지의 다양한 경로 중에서 <strong>가장 효율적인 경로</strong>를 찾는 탐색</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p><p class="page-ref">p.28</p>
+          <h1>문제의 표현</h1>
+          <p class="subtitle">주어진 문제를 <strong>탐색 가능한 형태</strong>로 다시 표현할 때 가장 일반적인 형태는 <strong>트리 구조</strong>이다.</p>
+        </div>
+        <figure class="figure-box tree-figure" data-tone="blue">
+          <img src="assets/textbook-tree-structure.png" alt="초기 상태와 현재 상태에서 여러 상태로 갈라져 목표 상태에 도달하는 트리 구조" />
+        </figure>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p><p class="page-ref">p.30~32</p>
+          <h1>맹목적 탐색</h1>
+          <p class="subtitle">문제에서 <strong>사전에 주어진 정보</strong>만 가지고 모든 상태를 하나씩 테스트하면서 목표 상태를 찾는 전략</p>
+        </div>
+        <div class="two-column blind-search-grid">
+          <article class="panel search-card" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>비용 정보가 없을 때</h2></header>
+            <p class="search-summary"><strong>모든 간선의 비용이 1</strong>이라고 가정하고,<br> 상태를 모두 <strong>하나씩 순서대로 테스트</strong>한다.</p>
+            <div class="method-list">
+              <section class="soft-box search-method">
+                <h3>너비 우선 탐색</h3>
+                <p>트리 가장 위에서부터 차례대로 각 깊이(레벨)별로 테스트하면서 내려오는 순서로 진행</p>
+              </section>
+              <section class="soft-box search-method">
+                <h3>깊이 우선 탐색</h3>
+                <p>한 경로를 따라 가장 깊은 상태까지 먼저 내려간 뒤, <br>이전 상태로 돌아와 다른 경로를 탐색</p>
+              </section>
+            </div>
+          </article>
+          <article class="panel search-card" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>비용 정보가 주어졌을 때</h2></header>
+            <p class="search-summary">간선마다 주어진 비용을 사용하고, <br><strong>총비용이 가장 작은 상태</strong>부터 테스트한다.</p>
+            <div class="method-list single-method">
+              <section class="soft-box search-method">
+                <h3>균일 비용 탐색</h3>
+                <p>누적 비용의 값을 확인하여 그 값이 가장 작은 상태를 먼저 선택하는 순서로 탐색을 진행</p>
+              </section>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p><p class="page-ref">p.34~36</p>
+          <h1>지능적 탐색</h1>
+          <p class="subtitle">탐색 시간을 줄이기 위해 비용 정보와 함께 <strong>추정된 비용 정보</strong>를 사용하는 탐색</p>
+        </div>
+        <div class="grid-3 fill intelligent-search-grid">
+          <article class="panel intelligent-card" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>맹목적 탐색의<br>문제점</h2></header>
+            <div class="pros-cons">
+              <section class="soft-box">
+                <h3>장점</h3>
+                <p>목표 상태를 <strong>언젠가 찾는다는 것</strong>이 보장되며, 너비 우선 탐색은 가장 짧은 경로를 찾는다.</p>
+              </section>
+              <section class="soft-box">
+                <h3>단점</h3>
+                <p>상태 수가 많아질수록 상태 공간이 커져 <strong>탐색 시간이 크게 늘어난다.</strong></p>
+              </section>
+            </div>
+          </article>
+          <article class="panel intelligent-card" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>휴리스틱값</h2></header>
+            <p>탐색 시간을 더 줄이기 위해 문제 해결 경험과 지식을 바탕으로 한 <strong>경험적인 추정값</strong>을 추가로 사용한다.</p>
+            <div class="soft-box heuristic-definition">
+              <h3>예상 비용</h3>
+              <p>현재 상태에서 목표 상태까지 드는 비용을 경험적 지식으로 추정한 값</p>
+            </div>
+          </article>
+          <article class="panel intelligent-card" data-tone="green">
+            <header class="section-heading"><span class="section-number">03</span><h2>A* 알고리즘</h2></header>
+            <p><strong>누적 비용값</strong>과 <strong>휴리스틱값</strong>을 더한 최종 비용 추정치가 가장 작은 상태부터 탐색한다.</p>
+            <div class="soft-box astar-formula">
+              <h3>f(n) = g(n) + h(n)</h3>
+              <p><strong>g(n)</strong> 초기 상태부터 현재 상태까지의 비용<br /><strong>h(n)</strong> 현재 상태부터 목표 상태까지의 추정 비용</p>
+            </div>
+            <p>모든 상태를 다 확인하지 않고 목표에 가까운 상태를 선택해 <strong>빠르고 효율적으로 탐색</strong>한다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p><p class="page-ref">p.38~39</p>
+          <h1>문제 해결 사례</h1>
+          <p class="subtitle">문제의 상태 공간과 목표에 따라 <strong>알맞은 탐색 전략</strong>을 선택하여 문제를 해결한다.</p>
+        </div>
+        <div class="grid-3 fill problem-case-grid">
+          <article class="panel problem-case-card" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>경로 탐색</h2></header>
+            <p>문제를 상태와 간선으로 표현하고, 초기 상태에서 목표 상태까지의 <strong>가장 효율적인 경로</strong>를 찾는다.</p>
+            <div class="case-details">
+              <section class="soft-box">
+                <h3>대표 방법</h3>
+                <p>A* 알고리즘</p>
+              </section>
+              <section class="soft-box">
+                <h3>활용 사례</h3>
+                <p>게임의 경로 찾기<br />항공 경로 계획</p>
+              </section>
+            </div>
+          </article>
+          <article class="panel problem-case-card" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>게임 트리 탐색</h2></header>
+            <p>나와 상대방의 가능한 상태를 살펴보고, 나에게 <strong>가장 유리한 선택</strong>을 결정한다.</p>
+            <div class="case-details">
+              <section class="soft-box">
+                <h3>대표 방법</h3>
+                <p>휴리스틱 함수<br />Min-Max 알고리즘</p>
+              </section>
+              <section class="soft-box">
+                <h3>활용 사례</h3>
+                <p>대화·협상 시스템<br />체스 게임</p>
+              </section>
+            </div>
+          </article>
+          <article class="panel problem-case-card" data-tone="green">
+            <header class="section-heading"><span class="section-number">03</span><h2>지역 탐색</h2></header>
+            <p>주변 상태를 비교하여 더 좋은 상태로 이동하는 과정을 반복하며 <strong>충분히 좋은 상태</strong>를 찾는다.</p>
+            <div class="case-details">
+              <section class="soft-box">
+                <h3>대표 방법</h3>
+                <p>언덕 오르기 탐색<br />유전자 알고리즘</p>
+              </section>
+              <section class="soft-box">
+                <h3>활용 사례</h3>
+                <p>단백질 폴딩<br />비행 일정 최적화</p>
+              </section>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드"><span></span></button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드"><span></span></button>
+    <div class="footer"><div class="dots" aria-label="슬라이드 위치"></div><p><span id="currentSlide">1</span> / <span id="totalSlides">1</span></p></div>
+    <script src="../../common/script.js"></script>
+  </body>
+</html>

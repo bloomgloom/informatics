@@ -44,7 +44,6 @@
 .turing-definition {
   display: grid;
   align-content: center;
-  gap: 16px;
   margin-top: 0 !important;
 }
 
@@ -62,17 +61,19 @@
 
 .turing-test {
   display: grid;
-  align-content: center;
-  gap: 14px;
-  border: 2px solid var(--line);
+  min-height: 0;
+  place-items: center;
+  overflow: hidden;
   border-radius: var(--radius);
-  padding: 18px 22px;
-  background: var(--paper);
+  padding: 10px;
+  background: #fff;
 }
 
-.turing-test > b {
-  color: var(--tone-dark);
-  font-size: var(--fs-h3);
+.turing-test img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .ai-traits .panel {
@@ -146,20 +147,61 @@
   font-size: var(--fs-label);
 }
 
-.agent-structure-figure {
+.agent-structure-card {
   display: grid;
   flex: 1;
   min-height: 0;
-  place-items: center;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 18px;
+}
+
+.agent-structure-body {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 22px;
+}
+
+.agent-definition {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.agent-point {
+  display: grid;
+  align-items: center;
+  border-radius: var(--radius);
+  padding: 30px 34px;
+  background: var(--blue-badge);
+}
+
+.agent-point p {
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: 1.3;
+}
+
+.agent-point strong {
+  color: var(--tone-dark);
+}
+
+.agent-structure-figure {
+  display: grid;
+  min-height: 0;
+  align-items: center;
+  justify-items: start;
+  overflow: hidden;
   border-radius: var(--radius-figure);
   background: var(--blue-soft);
 }
 
 .agent-structure-figure img {
   display: block;
-  width: min(1420px, 94%);
-  max-height: 640px;
-  object-fit: contain;
+  width: auto;
+  max-width: none;
+  height: 94%;
 }
 
 .system-traits {
