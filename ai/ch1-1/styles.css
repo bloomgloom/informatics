@@ -1,0 +1,243 @@
+/* ch1-1에는 공통 디자인 토큰을 재정의하지 않고 단원별 배치만 둔다. */
+
+.intelligence-layout .panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.intelligence-grid {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.intelligence-grid section {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  background: var(--tone-soft);
+}
+
+.intelligence-grid b {
+  color: var(--tone-dark);
+  font-size: var(--fs-body);
+}
+
+.intelligence-grid span {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  line-height: 1.2;
+}
+
+.computer-intelligence {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.turing-definition {
+  display: grid;
+  align-content: center;
+  gap: 16px;
+  margin-top: 0 !important;
+}
+
+.turing-definition p,
+.turing-test p {
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: 1.25;
+}
+
+.turing-definition strong,
+.turing-test strong {
+  color: var(--tone-dark);
+}
+
+.turing-test {
+  display: grid;
+  align-content: center;
+  gap: 14px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  background: var(--paper);
+}
+
+.turing-test > b {
+  color: var(--tone-dark);
+  font-size: var(--fs-h3);
+}
+
+.ai-traits .panel {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.trait-item {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-content: center;
+  gap: 12px;
+  border-radius: var(--radius);
+  padding: 20px;
+  background: var(--tone-soft);
+}
+
+.trait-item h2 {
+  margin-bottom: 14px;
+}
+
+.trait-item p {
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: 1.22;
+}
+
+.cases-grid .panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.cases-grid h2 {
+  font-size: var(--fs-h3);
+}
+
+.case-list {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  align-content: stretch;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.case-list li {
+  display: grid;
+  align-content: center;
+  gap: 12px;
+  border-radius: var(--radius);
+  padding: 16px;
+  background: var(--tone-soft);
+}
+
+.case-list p {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  line-height: 1.25;
+}
+
+.case-list b {
+  width: max-content;
+  border-radius: var(--radius-pill);
+  padding: 8px 14px;
+  background: var(--paper);
+  color: var(--tone-dark);
+  font-size: var(--fs-label);
+}
+
+.agent-structure-figure {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  place-items: center;
+  border-radius: var(--radius-figure);
+  background: var(--blue-soft);
+}
+
+.agent-structure-figure img {
+  display: block;
+  width: min(1420px, 94%);
+  max-height: 640px;
+  object-fit: contain;
+}
+
+.system-traits {
+  flex: 0 0 310px;
+}
+
+.system-traits .panel > p {
+  margin-top: 12px;
+  font-size: var(--fs-label);
+  line-height: 1.25;
+}
+
+.software-comparison {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) 110px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 18px;
+}
+
+.software-side {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+.software-side h3 {
+  padding: 14px 22px;
+  background: var(--blue-badge);
+  color: var(--blue);
+  text-align: center;
+}
+
+.ai-software h3 {
+  background: var(--green-badge);
+  color: var(--green);
+}
+
+.software-side dl {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.software-side dl > div {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+  border-top: 2px solid var(--line);
+}
+
+.software-side dt {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  border-right: 2px solid var(--line);
+  padding: 12px;
+  background: var(--blue-soft);
+  color: var(--muted);
+  font-size: var(--fs-label);
+  text-align: center;
+}
+
+.software-side dd {
+  padding: 14px 20px;
+  color: var(--ink);
+  font-size: var(--fs-label);
+  line-height: 1.25;
+  text-align: center;
+}
+
+.versus {
+  display: grid;
+  place-items: center;
+  color: var(--orange-dark);
+  font-size: var(--fs-h2);
+}

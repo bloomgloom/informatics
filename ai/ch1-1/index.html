@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eef0f8" />
+    <title>인공지능의 원리</title>
+    <link rel="stylesheet" href="../../common/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p><p class="page-ref">p.14~15</p>
+          <h1>지능의 이해</h1>
+          <p class="subtitle">지능은 새로운 상황을 이해하고 <strong>합리적인 판단과 해결 방법</strong>을 이끌어 내는 지적 능력이다.</p>
+        </div>
+        <div class="two-column intelligence-layout">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>인간의 지능</h2></header>
+            <div class="intelligence-grid" aria-label="인간의 세부 지능 여섯 가지">
+              <section><b>문제 해결</b><span>지능적 전략으로 문제를 해결</span></section>
+              <section><b>추론</b><span>지식에서 새로운 지식을 유도</span></section>
+              <section><b>학습</b><span>경험으로 패턴과 지식을 습득</span></section>
+              <section><b>예측</b><span>과거와 현재로 미래를 예상</span></section>
+              <section><b>인식</b><span>환경을 감지하고 의미를 파악</span></section>
+              <section><b>생성</b><span>새로운 정보와 결과물을 창작</span></section>
+            </div>
+          </article>
+          <article class="panel computer-intelligence" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>컴퓨터의 지능</h2></header>
+            <div class="soft-box turing-definition">
+              <h3>튜링의 생각</h3>
+              <p>디지털 컴퓨터가 <strong>인간의 지능을 흉내 낼 수 있다</strong>고 보고, 컴퓨터의 지능을 판단할 방법을 제안했다.</p>
+            </div>
+            <div class="turing-test">
+              <b>튜링 테스트</b>
+              <p>질문자가 사람과 컴퓨터의 응답을 구별하기 어렵다면 컴퓨터를 <strong>‘지능적이다’</strong>라고 판단한다.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p><p class="page-ref">p.16</p>
+          <h1>인공지능의 개념과 특성</h1>
+          <p class="subtitle">인공지능은 인간의 지능적인 판단과 행위를 컴퓨터로 흉내 내어 구현한 것이다.</p>
+        </div>
+        <div class="grid-3 fill ai-traits">
+          <article class="panel" data-tone="blue">
+            <section class="trait-item"><span class="section-number">01</span><div><h2>문제 해결</h2><p>여러 상황을 고려해 가장 좋은 선택을 한다.</p></div></section>
+            <section class="trait-item"><span class="section-number">02</span><div><h2>추론</h2><p>주어진 사실에서 새로운 사실과 지식을 이끌어 낸다.</p></div></section>
+          </article>
+          <article class="panel" data-tone="orange">
+            <section class="trait-item"><span class="section-number">03</span><div><h2>학습</h2><p>예시 데이터에서 일반화된 모델을 만든다.</p></div></section>
+            <section class="trait-item"><span class="section-number">04</span><div><h2>예측</h2><p>학습한 패턴으로 앞으로의 결과를 예상한다.</p></div></section>
+          </article>
+          <article class="panel" data-tone="green">
+            <section class="trait-item"><span class="section-number">05</span><div><h2>인식</h2><p>이미지, 소리, 언어를 인식하고 이해한다.</p></div></section>
+            <section class="trait-item"><span class="section-number">06</span><div><h2>생성</h2><p>조건에 맞는 이미지, 언어, 소리 등을 만들어 낸다.</p></div></section>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p><p class="page-ref">p.18~19</p>
+          <h1>인공지능의 문제 해결 사례</h1>
+          <p class="subtitle">분야별 활용 사례와 그 사례에 사용된 <strong>인공지능의 세부 지능</strong>을 함께 살펴보자.</p>
+        </div>
+        <div class="application-grid cases-grid">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>의학 분야</h2></header>
+            <ul class="case-list">
+              <li><p>엑스레이(X-ray)나 자기 공명 영상(MRI) 등의 의료용 이미지를 분석하여 의료 진단</p><b>분류·예측</b></li>
+              <li><p>환자에게 적합한 암 치료 방법 제안</p><b>맞춤형 추천</b></li>
+              <li><p>질병과 관련된 유전자 발견</p><b>탐색·발견</b></li>
+            </ul>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>교통 분야</h2></header>
+            <ul class="case-list">
+              <li><p>실시간 교통 데이터를 분석하여 교통 상황 파악</p><b>학습</b></li>
+              <li><p>교통난을 해소하고 교통 흐름을 원활하게 할 방안 제시</p><b>문제 해결</b></li>
+            </ul>
+          </article>
+          <article class="panel" data-tone="green">
+            <header class="section-heading"><span class="section-number">03</span><h2>금융 분야</h2></header>
+            <ul class="case-list">
+              <li><p>부적절한 사용자의 거래 패턴 파악</p><b>분류</b></li>
+              <li><p>고객의 조건과 자료를 바탕으로 대출 심사</p><b>맞춤형 평가</b></li>
+              <li><p>고객에게 알맞은 금융 상품 제안</p><b>맞춤형 추천</b></li>
+            </ul>
+          </article>
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">04</span><h2>문화·예술·스포츠</h2></header>
+            <ul class="case-list">
+              <li><p>새로운 음악을 작곡하거나 미술 작품 제작</p><b>생성</b></li>
+              <li><p>빅데이터로 선수의 몸 상태와 상대 팀의 전력 분석</p><b>예측</b></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p><p class="page-ref">p.22</p>
+          <h1>지능 에이전트의 기본 구조</h1>
+          <p class="subtitle">환경을 인식하고 판단해 행동하며, 결과를 다시 받아들이는 과정을 반복한다.</p>
+        </div>
+        <figure class="agent-structure-figure">
+          <img src="assets/textbook-intelligent-agent-structure.png" alt="인공지능이 환경과 인간을 인식해 상황을 판단하고 행동을 결정한 뒤 출력하는 지능 에이전트의 기본 구조" />
+        </figure>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p><p class="page-ref">p.23</p>
+          <h1>인공지능 시스템의 특성</h1>
+          <p class="subtitle">인공지능 시스템은 지능적 기능을 갖고 자율적으로 행동하지만 <strong>실수할 가능성</strong>도 있다.</p>
+        </div>
+        <div class="grid-3 system-traits">
+          <article class="panel" data-tone="blue"><header class="section-heading"><span class="section-number">01</span><h2>지능적 기능</h2></header><p>기존 시스템에 판단·학습·추천 같은 <strong>인공지능 기능</strong>을 더한다.</p></article>
+          <article class="panel" data-tone="orange"><header class="section-heading"><span class="section-number">02</span><h2>자율적 행동</h2></header><p>목적을 효율적으로 달성하도록 스스로 <strong>판단하고 행동</strong>한다.</p></article>
+          <article class="panel" data-tone="green"><header class="section-heading"><span class="section-number">03</span><h2>실수 가능성</h2></header><p>학습 데이터와 모델의 한계로 <strong>오류가 발생</strong>할 수 있다.</p></article>
+        </div>
+        <div class="software-comparison" aria-label="일반 소프트웨어와 인공지능 소프트웨어 비교">
+          <section class="software-side general-software">
+            <h3>일반 소프트웨어</h3>
+            <dl><div><dt>처리하는 일</dt><dd>자료 저장, 반복 계산, 고정된 반복과 선택</dd></div><div><dt>주요 분야</dt><dd>대량 데이터 처리, 수식 계산</dd></div></dl>
+          </section>
+          <div class="versus" aria-hidden="true">VS</div>
+          <section class="software-side ai-software">
+            <h3>인공지능 소프트웨어</h3>
+            <dl><div><dt>처리하는 일</dt><dd>판단과 결정, 추론과 학습, 계획과 예측</dd></div><div><dt>주요 분야</dt><dd>질병 진단, 맞춤형 추천, 문자·음성 인식</dd></div></dl>
+          </section>
+        </div>
+      </section>
+    </main>
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드"><span></span></button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드"><span></span></button>
+    <div class="footer"><div class="dots" aria-label="슬라이드 위치"></div><p><span id="currentSlide">1</span> / <span id="totalSlides">1</span></p></div>
+    <script src="../../common/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eef0f8" />
+    <title>공통 양식 견본</title>
+    <link rel="stylesheet" href="slides.css" />
+  </head>
+  <body>
+    <!--
+      공통 컴포넌트 견본 페이지입니다. 새 단원을 만들 때 이 파일의 마크업을 복사해 쓰세요.
+      단원 폴더에서는 경로를 ../common/slides.css, ../common/slides.js 로 바꿉니다.
+    -->
+    <main class="deck" aria-live="polite">
+      <!-- 1. 3칸 카드 + 내부 영역 + 소제목 -->
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p><p class="page-ref">p.16</p>
+          <h1>3칸 카드</h1>
+          <p class="subtitle">영역 카드는 <strong>blue → orange → green</strong> 순서로 색을 붙인다.</p>
+        </div>
+        <div class="grid-3 fill">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>인식</h2></header>
+            <p>이미지, 소리, 언어 등을 <strong>인식하고 이해</strong>하는 것</p>
+            <div class="soft-box">
+              <h3>예시</h3>
+              <p>음성 인식, 컴퓨터 비전</p>
+            </div>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>추론</h2></header>
+            <p>주어진 사실로부터 <strong>새로운 사실과 지식</strong>을 이끌어 내는 것</p>
+            <div class="soft-box">
+              <h3>예시</h3>
+              <p>전문가 시스템</p>
+            </div>
+          </article>
+          <article class="panel" data-tone="green">
+            <header class="section-heading"><span class="section-number">03</span><h2>학습</h2></header>
+            <p>예시 데이터로부터 <strong>일반화된 모델</strong>을 만들어 내는 것</p>
+            <div class="soft-box">
+              <h3>예시</h3>
+              <p>분류, 예측 시스템</p>
+            </div>
+          </article>
+        </div>
+        <div class="definition-strip"><strong>인공지능</strong><span>인간의 지능적인 판단과 행위를 컴퓨터로 흉내 내어 구현한 것</span></div>
+      </section>
+
+      <!-- 2. 4칸 사례 + 칩 + 역할 줄 -->
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p><p class="page-ref">p.18~19</p>
+          <h1>4칸 사례와 칩</h1>
+          <p class="subtitle">사례 이름처럼 <strong>짧은 낱말</strong>만 칩으로 나열한다.</p>
+        </div>
+        <div class="application-grid">
+          <article class="panel" data-tone="blue"><header class="section-heading"><span class="section-number">01</span><h2>의료</h2></header><p>의료 영상을 분석해 진단을 돕는다.</p><div class="chips"><b>분류</b><b>예측</b><b>추천</b></div></article>
+          <article class="panel" data-tone="orange"><header class="section-heading"><span class="section-number">02</span><h2>교통</h2></header><p>교통 데이터를 분석해 흐름을 개선한다.</p><div class="chips"><b>학습</b><b>문제 해결</b></div></article>
+          <article class="panel" data-tone="green"><header class="section-heading"><span class="section-number">03</span><h2>금융</h2></header><p>이상 거래를 찾고 상품을 추천한다.</p><div class="chips"><b>분류</b><b>추천</b></div></article>
+          <article class="panel" data-tone="blue"><header class="section-heading"><span class="section-number">04</span><h2>예술</h2></header><p>음악과 미술 작품을 만든다.</p><div class="chips"><b>생성</b></div></article>
+        </div>
+        <div class="role-row"><span><b>입력</b> 환경을 인식</span><span><b>판단</b> 상황을 판단</span><span><b>출력</b> 행동을 결정</span></div>
+      </section>
+
+      <!-- 3. 표 -->
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p><p class="page-ref">p.23</p>
+          <h1>비교표</h1>
+          <p class="subtitle">구분 열은 회색, <strong>대비할 열</strong>은 파랑과 초록 머리글을 쓴다.</p>
+        </div>
+        <table class="slide-table">
+          <thead>
+            <tr><th>구분</th><th>일반 소프트웨어</th><th class="is-green">인공지능 소프트웨어</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>처리하는 일</th><td>단순 저장, 반복 계산, 고정된 선택</td><td><strong>판단과 결정</strong>, 추론과 학습, 계획과 예측</td></tr>
+            <tr><th>분야</th><td>대량 데이터 처리, 수식 계산</td><td>질병 진단, 맞춤형 추천, 음성 인식</td></tr>
+          </tbody>
+        </table>
+        <div class="grid-2">
+          <article class="panel" data-tone="orange"><header class="section-heading"><span class="section-number">01</span><h2>실수 가능성</h2></header><p>개발자도 모델의 동작을 <strong>완전히 파악하기 어렵다.</strong></p></article>
+          <article class="panel" data-tone="green"><header class="section-heading"><span class="section-number">02</span><h2>사용 조건</h2></header><p>어느 정도 <strong>오류를 허용하는 곳</strong>에서 사용한다.</p></article>
+        </div>
+      </section>
+
+      <!-- 4. 그림 + 기호 목록 + 코드 -->
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p><p class="page-ref">p.22</p>
+          <h1>그림과 기호 목록</h1>
+          <p class="subtitle">그림은 <strong>연한 영역</strong> 안에, 기호 설명은 오른쪽 목록으로 둔다.</p>
+        </div>
+        <div class="grid-2 fill" style="grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr)">
+          <figure class="figure-box" data-tone="blue">
+            <svg viewBox="0 0 800 420" width="100%" height="100%" role="img" aria-label="지능 에이전트 기본 구조 자리 표시">
+              <rect x="40" y="60" width="300" height="300" rx="16" fill="#fff" stroke="#d7e0ea" stroke-width="3" />
+              <text x="190" y="220" text-anchor="middle" font-size="40" fill="#2563eb">지능 에이전트</text>
+              <rect x="460" y="60" width="300" height="300" rx="16" fill="#fff" stroke="#d7e0ea" stroke-width="3" />
+              <text x="610" y="220" text-anchor="middle" font-size="40" fill="#159957">환경·인간</text>
+            </svg>
+          </figure>
+          <aside class="variable-list align-top" aria-label="구성 요소 설명">
+            <section><b>입</b><p>환경을 <strong>인식</strong>해 정보를 받는다</p></section>
+            <section><b>판</b><p>인공지능으로 <strong>상황을 판단</strong>한다</p></section>
+            <section><b>출</b><p>결정한 <strong>행동</strong>을 수행한다</p></section>
+            <p><span class="code-chip">agent.step(state)</span></p>
+          </aside>
+        </div>
+      </section>
+    </main>
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드"><span></span></button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드"><span></span></button>
+    <div class="footer"><div class="dots" aria-label="슬라이드 위치"></div><p><span id="currentSlide">1</span> / <span id="totalSlides">1</span></p></div>
+    <script src="slides.js"></script>
+  </body>
+</html>
