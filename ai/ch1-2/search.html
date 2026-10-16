@@ -909,7 +909,7 @@
     zoom = ["ucs", "greedy", "astar"].includes(algo) ? 0.8 : 0.85;
     side.innerHTML = searchPanelHTML(algo, problemCard());
     const ctl = mountSearch({
-      kind: "puzzle", algo, algos: ["bfs", "dfs", "ucs", "greedy", "astar"],
+      kind: "puzzle", algo, algos: ["bfs", "dfs", "greedy", "astar"],
       problemKey: () => `puzzle-${puzzleState}-${puzzleOrder}`,
       makeRoot: () => puzzleRoot(puzzleState),
       isGoal: (n) => n.state === GOAL,
@@ -1240,7 +1240,7 @@
    * ========================================================= */
   const GROUPS = [
     { id: "tree", name: "1. 기본 트리 (a–f)", subs: [["bfs", "너비 우선"], ["dfs", "깊이 우선"]], open: pageTree },
-    { id: "puzzle", name: "2. 8퍼즐", subs: [["build", "탐색 트리 만들기"], ["bfs", "너비 우선"], ["dfs", "깊이 우선"], ["ucs", "균일 비용"], ["greedy", "휴리스틱(탐욕)"], ["astar", "A*"]],
+    { id: "puzzle", name: "2. 8퍼즐", subs: [["build", "탐색 트리 만들기"], ["bfs", "너비 우선"], ["dfs", "깊이 우선"], ["greedy", "휴리스틱(탐욕)"], ["astar", "A*"]],
       open: (a) => (a === "build" ? pageBuild() : pagePuzzleSearch(a)) },
     { id: "city", name: "3. 도시 방문 경로", subs: [["ucs", "균일 비용"], ["greedy", "휴리스틱(탐욕)"], ["astar", "A*"]], open: pageCity },
   ];
