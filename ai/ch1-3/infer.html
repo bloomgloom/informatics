@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>지식 표현과 추론 연습 활동지</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --paper: #fff;
+      --ink: #172033;
+      --muted: #5c6b7d;
+      --line: #d7e0ea;
+      --blue: #2563eb;
+      --blue-soft: #eaf1ff;
+      --green: #159957;
+      --green-soft: #e6f6ee;
+      --orange: #e87b10;
+      --orange-soft: #fff1e2;
+      --red: #c9364f;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+      font-size: 17px;
+    }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .topbar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding: 12px max(18px, calc((100vw - 1180px) / 2));
+      background: rgba(255,255,255,.96);
+      box-shadow: 0 4px 18px rgba(23,32,51,.06);
+      backdrop-filter: blur(10px);
+    }
+    .topbar h1 { flex: 1; margin: 0; font-size: 22px; }
+    .save-state { color: var(--muted); font-size: 14px; white-space: nowrap; }
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 9px 14px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .btn:hover { border-color: var(--blue); color: var(--blue); }
+    .btn.primary { border-color: var(--blue); background: var(--blue); color: #fff; }
+    .btn.danger:hover { border-color: var(--red); color: var(--red); }
+    main { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 34px 0 70px; }
+    .intro, .activity {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--paper);
+      box-shadow: 0 10px 30px rgba(23,32,51,.05);
+    }
+    .intro { padding: 24px; }
+    .intro-head { display: flex; align-items: flex-start; gap: 18px; }
+    .book-page {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 900;
+    }
+    .intro h2 { margin: 0 0 8px; font-size: 30px; }
+    .intro p { margin: 0; color: var(--muted); line-height: 1.6; }
+    .student-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 2fr; gap: 12px; margin-top: 22px; }
+    label.field { display: grid; gap: 7px; color: var(--muted); font-size: 14px; font-weight: 800; }
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 11px 12px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+    input:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    textarea { min-height: 82px; resize: vertical; line-height: 1.55; }
+    .activity { margin-top: 22px; padding: 24px; }
+    .activity-title { display: grid; grid-template-columns: 46px 1fr; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .activity-number {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
+    }
+    .activity h2 { margin: 0; font-size: 24px; }
+    .hint { margin: 6px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .rule-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .rule-card { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
+    .rule-card h3 { margin: 0; padding: 10px 14px; background: var(--blue-soft); color: var(--blue); font-size: 15px; }
+    .rule-line { display: grid; grid-template-columns: 72px 1fr; align-items: stretch; }
+    .rule-line + .rule-line { border-top: 1px solid var(--line); }
+    .rule-line b { display: grid; place-items: center; background: #f8fafc; color: var(--muted); }
+    .rule-line input { border: 0; border-radius: 0; min-height: 52px; }
+    .logic-grid, .syllogism-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
+    th, td { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 10px; text-align: center; }
+    tr:last-child > * { border-bottom: 0; }
+    tr > *:last-child { border-right: 0; }
+    th { background: #f1f5f9; color: var(--muted); font-size: 15px; }
+    td:first-child { width: 112px; font-weight: 800; }
+    td input, td textarea { border: 0; border-radius: 0; box-shadow: none !important; }
+    .network-editor { display: grid; gap: 10px; }
+    .network-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .network-toolbar .status { flex: 1; min-width: 240px; color: var(--muted); font-size: 14px; text-align: right; }
+    .network-toolbar .btn.active { border-color: var(--orange); background: var(--orange-soft); color: var(--orange); }
+    .network-canvas {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background-color: #fbfdff;
+      background-image: radial-gradient(circle, #d7e0ea 1px, transparent 1px);
+      background-size: 22px 22px;
+      touch-action: none;
+    }
+    .network-canvas svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .network-canvas .net-edge { stroke: #4f7fca; stroke-width: 3; cursor: pointer; }
+    .network-canvas .net-edge:hover, .network-canvas .net-edge.selected { stroke: var(--orange); stroke-width: 5; }
+    .network-canvas marker path { fill: #4f7fca; }
+    .net-edge-label { fill: var(--muted); stroke: #fbfdff; stroke-width: 7px; paint-order: stroke; font-size: 20px; font-weight: 800; text-anchor: middle; cursor: pointer; }
+    .net-edge-label.selected { fill: var(--orange); }
+    .node-layer { position: absolute; inset: 0; }
+    .net-node {
+      position: absolute;
+      display: grid;
+      min-width: 96px;
+      min-height: 54px;
+      place-items: center;
+      transform: translate(-50%,-50%);
+      border: 2px solid #82aaf0;
+      border-radius: 999px;
+      padding: 9px 15px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 800;
+      text-align: center;
+      cursor: grab;
+      user-select: none;
+      box-shadow: 0 4px 12px rgba(23,32,51,.08);
+    }
+    .net-node:active { cursor: grabbing; }
+    .net-node.selected { border-color: var(--orange); box-shadow: 0 0 0 4px var(--orange-soft); }
+    .net-node.connect-source { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft); }
+    .network-empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); text-align: center; pointer-events: none; }
+    .network-empty[hidden] { display: none; }
+    .premise-box { border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .premise-box h3 { margin: 0 0 12px; color: var(--blue); font-size: 18px; }
+    .given { display: grid; gap: 8px; margin-bottom: 12px; }
+    .given p { margin: 0; border-radius: 8px; padding: 10px 12px; background: #f6f8fb; line-height: 1.45; }
+    .save-help {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 18px;
+      margin-top: 22px;
+      border: 1px solid #b9e1d0;
+      border-radius: 14px;
+      padding: 18px 20px;
+      background: var(--green-soft);
+    }
+    .save-help h2 { margin: 0 0 5px; color: var(--green); font-size: 19px; }
+    .save-help p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(12px);
+      border-radius: 10px;
+      padding: 12px 16px;
+      background: var(--ink);
+      color: #fff;
+      pointer-events: none;
+      transition: .2s ease;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    @media (max-width: 850px) {
+      .topbar { flex-wrap: wrap; }
+      .topbar h1 { width: 100%; flex-basis: 100%; }
+      .save-state { margin-right: auto; }
+      .student-grid, .rule-grid, .logic-grid, .syllogism-grid { grid-template-columns: 1fr; }
+      .network-toolbar .status { width: 100%; flex-basis: 100%; text-align: left; }
+      .save-help { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; font-size: 13px; }
+      .topbar, .save-help { display: none; }
+      main { width: 100%; padding: 0; }
+      .intro, .activity { break-inside: avoid; box-shadow: none; margin-top: 12px; padding: 16px; }
+      input, textarea { border-color: #aaa; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1>지식 표현과 추론 연습 활동지</h1>
+    <span class="save-state" id="saveState">입력 대기 중</span>
+    <button class="btn" id="printBtn" type="button">인쇄</button>
+    <button class="btn danger" id="resetBtn" type="button">모두 지우기</button>
+    <button class="btn primary" id="downloadBtn" type="button">작성 파일 저장</button>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="intro-head">
+        <span class="book-page">교과서 p.47</span>
+        <div>
+          <h2>지식을 표현하고 추론해 보기</h2>
+          <p>규칙, 명제 논리, 의미망, 술어 논리로 지식을 표현하고 결론을 추론해 보세요.</p>
+        </div>
+      </div>
+      <div class="student-grid">
+        <label class="field">학년<input data-save="grade" inputmode="numeric" autocomplete="off" /></label>
+        <label class="field">반<input data-save="classNumber" inputmode="numeric" autocomplete="off" /></label>
+        <label class="field">번호<input data-save="studentNumber" inputmode="numeric" autocomplete="off" /></label>
+        <label class="field">이름<input data-save="studentName" autocomplete="name" /></label>
+      </div>
+    </section>
+
+    <section class="activity">
+      <div class="activity-title"><span class="activity-number">1</span><div><h2>IF-THEN 형태의 규칙을 두 개 이상 만들어 보자.</h2><p class="hint">조건은 IF에, 그 조건에서 실행할 행동이나 결과는 THEN에 적으세요.</p></div></div>
+      <div class="rule-grid">
+        <article class="rule-card"><h3>규칙 1</h3><div class="rule-line"><b>IF</b><input data-save="rule1If" placeholder="예: 비가 온다." /></div><div class="rule-line"><b>THEN</b><input data-save="rule1Then" placeholder="예: 우산을 챙긴다." /></div></article>
+        <article class="rule-card"><h3>규칙 2</h3><div class="rule-line"><b>IF</b><input data-save="rule2If" /></div><div class="rule-line"><b>THEN</b><input data-save="rule2Then" /></div></article>
+        <article class="rule-card"><h3>규칙 3 · 선택</h3><div class="rule-line"><b>IF</b><input data-save="rule3If" /></div><div class="rule-line"><b>THEN</b><input data-save="rule3Then" /></div></article>
+      </div>
+    </section>
+
+    <section class="activity">
+      <div class="activity-title"><span class="activity-number">2</span><div><h2>명제를 이용하여 복합 명제를 만들어 보자.</h2><p class="hint">P, Q, R에 명제를 적고 오른쪽 복합 명제를 자연스러운 문장으로 바꾸세요.</p></div></div>
+      <div class="logic-grid">
+        <table aria-label="명제 입력"><thead><tr><th>기호</th><th>명제</th></tr></thead><tbody>
+          <tr><td>P</td><td><input data-save="propP" placeholder="예: 수업을 듣는다." /></td></tr>
+          <tr><td>Q</td><td><input data-save="propQ" placeholder="예: 식사를 한다." /></td></tr>
+          <tr><td>R</td><td><input data-save="propR" placeholder="예: 집에 간다." /></td></tr>
+        </tbody></table>
+        <table aria-label="복합 명제 입력"><thead><tr><th>복합 명제 기호</th><th>복합 명제</th></tr></thead><tbody>
+          <tr><td>NOT P</td><td><input data-save="notP" /></td></tr>
+          <tr><td>P AND Q</td><td><input data-save="pAndQ" /></td></tr>
+          <tr><td>P OR Q</td><td><input data-save="pOrQ" /></td></tr>
+          <tr><td>P → R</td><td><input data-save="pToR" /></td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <section class="activity">
+      <div class="activity-title"><span class="activity-number">3</span><div><h2>의미망을 이용하여 지식을 표현해 보자.</h2><p class="hint">개념을 자유롭게 추가하고 이동한 뒤, 원하는 두 개념을 관계선으로 연결하세요. 노드나 관계를 두 번 누르면 이름을 바꿀 수 있습니다.</p></div></div>
+      <div class="network-editor">
+        <div class="network-toolbar" aria-label="의미망 편집 도구">
+          <button class="btn" id="addNodeBtn" type="button">+ 개념 추가</button>
+          <button class="btn" id="connectBtn" type="button">관계 연결</button>
+          <button class="btn" id="renameGraphBtn" type="button">이름 수정</button>
+          <button class="btn danger" id="deleteGraphBtn" type="button">선택 삭제</button>
+          <button class="btn" id="exampleGraphBtn" type="button">예시 불러오기</button>
+          <button class="btn danger" id="clearGraphBtn" type="button">의미망 지우기</button>
+          <span class="status" id="graphStatus">개념 추가를 눌러 시작하세요.</span>
+        </div>
+        <div class="network-canvas" id="networkCanvas" aria-label="자유롭게 편집하는 의미망 캔버스">
+          <svg viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+            <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" /></marker></defs>
+            <g id="edgeLayer"></g>
+          </svg>
+          <div class="node-layer" id="nodeLayer"></div>
+          <div class="network-empty" id="networkEmpty">아직 개념이 없습니다.<br />‘+ 개념 추가’를 눌러 의미망을 만들어 보세요.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="activity">
+      <div class="activity-title"><span class="activity-number">4</span><div><h2>명제 논리와 술어 논리로 삼단 논법을 추론해 보자.</h2><p class="hint">두 전제로부터 공통으로 도출되는 결론을 각각의 표현 방식으로 적으세요.</p></div></div>
+      <div class="syllogism-grid">
+        <article class="premise-box">
+          <h3>명제 논리로 추론한 삼단 논법</h3>
+          <div class="given"><p><b>명제 1 · A</b><br />모든 인간은 죽음을 피할 수 없다.</p><p><b>명제 2 · B</b><br />소크라테스는 인간이다.</p></div>
+          <label class="field">결론<textarea data-save="propConclusion" placeholder="두 명제로부터 알 수 있는 결론을 적으세요."></textarea></label>
+        </article>
+        <article class="premise-box">
+          <h3>술어 논리로 추론한 삼단 논법</h3>
+          <div class="given"><p><b>술어 논리</b><br />∀x, 인간(x) → 죽음을 피할 수 없다(x)</p><p><b>술어 논리 표현</b><br />인간(소크라테스)</p><p><b>대입</b><br />변수 x에 소크라테스를 대입</p></div>
+          <label class="field">결론<textarea data-save="predicateConclusion" placeholder="술어 논리식으로 결론을 적으세요."></textarea></label>
+        </article>
+      </div>
+    </section>
+
+    <section class="save-help">
+      <div><h2>작성한 내용을 HTML 파일에 넣어 저장할 수 있어요.</h2><p>상단의 <b>작성 파일 저장</b>을 누르면 현재 답이 포함된 새 HTML 파일을 내려받습니다. 그 파일을 다시 열면 답이 복원되며, 파일 자체를 Google Classroom 과제로 제출할 수 있습니다.</p></div>
+      <button class="btn primary" id="downloadBtnBottom" type="button">작성 파일 저장</button>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+  (() => {
+    "use strict";
+    const STORAGE_KEY = "ai-ch1-3-practice-v1:" + location.pathname;
+    const fields = [...document.querySelectorAll("[data-save]")];
+    const saveState = document.getElementById("saveState");
+    const toast = document.getElementById("toast");
+    const networkCanvas = document.getElementById("networkCanvas");
+    const nodeLayer = document.getElementById("nodeLayer");
+    const edgeLayer = document.getElementById("edgeLayer");
+    const networkEmpty = document.getElementById("networkEmpty");
+    const graphStatus = document.getElementById("graphStatus");
+    const connectBtn = document.getElementById("connectBtn");
+    let saveTimer;
+    let graph = { nodes: [], edges: [] };
+    let selected = null;
+    let connectMode = false;
+    let connectingFrom = null;
+    let idCounter = 0;
+    let suppressClickUntil = 0;
+
+    function collect() {
+      const values = {};
+      fields.forEach((field) => { values[field.dataset.save] = field.value; });
+      return {
+        version: 2,
+        updatedAt: new Date().toISOString(),
+        values,
+        graph: JSON.parse(JSON.stringify(graph)),
+      };
+    }
+
+    function apply(data) {
+      if (!data || !data.values) return;
+      fields.forEach((field) => {
+        if (Object.prototype.hasOwnProperty.call(data.values, field.dataset.save)) field.value = data.values[field.dataset.save];
+      });
+      if (data.graph && Array.isArray(data.graph.nodes) && Array.isArray(data.graph.edges)) {
+        graph = JSON.parse(JSON.stringify(data.graph));
+      }
+      renderGraph();
+    }
+
+    function readEmbedded() {
+      const raw = document.documentElement.dataset.savedWork;
+      if (!raw) return null;
+      try { return JSON.parse(decodeURIComponent(raw)); } catch { return null; }
+    }
+
+    function readLocal() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch { return null; }
+    }
+
+    function newest(a, b) {
+      if (!a) return b;
+      if (!b) return a;
+      return String(a.updatedAt || "") >= String(b.updatedAt || "") ? a : b;
+    }
+
+    function autosave() {
+      const data = collect();
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        saveState.textContent = "브라우저에 임시 저장됨";
+      } catch {
+        saveState.textContent = "자동 저장 제한 · 파일 저장을 이용하세요";
+      }
+    }
+
+    function nextId(prefix) {
+      idCounter += 1;
+      return `${prefix}${Date.now().toString(36)}${idCounter.toString(36)}`;
+    }
+
+    function nodeById(id) {
+      return graph.nodes.find((node) => node.id === id);
+    }
+
+    function scheduleSave() {
+      saveState.textContent = "입력 중…";
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(autosave, 450);
+    }
+
+    function setGraphStatus(message) {
+      graphStatus.textContent = message;
+    }
+
+    function selectGraphItem(type, id) {
+      selected = id ? { type, id } : null;
+      renderGraph();
+    }
+
+    function finishConnect() {
+      connectMode = false;
+      connectingFrom = null;
+      connectBtn.classList.remove("active");
+      networkCanvas.classList.remove("connecting");
+      setGraphStatus("노드를 드래그해 이동하거나 두 번 눌러 이름을 바꿀 수 있습니다.");
+      renderGraph();
+    }
+
+    function beginConnect() {
+      if (graph.nodes.length < 2) {
+        flash("관계를 연결하려면 개념이 두 개 이상 필요합니다.");
+        return;
+      }
+      if (connectMode) {
+        finishConnect();
+        return;
+      }
+      connectMode = true;
+      connectingFrom = null;
+      selected = null;
+      connectBtn.classList.add("active");
+      networkCanvas.classList.add("connecting");
+      setGraphStatus("관계가 시작될 개념을 선택하세요.");
+      renderGraph();
+    }
+
+    function handleNodeChoice(id) {
+      if (!connectMode) {
+        selectGraphItem("node", id);
+        return;
+      }
+      if (!connectingFrom) {
+        connectingFrom = id;
+        setGraphStatus(`‘${nodeById(id).label}’에서 연결할 도착 개념을 선택하세요.`);
+        renderGraph();
+        return;
+      }
+      if (connectingFrom === id) {
+        flash("서로 다른 두 개념을 선택하세요.");
+        return;
+      }
+      const relation = prompt("두 개념의 관계를 입력하세요.", "is a");
+      if (relation === null) {
+        finishConnect();
+        return;
+      }
+      graph.edges.push({ id: nextId("e"), from: connectingFrom, to: id, label: relation.trim() || "관계" });
+      scheduleSave();
+      finishConnect();
+    }
+
+    function addNode() {
+      const label = prompt("추가할 개념을 입력하세요.", "");
+      if (label === null) return;
+      const index = graph.nodes.length;
+      const positions = [[50,20],[25,45],[50,48],[75,45],[35,75],[65,75],[18,72],[82,72]];
+      const position = positions[index % positions.length];
+      const offset = Math.floor(index / positions.length) * 3;
+      graph.nodes.push({ id: nextId("n"), label: label.trim() || "새 개념", x: Math.min(92, position[0] + offset), y: Math.min(92, position[1] + offset) });
+      selected = { type: "node", id: graph.nodes.at(-1).id };
+      renderGraph();
+      scheduleSave();
+    }
+
+    function renameItem(type, id) {
+      if (type === "node") {
+        const node = nodeById(id);
+        if (!node) return;
+        const label = prompt("개념 이름을 수정하세요.", node.label);
+        if (label === null) return;
+        node.label = label.trim() || node.label;
+      } else {
+        const edge = graph.edges.find((item) => item.id === id);
+        if (!edge) return;
+        const label = prompt("관계 이름을 수정하세요.", edge.label);
+        if (label === null) return;
+        edge.label = label.trim() || edge.label;
+      }
+      renderGraph();
+      scheduleSave();
+    }
+
+    function renameSelected() {
+      if (!selected) {
+        flash("수정할 개념이나 관계선을 먼저 선택하세요.");
+        return;
+      }
+      renameItem(selected.type, selected.id);
+    }
+
+    function deleteSelected() {
+      if (!selected) {
+        flash("삭제할 개념이나 관계선을 먼저 선택하세요.");
+        return;
+      }
+      if (selected.type === "node") {
+        graph.nodes = graph.nodes.filter((node) => node.id !== selected.id);
+        graph.edges = graph.edges.filter((edge) => edge.from !== selected.id && edge.to !== selected.id);
+      } else {
+        graph.edges = graph.edges.filter((edge) => edge.id !== selected.id);
+      }
+      selected = null;
+      renderGraph();
+      scheduleSave();
+    }
+
+    function loadExample() {
+      if (graph.nodes.length && !confirm("현재 의미망을 지우고 교과서 예시를 불러올까요?")) return;
+      graph = {
+        nodes: [
+          { id: "example-transport", label: "이동 수단", x: 50, y: 20 },
+          { id: "example-bike", label: "자전거", x: 22, y: 50 },
+          { id: "example-bus", label: "버스", x: 50, y: 50 },
+          { id: "example-taxi", label: "택시", x: 78, y: 50 },
+          { id: "example-wheel", label: "바퀴", x: 50, y: 82 },
+        ],
+        edges: [
+          { id: "example-e1", from: "example-bike", to: "example-transport", label: "is a" },
+          { id: "example-e2", from: "example-bus", to: "example-transport", label: "is a" },
+          { id: "example-e3", from: "example-taxi", to: "example-transport", label: "is a" },
+          { id: "example-e4", from: "example-bike", to: "example-wheel", label: "has" },
+          { id: "example-e5", from: "example-bus", to: "example-wheel", label: "has" },
+          { id: "example-e6", from: "example-taxi", to: "example-wheel", label: "has" },
+        ],
+      };
+      selected = null;
+      finishConnect();
+      scheduleSave();
+    }
+
+    function drawEdges() {
+      const ns = "http://www.w3.org/2000/svg";
+      edgeLayer.replaceChildren();
+      graph.edges.forEach((edge) => {
+        const from = nodeById(edge.from);
+        const to = nodeById(edge.to);
+        if (!from || !to) return;
+        const sx0 = from.x * 10, sy0 = from.y * 6, tx0 = to.x * 10, ty0 = to.y * 6;
+        const dx = tx0 - sx0, dy = ty0 - sy0;
+        const distance = Math.hypot(dx, dy) || 1;
+        const gap = Math.min(72, distance / 3);
+        const sx = sx0 + dx / distance * gap;
+        const sy = sy0 + dy / distance * gap;
+        const tx = tx0 - dx / distance * gap;
+        const ty = ty0 - dy / distance * gap;
+        const isSelected = selected?.type === "edge" && selected.id === edge.id;
+        const line = document.createElementNS(ns, "line");
+        line.setAttribute("x1", sx); line.setAttribute("y1", sy); line.setAttribute("x2", tx); line.setAttribute("y2", ty);
+        line.setAttribute("marker-end", "url(#arrow)");
+        line.setAttribute("class", `net-edge${isSelected ? " selected" : ""}`);
+        const text = document.createElementNS(ns, "text");
+        text.setAttribute("x", (sx0 + tx0) / 2);
+        text.setAttribute("y", (sy0 + ty0) / 2 - 10);
+        text.setAttribute("class", `net-edge-label${isSelected ? " selected" : ""}`);
+        text.textContent = edge.label;
+        [line, text].forEach((element) => {
+          element.addEventListener("click", (event) => { event.stopPropagation(); selectGraphItem("edge", edge.id); });
+          element.addEventListener("dblclick", (event) => { event.stopPropagation(); renameItem("edge", edge.id); });
+        });
+        edgeLayer.append(line, text);
+      });
+    }
+
+    function renderGraph() {
+      nodeLayer.replaceChildren();
+      networkEmpty.hidden = graph.nodes.length > 0;
+      graph.nodes.forEach((node) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "net-node";
+        if (selected?.type === "node" && selected.id === node.id) button.classList.add("selected");
+        if (connectingFrom === node.id) button.classList.add("connect-source");
+        button.style.left = `${node.x}%`;
+        button.style.top = `${node.y}%`;
+        button.textContent = node.label;
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          if (performance.now() < suppressClickUntil) return;
+          handleNodeChoice(node.id);
+        });
+        button.addEventListener("dblclick", (event) => {
+          event.stopPropagation();
+          if (!connectMode) renameItem("node", node.id);
+        });
+        button.addEventListener("pointerdown", (event) => {
+          if (connectMode || event.button !== 0) return;
+          event.preventDefault();
+          selected = { type: "node", id: node.id };
+          button.classList.add("selected");
+          const startX = event.clientX, startY = event.clientY;
+          let moved = false;
+          button.setPointerCapture(event.pointerId);
+          const move = (moveEvent) => {
+            const rect = networkCanvas.getBoundingClientRect();
+            if (Math.hypot(moveEvent.clientX - startX, moveEvent.clientY - startY) > 3) moved = true;
+            node.x = Math.max(6, Math.min(94, (moveEvent.clientX - rect.left) / rect.width * 100));
+            node.y = Math.max(7, Math.min(93, (moveEvent.clientY - rect.top) / rect.height * 100));
+            button.style.left = `${node.x}%`;
+            button.style.top = `${node.y}%`;
+            drawEdges();
+          };
+          const up = () => {
+            button.removeEventListener("pointermove", move);
+            button.removeEventListener("pointerup", up);
+            button.removeEventListener("pointercancel", up);
+            if (moved) {
+              suppressClickUntil = performance.now() + 150;
+              scheduleSave();
+            }
+          };
+          button.addEventListener("pointermove", move);
+          button.addEventListener("pointerup", up);
+          button.addEventListener("pointercancel", up);
+        });
+        nodeLayer.appendChild(button);
+      });
+      drawEdges();
+    }
+
+    function flash(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function safeName(text) {
+      return (text || "이름미입력").trim().replace(/[\\/:*?"<>|]/g, "_").replace(/\s+/g, "_");
+    }
+
+    function downloadWork() {
+      const data = collect();
+      autosave();
+      const clone = document.documentElement.cloneNode(true);
+      clone.dataset.savedWork = encodeURIComponent(JSON.stringify(data));
+      clone.querySelectorAll("input, textarea").forEach((field) => {
+        const value = data.values[field.dataset.save] || "";
+        if (field.tagName === "TEXTAREA") field.textContent = value;
+        else field.setAttribute("value", value);
+      });
+      clone.querySelector("#toast")?.classList.remove("show");
+      const html = "<!doctype html>\n" + clone.outerHTML;
+      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const student = document.querySelector('[data-save="studentName"]').value;
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `지식표현과추론_활동지_${safeName(student)}.html`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      flash("현재 답이 포함된 HTML 파일을 저장했습니다.");
+    }
+
+    fields.forEach((field) => field.addEventListener("input", () => {
+      scheduleSave();
+    }));
+
+    document.getElementById("addNodeBtn").addEventListener("click", addNode);
+    connectBtn.addEventListener("click", beginConnect);
+    document.getElementById("renameGraphBtn").addEventListener("click", renameSelected);
+    document.getElementById("deleteGraphBtn").addEventListener("click", deleteSelected);
+    document.getElementById("exampleGraphBtn").addEventListener("click", loadExample);
+    document.getElementById("clearGraphBtn").addEventListener("click", () => {
+      if (graph.nodes.length && !confirm("의미망의 모든 개념과 관계를 지울까요?")) return;
+      graph = { nodes: [], edges: [] };
+      selected = null;
+      finishConnect();
+      scheduleSave();
+    });
+    networkCanvas.addEventListener("click", (event) => {
+      if (event.target === networkCanvas || event.target === nodeLayer || event.target.tagName === "svg") selectGraphItem(null, null);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (!selected || !["Delete", "Backspace"].includes(event.key) || /input|textarea/i.test(document.activeElement.tagName)) return;
+      event.preventDefault();
+      deleteSelected();
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", downloadWork);
+    document.getElementById("downloadBtnBottom").addEventListener("click", downloadWork);
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      if (!confirm("작성한 내용을 모두 지울까요? 저장한 HTML 파일은 영향을 받지 않습니다.")) return;
+      fields.forEach((field) => { field.value = ""; });
+      graph = { nodes: [], edges: [] };
+      selected = null;
+      finishConnect();
+      try { localStorage.removeItem(STORAGE_KEY); } catch {}
+      delete document.documentElement.dataset.savedWork;
+      renderGraph();
+      saveState.textContent = "입력 대기 중";
+      flash("작성 내용을 지웠습니다.");
+    });
+
+    const restored = newest(readEmbedded(), readLocal());
+    if (restored) {
+      apply(restored);
+      saveState.textContent = "저장된 내용을 불러옴";
+    } else {
+      renderGraph();
+    }
+  })();
+  </script>
+</body>
+</html>

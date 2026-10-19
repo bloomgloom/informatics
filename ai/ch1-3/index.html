@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eef0f8" />
+    <title>지식의 표현과 추론</title>
+    <link rel="stylesheet" href="../../common/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p><p class="page-ref">p.43</p>
+          <h1>추론</h1>
+          <p class="subtitle">어떠한 판단을 근거로 삼아 다른 판단을 이끌어 냄</p>
+        </div>
+        <div class="two-column inference-types">
+          <article class="panel inference-card" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>철학과 논리학</h2></header>
+            <p>명확하고 명시적인 논리 전개를 따르는 <strong>연역적 추론</strong>을 중심으로 사고 과정을 탐구한다.</p>
+            <div class="reasoning-chain" aria-label="삼단 논법의 추론 과정">
+              <div><b>대전제</b><span>인간은 죽는다.</span></div>
+              <i>+</i>
+              <div><b>소전제</b><span>소크라테스는 인간이다.</span></div>
+              <i class="flow-arrow">↓</i>
+              <div class="result"><b>결론</b><span>소크라테스는 죽는다.</span></div>
+            </div>
+          </article>
+          <article class="panel inference-card" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>인공지능</h2></header>
+            <p>사실을 입력하면 지식 베이스의 규칙을 비교하여 <strong>새로운 사실</strong>을 논리적으로 만들어 낸다.</p>
+            <div class="ai-inference-flow" aria-label="인공지능의 논리적 추론 과정">
+              <div class="knowledge-box"><b>지식 베이스</b><span>IF A, THEN B</span><span>IF B, THEN F</span></div>
+              <i>+</i>
+              <div><b>관측된 사실</b><span>A 입력</span></div>
+              <i class="flow-arrow">↓</i>
+              <div class="result"><b>추론 결과</b><span>F 출력</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p><p class="page-ref">p.44</p>
+          <h1>추론을 위한 지식 표현</h1>
+          <p class="subtitle">지식 기반의 인공지능을 만들려면 컴퓨터로 지식을 <strong>처리하고 저장</strong>할 수 있어야 한다.</p>
+        </div>
+        <div class="knowledge-process" aria-label="지식 표현과 추론의 흐름">
+          <span>현실의 지식</span><b class="symbolize-step">기호화<span class="logic-source"><i>↑</i><em>논리와 규칙</em></span></b><span>컴퓨터에 저장</span><b>논리적 추론</b><span>새로운 사실</span>
+        </div>
+        <table class="slide-table knowledge-table">
+          <caption>컴퓨터의 지식 표현 방법</caption>
+          <colgroup><col /><col /><col /><col /><col /></colgroup>
+          <thead>
+            <tr><th>명제 논리</th><th>술어 논리</th><th>규칙</th><th>의미망</th><th>지식 그래프</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>기호를 사용하여<br /> <strong>명제</strong>를 표현</td>
+              <td>술어와 변수로 <br />개체의 <strong>속성과 관계</strong>를 표현</td>
+              <td>조건과 행동을 <br /><strong>IF-THEN</strong>으로 표현</td>
+              <td>거미줄 같은 구조로 <br /><strong>개념 간 관계</strong>를 표현</td>
+              <td>현실 정보를<br /> <strong>그래프 형식</strong>으로 표현</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p><p class="page-ref">p.44</p>
+          <h1>명제 논리</h1>
+          <p class="subtitle"><strong>참 또는 거짓</strong>을 판별할 수 있는 문장을 기호와 논리 연산자로 표현한다.</p>
+        </div>
+        <div class="proposition-layout">
+          <article class="panel proposition-symbols" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>명제 기호</h2></header>
+            <dl class="symbol-list">
+              <div><dt>A</dt><dd>비가 온다.</dd></div>
+              <div><dt>B</dt><dd>습도가 높아진다.</dd></div>
+              <div><dt>C</dt><dd>나는 우산을 가지고 있다.</dd></div>
+            </dl>
+          </article>
+          <article class="panel proposition-operators" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>복합 명제</h2></header>
+            <table class="logic-table">
+              <thead><tr><th>연산</th><th>기호</th><th>뜻</th></tr></thead>
+              <tbody>
+                <tr><th>논리 부정</th><td>NOT A</td><td>비가 오지 않는다.</td></tr>
+                <tr><th>논리곱</th><td>A AND B</td><td>비가 오고 습도가 높아진다.</td></tr>
+                <tr><th>논리합</th><td>A OR C</td><td>비가 오거나 우산을 가지고 있다.</td></tr>
+                <tr><th>조건·함축</th><td>A → B</td><td>비가 오면 습도가 높아진다.</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+        <div class="definition-strip"><strong>핵심</strong><span>단순 명제를 논리 연산자로 연결하면 더 복잡한 지식을 표현할 수 있다.</span></div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p><p class="page-ref">p.44~45</p>
+          <h1>술어 논리</h1>
+          <p class="subtitle">문장을 <strong>주어와 술부</strong>로 나누고 변수와 한정자를 도입하여 개체의 속성과 관계를 풍부하게 표현한다.</p>
+        </div>
+        <div class="predicate-layout">
+          <article class="panel predicate-form" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>표현 형식</h2></header>
+            <div class="formula-box"><span>∀x,</span><strong>인간(x)</strong><i>→</i><strong>죽는다(x)</strong></div>
+            <div class="formula-labels"><span>한정자·변수</span><span>술어</span><span>논리 기호</span><span>술어</span></div>
+            <div class="quantifiers soft-box">
+              <p><strong>∀</strong> 모든(전칭 기호)</p>
+              <p><strong>∃</strong> 어떤(존재 기호)</p>
+            </div>
+          </article>
+          <article class="panel predicate-examples" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>표현 예</h2></header>
+            <dl class="expression-list">
+              <div><dt>날씨(오늘, 비)</dt><dd>오늘 비가 온다.</dd></div>
+              <div><dt>사용(나, 오늘, 우산)</dt><dd>나는 오늘 우산을 쓰고 있다.</dd></div>
+              <div><dt>사용(Jane, 어제, 우산)</dt><dd>Jane이 어제 우산을 썼다.</dd></div>
+            </dl>
+          </article>
+        </div>
+        <div class="predicate-inference" data-tone="green">
+          <span>∀x, 인간(x) → 죽는다(x)</span><b>+</b><span>인간(소크라테스)</span><b>→</b><strong>죽는다(소크라테스)</strong>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p><p class="page-ref">p.45</p>
+          <h1>규칙</h1>
+          <p class="subtitle">조건과 행동을 <strong>IF-THEN</strong> 형태로 서술하여 지식을 직관적으로 표현한다.</p>
+        </div>
+        <article class="panel rule-main" data-tone="blue">
+          <header class="section-heading"><span class="section-number">01</span><h2>기본 규칙</h2></header>
+          <div class="if-then-rule">
+            <div><b>IF</b><span>신호등이 녹색불이다.</span></div>
+            <i>→</i>
+            <div><b>THEN</b><span>횡단보도를 건넌다.</span></div>
+          </div>
+        </article>
+        <div class="two-column compound-rules">
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>AND 규칙</h2></header>
+            <div class="rule-lines"><p><b>IF</b> 눈이 충혈되었다.</p><p><b>AND</b> 눈을 깜빡일 때 통증이 느껴진다.</p><p class="then"><b>THEN</b> 결막염을 진단한다.</p></div>
+          </article>
+          <article class="panel" data-tone="green">
+            <header class="section-heading"><span class="section-number">03</span><h2>OR 규칙</h2></header>
+            <div class="rule-lines"><p><b>IF</b> 눈물의 양이 적다.</p><p><b>OR</b> 눈에 피로감을 느낀다.</p><p class="then"><b>THEN</b> 인공 눈물을 처방한다.</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <div class="slide-header">
+          <p class="unit">06</p><p class="page-ref">p.46</p>
+          <h1>의미망</h1>
+          <p class="subtitle">단어나 개념을 간선으로 연결하여 <strong>개념 간의 관계</strong>와 유사성·상하위 개념을 시각적으로 표현한다.</p>
+        </div>
+        <div class="semantic-layout">
+          <article class="panel semantic-notes" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>특징</h2></header>
+            <ul>
+              <li>단어와 개념을 <strong>노드</strong>로 표현</li>
+              <li>개념 사이의 관계를 <strong>간선</strong>으로 연결</li>
+              <li>언어 이해, 정보 검색, 자연어 처리에 활용</li>
+            </ul>
+          </article>
+          <figure class="panel network-figure" data-tone="green">
+            <figcaption>의미망의 예</figcaption>
+            <div class="network-canvas semantic-network" role="img" aria-label="동물, 포유동물, 고양이, 곰, 고래, 물고기의 관계를 나타낸 의미망">
+              <svg viewBox="0 0 1000 520" aria-hidden="true">
+                <defs><marker id="arrow-semantic" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#4f7fca" /></marker></defs>
+                <g marker-end="url(#arrow-semantic)"><path d="M430 250 L278 250"/><path d="M430 250 L518 162"/><path d="M555 125 L766 103"/><path d="M430 250 L746 245"/><path d="M430 250 L710 369"/><path d="M180 405 L218 287"/><path d="M180 405 L416 426"/></g>
+                <g class="edge-labels"><text x="310" y="235">is a</text><text x="480" y="178">is a</text><text x="665" y="92">has</text><text x="615" y="235">is a</text><text x="610" y="338">is a</text><text x="175" y="330">is a</text><text x="300" y="418">lives in</text></g>
+              </svg>
+              <span class="node n-animal">동물</span><span class="node n-mammal">포유동물</span><span class="node n-cat">고양이</span><span class="node n-fur">털</span><span class="node n-bear">곰</span><span class="node n-whale">고래</span><span class="node n-fish">물고기</span><span class="node n-water">물</span>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="7">
+        <div class="slide-header">
+          <p class="unit">07</p><p class="page-ref">p.46</p>
+          <h1>지식 그래프</h1>
+          <p class="subtitle">현실 세계의 사물·사건·개념·인물과 그 관계를 <strong>노드와 간선</strong>으로 저장하여 컴퓨터가 이해하도록 한다.</p>
+        </div>
+        <div class="knowledge-graph-layout">
+          <figure class="panel graph-figure" data-tone="blue">
+            <figcaption>“이순신 장군은 임진왜란 때 무슨 일을 했나요?”</figcaption>
+            <div class="network-canvas knowledge-graph" role="img" aria-label="이순신과 임진왜란, 거북선, 조선, 일본의 관계를 나타낸 지식 그래프">
+              <svg viewBox="0 0 1100 520" aria-hidden="true">
+                <defs><marker id="arrow-graph" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#4f7fca" /></marker></defs>
+                <g marker-end="url(#arrow-graph)"><path d="M260 140 L500 115"/><path d="M280 165 L490 300"/><path d="M230 180 L200 380"/><path d="M550 300 L780 140"/><path d="M560 320 L820 365"/><path d="M820 365 L800 165"/><path d="M235 395 L470 320"/></g>
+                <g class="edge-labels"><text x="365" y="110">직업</text><text x="365" y="238">참전</text><text x="185" y="290">발명</text><text x="655" y="215">국적</text><text x="690" y="358">적</text><text x="820" y="275">침략</text><text x="350" y="375">사용</text></g>
+              </svg>
+              <span class="kg-node k-yi">이순신</span><span class="kg-node k-job">전라도 수군절도사</span><span class="kg-node k-war">임진왜란</span><span class="kg-node k-ship">거북선</span><span class="kg-node k-joseon">조선</span><span class="kg-node k-japan">일본</span>
+            </div>
+          </figure>
+          <article class="panel graph-notes" data-tone="orange">
+            <header class="section-heading"><span class="section-number">01</span><h2>특징과 활용</h2></header>
+            <div class="soft-box"><h3>구조</h3><p>실제 세계의 사실과 관계를 그래프로 연결한다.</p></div>
+            <div class="soft-box"><h3>활용</h3><p>지식 검색, 자동 질문 응답, 정보의 진위 확인에 사용한다.</p></div>
+            <div class="difference-note"><b>의미망과의 차이</b><span>의미망은 개념 연결, 지식 그래프는 <strong>현실의 사실과 관계</strong>에 초점을 둔다.</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <div class="slide-header">
+          <p class="unit">08</p><p class="page-ref">p.48~49</p>
+          <h1>인공지능 추론 시스템</h1>
+          <p class="subtitle">주어진 정보나 사실을 기반으로 논리 표현과 규칙을 적용하여 <strong>새로운 정보나 결론</strong>을 도출한다.</p>
+        </div>
+        <div class="two-column expert-system-grid">
+          <article class="panel expert-system" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>전문가 시스템</h2></header>
+            <p>특정 분야에서 <strong>전문가의 의사 결정 능력</strong>을 흉내 내는 프로그램이다.</p>
+            <div class="expert-flow" aria-label="전문가 시스템의 구성 요소">
+              <span class="person">사용자</span>
+              <div class="query-response" aria-label="사용자의 질의와 시스템의 응답">
+                <b>질의</b><i>→</i><i>←</i><b>응답</b>
+              </div>
+              <span class="system-box">사용자<br />인터페이스</span>
+              <i class="system-link">↔</i>
+              <span class="system-box">추론 엔진</span>
+              <i class="system-link">↔</i>
+              <div class="knowledge-stack">
+                <b>전문가<br />지식</b><i>↓</i><span class="system-box">지식<br />베이스</span>
+              </div>
+            </div>
+            <div class="role-row expert-roles">
+              <span><b>인터페이스</b><small>입력·설명</small></span>
+              <span><b>추론 엔진</b><small>새 사실 추론</small></span>
+              <span><b>지식 베이스</b><small>전문 지식 저장</small></span>
+            </div>
+          </article>
+          <article class="panel expert-limits" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>의의</h2></header>
+            <div class="soft-box success-box">
+              <p>정해진 절차만 실행하지 않고 저장된 지식을 활용하여 사람의 의사 결정과 비슷하게 결론을 낸다.</p>
+            </div>
+            <header class="section-heading"><span class="section-number">03</span><h2>한계</h2></header>
+            <div class="limit-list">
+              <section><p>충분한 양의 <strong>전문가 지식 확보</strong>가 어렵다.</p></section>
+              <section><p>지식 베이스를 <strong>유지하고 관리</strong>하기 어렵다.</p></section>
+              <section><p>한계를 보완하기 위해 데이터에서 지식을 만드는 <strong>기계학습</strong>이 주목받았다.</p></section>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드"><span></span></button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드"><span></span></button>
+    <div class="footer"><div class="dots" aria-label="슬라이드 위치"></div><p><span id="currentSlide">1</span> / <span id="totalSlides">1</span></p></div>
+    <script src="../../common/script.js"></script>
+  </body>
+</html>
