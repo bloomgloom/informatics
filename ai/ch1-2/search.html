@@ -202,6 +202,9 @@
   .edge-inputs label { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 13px; color: var(--muted); font-weight: 700; }
   .edge-inputs input { width: 56px; text-align: center; padding: 5px; }
   .warnline { color: var(--red); font-size: 13px; line-height: 1.5; }
+  .hist { margin: 0; padding-left: 22px; display: grid; gap: 4px; font-size: 14px; line-height: 1.5; }
+  .hist li.rep { color: var(--orange); }
+  .hist .river { color: #6aa7d8; }
   .ftxt { fill: var(--blue); font-size: 12px; font-weight: 800; text-anchor: middle; }
 </style>
 </head>
@@ -720,6 +723,10 @@
       <div class="row" style="margin-bottom:8px">
         <select id="pSel">${PRESETS.map((p, i) => `<option value="${i}">${p.name}</option>`).join("")}<option value="custom">직접 입력</option></select>
       </div>
+      <div class="row" style="margin-bottom:8px; font-size:14px">랜덤 문제
+        <select id="rLevel">${Object.entries(LEVELS).map(([k, L]) => `<option value="${k}" ${k === randLevel ? "selected" : ""}>${L.name} (최소 ${L.min}~${L.max}번)</option>`).join("")}</select>
+        <button class="btn small" id="rGo">만들기</button>
+      </div>
       <div class="row" id="pRow" style="display:none; margin-bottom:8px">
         <input type="text" id="pInput" maxlength="9" placeholder="283104765">
         <button class="btn small" id="pApply">적용</button>
@@ -732,11 +739,17 @@
         <div>초기 상태<br><span id="pStart"></span></div>
         <div>목표 상태<br>${miniHTML(GOAL)}</div>
       </div>
+      <p id="pInfo" style="margin-top:8px"></p>
     </div>`;
   }
   function bindProblem(onApply) {
     const sel = $("pSel"), row = $("pRow");
-    const show = () => ($("pStart").innerHTML = miniHTML(puzzleState));
+    const show = () => {
+      $("pStart").innerHTML = miniHTML(puzzleState);
+      const d = optimalDepth(puzzleState);
+      $("pInfo").innerHTML = d == null ? "이 문제는 14번 넘게 움직여야 풀 수 있어요. 트리가 아주 커져요."
+        : d === 0 ? "초기 상태가 이미 목표 상태예요." : `이 문제는 최소 <b>${d}번</b> 움직이면 풀 수 있어요.`;
+    };
     const idx = PRESETS.findIndex((p) => p.state === puzzleState);
     sel.value = idx >= 0 ? String(idx) : "custom";
     row.style.display = idx >= 0 ? "none" : "";
@@ -754,6 +767,12 @@
       if (!validState(v)) return alert("0부터 8까지 숫자를 한 번씩, 9자리로 입력해 주세요. (빈칸은 0)");
       if (!solvable(v)) return alert("이 배치는 목표 상태로 만들 수 없는 배치예요. 두 타일의 위치를 바꿔 보세요.");
       puzzleState = v; show(); onApply();
+    };
+    $("rLevel").onchange = (e) => (randLevel = e.target.value);
+    $("rGo").onclick = () => {
+      puzzleState = randomPuzzle(randLevel);
+      sel.value = "custom"; row.style.display = ""; $("pInput").value = puzzleState;
+      show(); onApply();
     };
     show();
   }
@@ -990,7 +1009,12 @@
       <div class="card">
         <h2>도로망과 직선거리</h2>
         <svg id="cityGraph" viewBox="0 0 380 250" width="100%"></svg>
-        <div class="row" style="margin:6px 0">지도 <select id="cityPresetSel">${CITY_PRESETS.map((p, i) => `<option value="${i}" ${String(i) === cityPreset ? "selected" : ""}>${p.name}</option>`).join("")}<option value="custom" ${cityPreset === "custom" ? "selected" : ""}>직접 바꾸기</option></select></div>
+        <div class="row" style="margin:6px 0">지도 <select id="cityPresetSel">${CITY_PRESETS.map((p, i) => `<option value="${i}" ${String(i) === cityPreset ? "selected" : ""}>${p.name}</option>`).join("")}<option value="random" ${cityPreset === "random" ? "selected" : ""}>랜덤 지도</option><option value="custom" ${cityPreset === "custom" ? "selected" : ""}>직접 바꾸기</option></select></div>
+        <div class="row" style="margin:6px 0; font-size:14px">
+          <button class="btn small" id="cityRand">새 랜덤 지도</button>
+          <label class="row" style="gap:4px"><input type="checkbox" id="cityTrap" ${cityTrap ? "checked" : ""}> 휴리스틱이 최단을 못 찾는 지도만</label>
+        </div>
+        ${cityPreset === "random" ? `<p style="margin:4px 0">랜덤 지도에서는 h를 그림 위의 <b>e까지 직선거리</b>로 정하고, 도로 비용은 그 도로의 직선거리보다 작지 않게 정해요. 그래서 A*는 항상 최단 경로를 찾아요.</p>` : ""}
         <p style="margin:4px 0"><b>간선 비용</b> (이동 시간)</p>
         <div class="edge-inputs">${EDGE_KEYS.map(([u, v]) => `<label>${u}–${v}<input type="number" min="1" max="30" data-w="${u + v}" value="${city.w[u + v]}"></label>`).join("")}</div>
         <p style="margin:8px 0 4px"><b>휴리스틱값 h</b> (e까지 직선거리)</p>
@@ -1014,9 +1038,12 @@
     $("uHint").onclick = cityHint;
     $("cityPresetSel").onchange = (e) => {
       cityPreset = e.target.value;
-      if (cityPreset !== "custom") city = JSON.parse(JSON.stringify(CITY_PRESETS[Number(cityPreset)]));
+      if (cityPreset === "random") randomCity(cityTrap);
+      else if (cityPreset !== "custom") city = JSON.parse(JSON.stringify(CITY_PRESETS[Number(cityPreset)]));
       pageCity(algo);
     };
+    $("cityRand").onclick = () => { cityPreset = "random"; randomCity(cityTrap); pageCity(algo); };
+    $("cityTrap").onchange = (e) => (cityTrap = e.target.checked);
     side.querySelectorAll("input[data-w], input[data-h]").forEach((inp) => (inp.onchange = () => {
       const v = Math.max(inp.dataset.w ? 1 : 0, Math.round(Number(inp.value) || 0));
       inp.value = v;
@@ -1236,15 +1263,557 @@
   }
 
   /* =========================================================
+   * 0. 탐색 체험: 강 건너기 · 8퍼즐 맞추기 · 퀸 놓기 (직접 풀어 보는 도입 활동)
+   * ========================================================= */
+  const nextCardHTML = (gid, label) => `<div class="card" id="nextCard" style="display:none">
+      <h2>이게 바로 탐색이에요</h2>
+      <p>방금 한 것처럼 <b>상태를 하나씩 바꿔 보고, 안 되면 되돌아가며</b> 목표 상태를 찾는 것이 <b>탐색</b>이에요.</p>
+      <p>컴퓨터는 이걸 어떤 순서로 할까요?</p>
+      <button class="btn" data-go="${gid}">${label} →</button>
+    </div>`;
+  function bindNext() {
+    side.querySelectorAll("[data-go]").forEach((b) => (b.onclick = () => goTo(b.dataset.go)));
+  }
+  function drawSvg(w, h) {
+    view = null;
+    svg.innerHTML = "";
+    const changed = svg.getAttribute("width") !== String(w) || svg.getAttribute("height") !== String(h);
+    svg.setAttribute("width", w);
+    svg.setAttribute("height", h);
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    if (changed) stage.scrollTo({ left: 0, top: 0 });
+  }
+
+  /* ---------- 강 건너기 ---------- */
+  const RV = { F: { e: "🧑‍🌾", n: "농부" }, W: { e: "🐺", n: "늑대" }, G: { e: "🐐", n: "염소" }, C: { e: "🥬", n: "양배추" } };
+  const RK = ["F", "W", "G", "C"];
+  const RI = ["W", "G", "C"];
+  const SIDE_NAME = ["왼쪽", "오른쪽"];
+  const DOCK = [232, 448];
+  let R = null;
+  const rKey = (s) => RK.map((k) => s[k]).join("");
+  const rParse = (k) => ({ F: +k[0], W: +k[1], G: +k[2], C: +k[3] });
+  const rBank = (s, side) => RK.filter((k) => s[k] === side).map((k) => RV[k].e).join(" ") || "—";
+  function rDanger(s) {
+    const away = 1 - s.F, d = [];
+    if (s.W === away && s.G === away) d.push(["W", "G"]);
+    if (s.G === away && s.C === away) d.push(["G", "C"]);
+    return d;
+  }
+
+  function pageRiver() {
+    setLegend([["#2563eb", "border-style:dashed", "클릭하면 배에 타요 / 내려요"], ["#d23b4f", "background:#ffe9ec", "위험!"]]);
+    side.innerHTML = `
+      <div class="message" id="msg"></div>
+      <div class="card">
+        <h2>배에 누구를 태울까요?</h2>
+        <div class="row">
+          ${RI.map((k) => `<button class="btn" data-r="${k}">${RV[k].e} ${RV[k].n}</button>`).join("")}
+        </div>
+        <div class="row" style="margin-top:8px"><button class="btn" id="rGo">⛵ 출발</button></div>
+        <p>농부와 같은 쪽에 있는 것을 클릭하면 배에 타고, 다시 클릭하면 내려요. 아무도 안 태우고 출발하면 농부 혼자 건너요.</p>
+      </div>
+      <div class="row">
+        <button class="btn" id="rUndo">되돌리기</button>
+        <button class="btn" id="rReset">처음부터</button>
+        <span style="flex:1"></span>
+        <span class="score" id="score"></span>
+      </div>
+      ${nextCardHTML("tree", "1. 기본 트리로 가기")}
+      <div class="card">
+        <h2>강 건너기</h2>
+        <p>농부가 늑대, 염소, 양배추를 모두 강 건너편으로 옮겨야 해요.</p>
+        <p>배에는 <b>농부와 하나만</b> 더 탈 수 있어요. 농부가 없으면 <b>늑대는 염소를</b>, <b>염소는 양배추를</b> 먹어 버려요.</p>
+      </div>
+      <div class="card">
+        <h2>지금까지 거친 상태</h2>
+        <ol class="hist" id="rHist"></ol>
+      </div>`;
+    side.querySelectorAll("[data-r]").forEach((b) => (b.onclick = () => rToggle(b.dataset.r)));
+    $("rGo").onclick = rGo;
+    $("rUndo").onclick = rUndo;
+    $("rReset").onclick = resetRiver;
+    bindNext();
+    resetRiver();
+  }
+  function resetRiver() {
+    R = { s: rParse("0000"), load: null, path: ["0000"], seen: new Set(["0000"]), fails: 0, busy: false, danger: null, done: false, animX: null };
+    drawRiver();
+    $("nextCard").style.display = "none";
+    say("모두 <b>왼쪽 강가</b>에 있어요. 오른쪽 강가로 모두 옮겨 보세요.", "", "배에 누구를 태울까요?");
+  }
+  function rToggle(k) {
+    if (!R || R.busy || R.done) return;
+    if (R.s[k] !== R.s.F) return say(`${RV[k].n}는 배와 다른 쪽(${SIDE_NAME[R.s[k]]} 강가)에 있어서 태울 수 없어요.`, "bad", "배와 같은 쪽에 있는 것만 태울 수 있어요.");
+    if (R.load === k) { R.load = null; drawRiver(); return say(`${RV[k].n}를 배에서 내렸어요. 지금은 <b>농부 혼자</b> 타고 있어요.`, "", "⛵ 출발을 누르거나 다른 것을 태워 보세요."); }
+    const was = R.load;
+    R.load = k;
+    drawRiver();
+    say(`${was ? `${RV[was].n}를 내리고 ` : ""}<b>${RV[k].n}</b>를 배에 태웠어요. 배에는 <b>농부와 ${RV[k].n}</b>가 타고 있어요.`, "", "⛵ 출발을 누르면 건너요.");
+  }
+  function rGo() {
+    if (!R || R.busy || R.done) return;
+    const token = R, s = R.s, item = R.load;
+    const t = { ...s, F: 1 - s.F };
+    if (item) t[item] = t.F;
+    R.busy = true;
+    const from = DOCK[s.F], to = DOCK[t.F], t0 = performance.now();
+    say(`배가 ${SIDE_NAME[s.F]} 강가에서 ${SIDE_NAME[t.F]} 강가로 건너가는 중이에요…`, "");
+    const step = (now) => {
+      if (R !== token || !$("rHist")) return;
+      const p = Math.min(1, (now - t0) / 900);
+      R.animX = from + (to - from) * (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
+      drawRiver();
+      if (p < 1) return requestAnimationFrame(step);
+      R.animX = null;
+      rArrive(s, t, item);
+    };
+    requestAnimationFrame(step);
+  }
+  function rArrive(s, t, item) {
+    const token = R;
+    const d = rDanger(t);
+    if (d.length) {
+      R.fails++; R.s = t; R.danger = d.flat();
+      drawRiver();
+      say(`<b>앗!</b> 농부가 없는 ${SIDE_NAME[s.F]} 강가에서 ${d.map(([a, b]) => `${RV[a].n}가 ${RV[b].n}를 먹어 버려요`).join(", ")}.<br>잠시 뒤 바로 전 상태로 되돌릴게요.`, "bad");
+      setTimeout(() => {
+        if (R !== token || !$("rHist")) return;
+        R.s = s; R.load = item; R.danger = null; R.busy = false;
+        drawRiver();
+        say("바로 전 상태로 되돌렸어요. 이 방법은 <b>막다른 길</b>이에요.", "warn", "다른 방법을 생각해 보세요.");
+      }, 1700);
+      return;
+    }
+    const k = rKey(t), again = R.seen.has(k);
+    R.s = t; R.load = null; R.busy = false; R.seen.add(k); R.path.push(k);
+    const moves = R.path.length - 1;
+    if (RK.every((x) => t[x] === 1)) {
+      R.done = true;
+      drawRiver();
+      $("nextCard").style.display = "";
+      say(`<b>성공!</b> <b>${moves}번</b> 건너서 모두 오른쪽 강가에 도착했어요.<br>` +
+        (moves === 7 ? "가장 적은 횟수(7번)로 풀었어요!" : "가장 적은 횟수는 <b>7번</b>이에요. 이미 와 본 상태를 다시 거치지 않으면 더 줄일 수 있어요."), "ok");
+      return;
+    }
+    drawRiver();
+    const who = item ? `${RV[item].n}를 태우고` : "혼자";
+    if (again) say(`농부가 ${who} 건넜어요. 그런데 <b>아까 와 본 상태</b>예요.<br>같은 상태로 돌아오면 한 걸음도 나아가지 않은 거예요.`, "warn", "배에 누구를 태울까요?");
+    else say(`농부가 ${who} ${SIDE_NAME[t.F]} 강가로 건넜어요.${item ? ` ${RV[item].n}는 배에서 내렸어요.` : ""} 새로운 상태가 됐어요.`, "", "배에 누구를 태울까요?");
+  }
+  function rUndo() {
+    if (!R || R.busy || R.path.length < 2) return;
+    R.path.pop(); R.done = false; R.load = null;
+    R.s = rParse(R.path[R.path.length - 1]);
+    $("nextCard").style.display = "none";
+    drawRiver();
+    say("한 단계 되돌렸어요.", "", "배에 누구를 태울까요?");
+  }
+  function drawRiver() {
+    const W = 820, H = 470;
+    drawSvg(W, H);
+    const s = R.s, ready = !R.busy && !R.done;
+    el("rect", { x: 0, y: 0, width: 220, height: 330, fill: "#e6f6ee" }, svg);
+    el("rect", { x: 220, y: 0, width: 380, height: 330, fill: "#d8ecfb" }, svg);
+    el("rect", { x: 600, y: 0, width: 220, height: 330, fill: "#e6f6ee" }, svg);
+    for (let i = 0; i < 4; i++) el("path", { d: `M${240 + (i % 2) * 14},${70 + i * 72} q30,-10 60,0 t60,0 t60,0 t60,0 t60,0`, fill: "none", stroke: "#9cc6ea", "stroke-width": 2 }, svg);
+    const label = (x, t) => (el("text", { x, y: 28, "text-anchor": "middle", "font-size": 16, "font-weight": 800, fill: "#172033" }, svg).textContent = t);
+    label(110, "왼쪽 강가 (출발)"); label(410, "강"); label(710, "오른쪽 강가 (목표)");
+
+    // 강가에 있는 늑대·염소·양배추
+    RI.forEach((k, i) => {
+      if (k === R.load) return;
+      const x = s[k] ? 710 : 110, y = 95 + i * 80;
+      const can = ready && s[k] === s.F;
+      const g = el("g", { class: can ? "node" : "" }, svg);
+      if (R.danger && R.danger.includes(k)) el("circle", { cx: x - 22, cy: y, r: 32, fill: "#ffe9ec", stroke: "#d23b4f", "stroke-width": 4 }, g);
+      else if (can) el("circle", { cx: x - 22, cy: y, r: 30, fill: "#fff", stroke: "#2563eb", "stroke-width": 2, "stroke-dasharray": "5 4" }, g);
+      el("text", { x: x - 22, y: y + 2, "font-size": 36, "text-anchor": "middle", "dominant-baseline": "central" }, g).textContent = RV[k].e;
+      el("text", { x: x + 16, y: y + 5, "font-size": 15, "font-weight": 700, fill: "#5c6b7d" }, g).textContent = RV[k].n;
+      if (can) g.addEventListener("click", () => rToggle(k));
+    });
+
+    // 배와 배에 탄 농부·짐
+    const bx = R.animX != null ? R.animX : DOCK[s.F], by = 175;
+    el("path", { d: `M${bx},${by} h140 l-18,38 h-104 z`, fill: "#b9875a", stroke: "#8a5f3a", "stroke-width": 2 }, svg);
+    el("text", { x: bx + 40, y: by - 18, "font-size": 34, "text-anchor": "middle", "dominant-baseline": "central" }, svg).textContent = RV.F.e;
+    if (R.load) {
+      const g = el("g", { class: ready ? "node" : "" }, svg);
+      el("text", { x: bx + 100, y: by - 18, "font-size": 34, "text-anchor": "middle", "dominant-baseline": "central" }, g).textContent = RV[R.load].e;
+      if (ready) g.addEventListener("click", () => rToggle(R.load));
+    } else {
+      el("circle", { cx: bx + 100, cy: by - 18, r: 17, fill: "none", stroke: "#8a5f3a", "stroke-width": 1.5, "stroke-dasharray": "4 3" }, svg);
+      el("text", { x: bx + 100, y: by - 17, "font-size": 11, "text-anchor": "middle", "dominant-baseline": "central", fill: "#8a5f3a" }, svg).textContent = "빈자리";
+    }
+    el("text", { x: bx + 70, y: by + 26, "font-size": 13, "font-weight": 800, "text-anchor": "middle", fill: "#fff" }, svg).textContent = "배";
+    if (ready) {
+      const g = el("g", { class: "node" }, svg);
+      el("rect", { x: bx + 20, y: by + 50, width: 100, height: 32, rx: 8, fill: "#2563eb" }, g);
+      el("text", { x: bx + 70, y: by + 67, "font-size": 15, "font-weight": 800, "text-anchor": "middle", "dominant-baseline": "central", fill: "#fff" }, g).textContent = s.F ? "← 출발" : "출발 →";
+      g.addEventListener("click", rGo);
+    }
+
+    // 아래쪽 상태 표시: 왼쪽 강가 | 배 | 오른쪽 강가
+    const onBank = (side) => RI.filter((k) => s[k] === side && k !== R.load);
+    const inBoat = ["F", ...(R.load ? [R.load] : [])];
+    const boatWhere = R.animX != null ? `${SIDE_NAME[s.F]} → ${SIDE_NAME[1 - s.F]} 건너는 중` : `${SIDE_NAME[s.F]} 강가에 있음`;
+    const dangerSide = R.danger ? 1 - s.F : -1;
+    const box = (x, w, title, body, bad) => {
+      el("rect", { x, y: 345, width: w, height: 110, rx: 10, fill: bad ? "#ffe9ec" : "#fff", stroke: bad ? "#d23b4f" : "#d6dde6", "stroke-width": bad ? 3 : 1.5 }, svg);
+      el("text", { x: x + w / 2, y: 372, "text-anchor": "middle", "font-size": 15, "font-weight": 800, fill: "#172033" }, svg).textContent = title;
+      body.forEach((line, i) => (el("text", { x: x + w / 2, y: 402 + i * 26, "text-anchor": "middle", "font-size": 15, fill: "#3a4757" }, svg).textContent = line));
+    };
+    const lines = (ks) => (ks.length ? ks.map((k) => `${RV[k].e} ${RV[k].n}`) : ["아무도 없음"]);
+    const two = (arr) => (arr.length > 2 ? [arr.slice(0, 2).join("  "), arr.slice(2).join("  ")] : [arr.join("  ")]);
+    box(10, 250, "왼쪽 강가", two(lines(onBank(0))), dangerSide === 0);
+    box(285, 250, `배 (${boatWhere})`, two(lines(inBoat)), false);
+    box(560, 250, "오른쪽 강가", two(lines(onBank(1))), dangerSide === 1);
+
+    side.querySelectorAll("[data-r]").forEach((b) => {
+      const k = b.dataset.r;
+      b.disabled = !ready || s[k] !== s.F;
+      b.style.borderColor = R.load === k ? "#2563eb" : "";
+      b.style.background = R.load === k ? "#eaf1ff" : "";
+      b.innerHTML = `${RV[k].e} ${RV[k].n}${R.load === k ? " 내리기" : " 태우기"}`;
+    });
+    $("rGo").disabled = !ready;
+    $("rGo").textContent = `⛵ 출발 (${R.load ? `농부 + ${RV[R.load].n}` : "농부 혼자"})`;
+    $("rUndo").disabled = R.busy || R.path.length < 2;
+    $("score").innerHTML = `건넌 횟수 <b>${R.path.length - 1}</b> · 실패 ${R.fails}`;
+    const seenAt = new Map();
+    $("rHist").innerHTML = R.path.map((k, i) => {
+      const st = rParse(k), rep = seenAt.has(k);
+      if (!rep) seenAt.set(k, i);
+      return `<li${rep ? ' class="rep"' : ""}>왼쪽 ${rBank(st, 0)} <span class="river">〰</span> 오른쪽 ${rBank(st, 1)}${rep ? ` <small>(${seenAt.get(k) + 1}번째와 같음)</small>` : ""}</li>`;
+    }).join("");
+  }
+
+  /* ---------- 8퍼즐 맞추기 ---------- */
+  let distTable = null, distBuckets = null;
+  function buildDist() {
+    if (distTable) return;
+    distTable = new Map([[GOAL, 0]]);
+    distBuckets = [[GOAL]];
+    let fr = [GOAL];
+    for (let d = 1; fr.length; d++) {
+      const nx = [];
+      for (const x of fr) for (const m of Object.values(M)) {
+        const r = applyMove(x, m);
+        if (r && !distTable.has(r.state)) { distTable.set(r.state, d); nx.push(r.state); }
+      }
+      if (nx.length) distBuckets[d] = nx;
+      fr = nx;
+    }
+  }
+  const PLAY_LEVELS = { easy: { name: "쉬움", min: 4, max: 6 }, mid: { name: "보통", min: 8, max: 10 }, hard: { name: "어려움", min: 12, max: 16 } };
+  let playLevel = "easy";
+  let P8 = null;
+  let keyHandler = null;
+  document.addEventListener("keydown", (e) => keyHandler && keyHandler(e));
+  function pickPlayPuzzle(level) {
+    buildDist();
+    const L = PLAY_LEVELS[level], pool = [];
+    for (let d = L.min; d <= L.max; d++) pool.push(...(distBuckets[d] || []));
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  function pagePlay8() {
+    setLegend([["#159957", "background:#e6f6ee", "제자리에 있는 타일"], ["#2563eb", "", "움직일 수 있는 타일"], ["#d23b4f", "border-style:dashed", "빈칸"]]);
+    side.innerHTML = `
+      <div class="message" id="msg"></div>
+      <div class="card">
+        <h2>8퍼즐 맞추기</h2>
+        <div class="row">난이도
+          <select id="pLevel">${Object.entries(PLAY_LEVELS).map(([k, L]) => `<option value="${k}" ${k === playLevel ? "selected" : ""}>${L.name} (최소 ${L.min}~${L.max}번)</option>`).join("")}</select>
+          <button class="btn small" id="pNew">새 문제</button>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn" id="pUndo">되돌리기</button>
+        <button class="btn" id="pRestart">처음부터</button>
+        <span style="flex:1"></span>
+        <span class="score" id="score"></span>
+      </div>
+      ${nextCardHTML("puzzle", "2. 8퍼즐 탐색으로 가기")}
+      <div class="card">
+        <h2>규칙</h2>
+        <p><b>빈칸 바로 옆</b>에 있는 숫자 타일을 클릭하면 빈칸으로 미끄러져요.</p>
+        <p>키보드 <b>방향키</b>로 빈칸을 위·아래·왼쪽·오른쪽으로 움직일 수도 있어요.</p>
+        <p>오른쪽의 <b>목표 상태</b>와 똑같이 만들면 성공이에요. 초록색 타일은 이미 제자리에 있어요.</p>
+      </div>`;
+    $("pLevel").onchange = (e) => (playLevel = e.target.value);
+    $("pNew").onclick = () => newPlay8();
+    $("pUndo").onclick = p8Undo;
+    $("pRestart").onclick = () => startPlay8(P8.start);
+    bindNext();
+    keyHandler = (e) => {
+      const dir = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right" }[e.key];
+      if (!dir || !P8 || P8.done || /input|select|textarea/i.test(document.activeElement.tagName)) return;
+      e.preventDefault();
+      const r = applyMove(P8.s, M[dir]);
+      if (r) p8Move(r.state);
+    };
+    if (P8) startPlay8(P8.start); else newPlay8();
+  }
+  function newPlay8() { startPlay8(pickPlayPuzzle(playLevel)); }
+  function startPlay8(start) {
+    buildDist();
+    P8 = { start, s: start, path: [start], seen: new Map([[start, 0]]), revisits: 0, done: false, min: distTable.get(start) };
+    $("nextCard").style.display = "none";
+    drawPlay8();
+    say(`이 문제는 <b>최소 ${P8.min}번</b> 움직이면 풀 수 있어요. 목표 상태와 똑같이 만들어 보세요.`, "", "빈칸 옆의 타일을 클릭하세요.");
+  }
+  function p8Click(i) {
+    if (!P8 || P8.done) return;
+    const b = P8.s.indexOf("0");
+    if (Math.abs(Math.floor(i / 3) - Math.floor(b / 3)) + Math.abs((i % 3) - (b % 3)) !== 1)
+      return say("이 타일은 <b>빈칸 바로 옆</b>이 아니라서 움직일 수 없어요.", "bad", "파란 테두리 타일만 움직일 수 있어요.");
+    const a = P8.s.split("");
+    [a[i], a[b]] = [a[b], a[i]];
+    p8Move(a.join(""));
+  }
+  function p8Move(ns) {
+    P8.s = ns; P8.path.push(ns);
+    const n = P8.path.length - 1;
+    if (ns === GOAL) {
+      P8.done = true;
+      drawPlay8();
+      $("nextCard").style.display = "";
+      say(`<b>성공!</b> <b>${n}번</b> 움직여서 목표 상태를 만들었어요.<br>` +
+        (n === P8.min ? "가장 적은 횟수로 풀었어요!" : `가장 적은 횟수는 <b>${P8.min}번</b>이에요.`), "ok");
+      return;
+    }
+    if (P8.seen.has(ns)) {
+      P8.revisits++;
+      drawPlay8();
+      const at = P8.seen.get(ns);
+      return say(`<b>아까 와 본 상태</b>예요. ${at === 0 ? "처음 상태" : `${at}번 움직였을 때`}와 똑같아요.<br>같은 상태로 돌아오면 한 걸음도 나아가지 않은 거예요.`, "warn", "다른 방향으로 움직여 보세요.");
+    }
+    P8.seen.set(ns, n);
+    drawPlay8();
+    say(`${n}번 움직였어요. 제자리에 있는 타일이 <b>${8 - misplaced(ns)}개</b>예요.`, "", "빈칸 옆의 타일을 클릭하세요.");
+  }
+  function p8Undo() {
+    if (!P8 || P8.path.length < 2) return;
+    P8.path.pop(); P8.done = false;
+    P8.s = P8.path[P8.path.length - 1];
+    $("nextCard").style.display = "none";
+    drawPlay8();
+    say("한 단계 되돌렸어요.", "", "빈칸 옆의 타일을 클릭하세요.");
+  }
+  function drawPlay8() {
+    const cs = 100, ox = 40, oy = 50, gs = 46, gx = ox + 3 * cs + 70, gy = oy + 40;
+    drawSvg(gx + 3 * gs + 40, oy + 3 * cs + 70);
+    const s = P8.s, b = s.indexOf("0");
+    el("text", { x: ox + 1.5 * cs, y: 30, "text-anchor": "middle", "font-size": 16, "font-weight": 800, fill: "#172033" }, svg).textContent = "지금 상태";
+    el("rect", { x: ox - 8, y: oy - 8, width: 3 * cs + 16, height: 3 * cs + 16, rx: 14, fill: "#dfe5ec" }, svg);
+    for (let i = 0; i < 9; i++) {
+      const x = ox + (i % 3) * cs, y = oy + Math.floor(i / 3) * cs;
+      if (s[i] === "0") {
+        el("rect", { x: x + 4, y: y + 4, width: cs - 8, height: cs - 8, rx: 12, fill: "#fff", stroke: "#d23b4f", "stroke-width": 3, "stroke-dasharray": "8 6" }, svg);
+        continue;
+      }
+      const near = !P8.done && Math.abs(Math.floor(i / 3) - Math.floor(b / 3)) + Math.abs((i % 3) - (b % 3)) === 1;
+      const ok = s[i] === GOAL[i];
+      const g = el("g", { class: "node" }, svg);
+      el("rect", { x: x + 4, y: y + 4, width: cs - 8, height: cs - 8, rx: 12, fill: ok ? "#e6f6ee" : "#fff", stroke: near ? "#2563eb" : ok ? "#159957" : "#c3ccd7", "stroke-width": near ? 4 : 2 }, g);
+      el("text", { x: x + cs / 2, y: y + cs / 2 + 2, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 42, "font-weight": 800, fill: "#172033" }, g).textContent = s[i];
+      g.addEventListener("click", () => p8Click(i));
+    }
+    el("text", { x: ox + 1.5 * cs, y: oy + 3 * cs + 40, "text-anchor": "middle", "font-size": 15, "font-weight": 700, fill: "#5c6b7d" }, svg).textContent = `제자리에 있는 타일 ${8 - misplaced(s)} / 8`;
+    el("text", { x: gx + 1.5 * gs, y: gy - 14, "text-anchor": "middle", "font-size": 15, "font-weight": 800, fill: "#172033" }, svg).textContent = "목표 상태";
+    for (let i = 0; i < 9; i++) {
+      const x = gx + (i % 3) * gs, y = gy + Math.floor(i / 3) * gs;
+      if (GOAL[i] === "0") { el("rect", { x: x + 2, y: y + 2, width: gs - 4, height: gs - 4, rx: 6, fill: "#fff", stroke: "#c3ccd7", "stroke-dasharray": "4 3" }, svg); continue; }
+      el("rect", { x: x + 2, y: y + 2, width: gs - 4, height: gs - 4, rx: 6, fill: "#eef2f7", stroke: "#c3ccd7" }, svg);
+      el("text", { x: x + gs / 2, y: y + gs / 2 + 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 20, "font-weight": 800, fill: "#172033" }, svg).textContent = GOAL[i];
+    }
+    $("pUndo").disabled = P8.path.length < 2;
+    $("score").innerHTML = `움직인 횟수 <b>${P8.path.length - 1}</b> · 최소 ${P8.min}번 · 다시 온 상태 ${P8.revisits}번`;
+  }
+
+  /* ---------- 퀸 놓기 ---------- */
+  const Q_SOL = { 4: 2, 5: 10, 6: 4, 8: 92 };
+  let qSize = 4;
+  let Q = null;
+  const qAttacked = (r, c) => Q.cols.some((qc, qr) => qc === c || Math.abs(qc - c) === Math.abs(qr - r));
+  const qSafeInRow = (r) => [...Array(Q.n).keys()].filter((c) => !qAttacked(r, c));
+  const qPrefix = () => Q.cols.join(",");
+  function pageQueens() {
+    setLegend([["#2563eb", "", "지금 놓을 줄"], ["#d23b4f", "background:#ffe9ec", "공격받는 칸"], ["#9aa7b6", "", "✕ 이미 해 본 칸"]]);
+    side.innerHTML = `
+      <div class="message" id="msg"></div>
+      <div class="row">
+        <span class="row" style="gap:4px">판 크기
+          <select id="qSize">${[4, 5, 6, 8].map((n) => `<option value="${n}" ${n === qSize ? "selected" : ""}>${n}×${n}</option>`).join("")}</select>
+        </span>
+        <button class="btn" id="qUndo">되돌리기</button>
+        <button class="btn" id="qReset">처음부터</button>
+      </div>
+      <div class="row"><span class="score" id="score"></span></div>
+      ${nextCardHTML("tree", "1. 기본 트리로 가기")}
+      <div class="card">
+        <h2>퀸 놓기</h2>
+        <p>체스의 퀸은 <b>가로, 세로, 대각선</b> 방향으로 몇 칸이든 공격해요.</p>
+        <p>판에 퀸을 줄 수만큼 놓되, <b>서로 공격하지 않게</b> 놓아 보세요. 맨 위 줄부터 <b>한 줄에 하나씩</b> 놓아요.</p>
+        <p>더 놓을 칸이 없으면 <b>되돌리기</b>로 마지막 퀸을 빼고 다른 칸을 시도해요. 마지막 퀸을 클릭해도 빠져요.</p>
+      </div>`;
+    $("qSize").onchange = (e) => { qSize = Number(e.target.value); resetQueens(); };
+    $("qUndo").onclick = qUndo;
+    $("qReset").onclick = resetQueens;
+    bindNext();
+    resetQueens();
+  }
+  function resetQueens() {
+    Q = { n: qSize, cols: [], tried: new Map(), places: 0, backs: 0, done: false };
+    $("nextCard").style.display = "none";
+    drawQueens();
+    say(`${qSize}×${qSize} 판에 퀸 <b>${qSize}개</b>를 서로 공격하지 않게 놓아 보세요.`, "", "1번째 줄에서 퀸을 놓을 칸을 클릭하세요.");
+  }
+  function qClick(r, c) {
+    if (Q.done && !(r === Q.cols.length - 1 && Q.cols[r] === c)) return;
+    if (r === Q.cols.length - 1 && Q.cols[r] === c) return qUndo();
+    if (r !== Q.cols.length) return say(`위 줄부터 한 줄에 하나씩 놓아요. 지금은 <b>${Q.cols.length + 1}번째 줄</b> 차례예요.`, "bad");
+    if (qAttacked(r, c)) return say("이 칸은 이미 놓인 퀸에게 <b>공격받는 칸</b>이에요. 빨간 칸에는 놓을 수 없어요.", "bad", `${r + 1}번째 줄의 다른 칸을 골라 보세요.`);
+    const key = qPrefix();
+    if (!Q.tried.has(key)) Q.tried.set(key, new Set());
+    Q.tried.get(key).add(c);
+    Q.cols.push(c); Q.places++;
+    if (Q.cols.length === Q.n) {
+      Q.done = true;
+      drawQueens();
+      $("nextCard").style.display = "";
+      say(`<b>성공!</b> 퀸 ${Q.n}개를 서로 공격하지 않게 놓았어요.<br>퀸을 <b>${Q.places}번</b> 놓고 <b>${Q.backs}번</b> 되돌렸어요. ${Q.n}×${Q.n} 판의 답은 모두 ${Q_SOL[Q.n]}가지예요.`, "ok");
+      return;
+    }
+    drawQueens();
+    const nr = Q.cols.length;
+    if (!qSafeInRow(nr).length) say(`<b>막혔어요!</b> ${nr + 1}번째 줄에는 퀸을 놓을 칸이 하나도 없어요.`, "warn", "되돌리기로 마지막 퀸을 다른 칸으로 옮겨 보세요.");
+    else say(`${r + 1}번째 줄에 퀸을 놓았어요.`, "", `${nr + 1}번째 줄에서 퀸을 놓을 칸을 클릭하세요.`);
+  }
+  function qUndo() {
+    if (!Q || !Q.cols.length) return;
+    Q.cols.pop(); Q.backs++; Q.done = false;
+    $("nextCard").style.display = "none";
+    drawQueens();
+    const r = Q.cols.length, tried = Q.tried.get(qPrefix()) || new Set();
+    const left = qSafeInRow(r).filter((c) => !tried.has(c));
+    if (left.length) say(`마지막 퀸을 뺐어요. ${r + 1}번째 줄에서 <b>아직 안 해 본 칸</b>(✕가 없는 칸)을 시도해 보세요.`, "");
+    else say(`${r + 1}번째 줄에서 놓을 수 있는 칸은 <b>모두 해 봤어요</b>. 한 번 더 되돌려야 해요.`, "warn");
+  }
+  function drawQueens() {
+    const n = Q.n, cs = n <= 4 ? 84 : n <= 6 ? 66 : 54, ox = 110, oy = 30;
+    drawSvg(ox + n * cs + 40, oy + n * cs + 40);
+    const cur = Q.cols.length, tried = Q.tried.get(qPrefix()) || new Set();
+    const blocked = !Q.done && cur < n && !qSafeInRow(cur).length;
+    for (let r = 0; r < n; r++) {
+      el("text", { class: "depth-t", x: 14, y: oy + r * cs + cs / 2 + 4 }, svg).textContent = `${r + 1}번째 줄`;
+      for (let c = 0; c < n; c++) {
+        const x = ox + c * cs, y = oy + r * cs;
+        const g = el("g", { class: "node" }, svg);
+        el("rect", { x, y, width: cs, height: cs, fill: (r + c) % 2 ? "#e3d6c2" : "#f6f0e6" }, g);
+        const hasQ = Q.cols[r] === c;
+        if (!hasQ && r >= cur && qAttacked(r, c)) el("rect", { x, y, width: cs, height: cs, fill: "#ffe9ec", opacity: 0.85 }, g);
+        if (hasQ) el("text", { x: x + cs / 2, y: y + cs / 2 + 2, "font-size": cs * 0.62, "text-anchor": "middle", "dominant-baseline": "central", fill: "#172033" }, g).textContent = "♛";
+        else if (r === cur && tried.has(c)) el("text", { x: x + cs / 2, y: y + cs / 2 + 1, "font-size": cs * 0.4, "text-anchor": "middle", "dominant-baseline": "central", fill: "#9aa7b6", "font-weight": 800 }, g).textContent = "✕";
+        g.addEventListener("click", () => qClick(r, c));
+      }
+    }
+    el("rect", { x: ox, y: oy, width: n * cs, height: n * cs, fill: "none", stroke: "#8a7a62", "stroke-width": 2 }, svg);
+    if (!Q.done && cur < n) el("rect", { x: ox - 3, y: oy + cur * cs - 3, width: n * cs + 6, height: cs + 6, fill: "none", stroke: blocked ? "#d23b4f" : "#2563eb", "stroke-width": 4, rx: 4 }, svg);
+    $("qUndo").disabled = !Q.cols.length;
+    $("score").innerHTML = `퀸을 놓은 횟수 <b>${Q.places}</b> · 되돌린 횟수 <b>${Q.backs}</b>`;
+  }
+
+  /* =========================================================
+   * 랜덤 문제: 8퍼즐 · 도시 방문
+   * ========================================================= */
+  const depthCache = new Map();
+  function optimalDepth(s, cap = 14) {
+    if (depthCache.has(s)) return depthCache.get(s);
+    let ans = s === GOAL ? 0 : null;
+    if (ans === null) {
+      let fr = [s];
+      const seen = new Set([s]);
+      outer: for (let d = 1; d <= cap; d++) {
+        const nx = [];
+        for (const x of fr) for (const m of Object.values(M)) {
+          const r = applyMove(x, m);
+          if (!r || seen.has(r.state)) continue;
+          if (r.state === GOAL) { ans = d; break outer; }
+          seen.add(r.state); nx.push(r.state);
+        }
+        fr = nx;
+      }
+    }
+    depthCache.set(s, ans);
+    return ans;
+  }
+  const LEVELS = { easy: { name: "쉬움", min: 2, max: 3 }, mid: { name: "보통", min: 4, max: 5 }, hard: { name: "어려움", min: 6, max: 7 } };
+  let randLevel = "easy";
+  function randomPuzzle(level) {
+    const L = LEVELS[level];
+    for (let t = 0; t < 500; t++) {
+      let s = GOAL, prev = null;
+      const k = L.max + Math.floor(Math.random() * 4);
+      for (let i = 0; i < k; i++) {
+        const opts = Object.values(M).map((m) => applyMove(s, m)).filter((r) => r && r.state !== prev);
+        prev = s;
+        s = opts[Math.floor(Math.random() * opts.length)].state;
+      }
+      const d = optimalDepth(s);
+      if (d != null && d >= L.min && d <= L.max && s !== puzzleState) return s;
+    }
+    return PRESETS[0].state;
+  }
+
+  // 도시 방문: h = 그림 위 e까지의 직선거리, 도로 비용 ≥ 그 도로의 직선거리 → h가 항상 일관적
+  const CITY_SCALE = 20;
+  let cityTrap = true;
+  const cityDist = (u, v) => Math.hypot(CITY_POS[u][0] - CITY_POS[v][0], CITY_POS[u][1] - CITY_POS[v][1]) / CITY_SCALE;
+  function simCity(algo) {
+    const key = (n) => (algo === "ucs" ? n.g : algo === "greedy" ? n.h : n.g + n.h);
+    const open = [{ l: "a", g: 0, h: city.h.a, p: null }], closed = [];
+    while (open.length) {
+      const n = open.reduce((m, x) => (key(x) < key(m) ? x : m), open[0]);
+      open.splice(open.indexOf(n), 1);
+      if (n.l === "e") return n.g;
+      for (const [v, w] of cityNeighbors(n.l)) {
+        if (n.p && v === n.p.l) continue;
+        if (closed.some((c) => c.l === v)) continue;
+        const g = n.g + w, same = open.find((o) => o.l === v);
+        if (same && same.g <= g) continue;
+        if (same) open.splice(open.indexOf(same), 1);
+        open.push({ l: v, g, h: city.h[v], p: n });
+      }
+      closed.push(n);
+    }
+    return Infinity;
+  }
+  function randomCity(trap) {
+    const h = { e: 0 };
+    "abcd".split("").forEach((k) => (h[k] = Math.floor(cityDist(k, "e"))));
+    let made = null;
+    for (let t = 0; t < 500; t++) {
+      const w = {};
+      EDGE_KEYS.forEach(([u, v]) => (w[u + v] = Math.ceil(cityDist(u, v)) + Math.floor(Math.random() * 5)));
+      city = { w, h: { ...h } };
+      made = city;
+      if (!trap || simCity("greedy") > cityShortest().a) return made;
+    }
+    return made;
+  }
+
+  /* =========================================================
    * 메뉴 (2단계)
    * ========================================================= */
   const GROUPS = [
+    { id: "intro", name: "0. 탐색 체험", subs: [["river", "강 건너기"], ["play8", "8퍼즐 맞추기"], ["queens", "퀸 놓기"]], open: (a) => (a === "river" ? pageRiver() : a === "play8" ? pagePlay8() : pageQueens()) },
     { id: "tree", name: "1. 기본 트리 (a–f)", subs: [["bfs", "너비 우선"], ["dfs", "깊이 우선"]], open: pageTree },
     { id: "puzzle", name: "2. 8퍼즐", subs: [["build", "탐색 트리 만들기"], ["bfs", "너비 우선"], ["dfs", "깊이 우선"], ["greedy", "휴리스틱(탐욕)"], ["astar", "A*"]],
       open: (a) => (a === "build" ? pageBuild() : pagePuzzleSearch(a)) },
     { id: "city", name: "3. 도시 방문 경로", subs: [["ucs", "균일 비용"], ["greedy", "휴리스틱(탐욕)"], ["astar", "A*"]], open: pageCity },
   ];
-  let curGroup = GROUPS[0], curSub = "bfs";
+  let curGroup = GROUPS[0], curSub = GROUPS[0].subs[0][0];
   const lastSub = {};
 
   function drawMenu() {
@@ -1258,7 +1827,18 @@
     }));
     $("subs").querySelectorAll("[data-s]").forEach((b) => (b.onclick = () => { curSub = b.dataset.s; open(); }));
   }
-  function open() { drawMenu(); curGroup.open(curSub); }
+  function open() {
+    keyHandler = null;
+    drawMenu();
+    ["zoomIn", "zoomOut", "zoomFit"].forEach((id) => ($(id).style.display = curGroup.id === "intro" ? "none" : ""));
+    curGroup.open(curSub);
+  }
+  function goTo(gid) {
+    lastSub[curGroup.id] = curSub;
+    curGroup = GROUPS.find((g) => g.id === gid);
+    curSub = lastSub[gid] || curGroup.subs[0][0];
+    open();
+  }
   open();
 })();
 </script>
