@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로젝트 데이터 찾기와 주제·특징·타깃 정하기</title>
+<meta name="description" content="인공지능 프로젝트에서 데이터를 구하고, 주제를 정하고, 특징과 타깃을 고르는 안내서">
+<!-- 글꼴은 인터넷이 없으면 시스템 글꼴로 자동 대체됩니다 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --paper:#F3F5F3; --surface:#fff; --ink:#17212B; --muted:#5B6A74; --line:#DBE1DF;
+  --reg:#17607F; --cls:#6B4A9C; --clu:#87641A; --shared:#4A5860; --nn:#9C3D54;
+  --bar:56px;
+  --sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"D2Coding",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:calc(var(--bar) + 16px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:15.5px;line-height:1.65;-webkit-text-size-adjust:100%}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px 80px}
+a{color:var(--reg)}
+a:focus-visible,.copy:focus-visible{outline:2px solid var(--reg);outline-offset:2px}
+code{font-family:var(--mono);font-size:.92em}
+p code,li code,td code{background:#E9EEEC;padding:1px 5px;border-radius:4px}
+
+/* ---------- 머리말 ---------- */
+.hero{padding:50px 0 22px}
+.hero .kicker{margin:0 0 8px;font-size:13px;font-weight:650;color:var(--muted)}
+.hero h1{margin:0;font-size:clamp(24px,3.4vw,36px);line-height:1.25;letter-spacing:-.02em;
+  font-weight:700;word-break:keep-all;text-wrap:balance}
+.hero p.lead{margin:12px 0 0;color:var(--muted);max-width:70ch;word-break:keep-all}
+
+/* ---------- 고정 막대 ---------- */
+.bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;height:var(--bar);
+  background:var(--paper);background:color-mix(in srgb,var(--paper) 92%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-bottom:18px}
+.jump{display:flex;flex-wrap:nowrap;gap:4px;font-size:13.5px;min-width:0;
+  overflow-x:auto;scrollbar-width:none}
+.jump::-webkit-scrollbar{display:none}
+.jump a{display:flex;gap:6px;align-items:baseline;white-space:nowrap;color:var(--muted);
+  text-decoration:none;padding:4px 9px;border-radius:6px}
+.jump a:hover{background:var(--surface);color:var(--ink)}
+.jump b{font-variant-numeric:tabular-nums;color:var(--ink)}
+
+/* ---------- 단계와 칸 ---------- */
+.stage{background:var(--ink);color:#fff;display:flex;align-items:baseline;gap:12px;
+  padding:10px 18px;border-radius:10px 10px 0 0;margin-top:34px}
+.stage-num{font-variant-numeric:tabular-nums;font-size:12.5px;font-weight:700;opacity:.55}
+.stage h2{margin:0;font-size:16px;font-weight:650}
+.panel{background:var(--line);border:1px solid var(--line);border-top:0;
+  border-radius:0 0 10px 10px;overflow:clip;display:grid;gap:1px}
+.block{background:var(--surface);padding:18px 20px;min-width:0}
+.block h3{margin:0 0 8px;font-size:16px;font-weight:700;display:flex;gap:9px;align-items:baseline}
+.block h3 .n{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px;font-weight:600}
+.block p{margin:8px 0;word-break:keep-all}
+.block ul,.block ol{margin:8px 0;padding-left:1.3em}
+.block li{margin:3px 0;word-break:keep-all}
+.block h4{margin:16px 0 6px;font-size:14px;font-weight:700;color:var(--tone,var(--shared))}
+.note{margin:10px 0 0;font-size:13.2px;color:var(--muted);line-height:1.6;word-break:keep-all}
+
+.tone-reg{--tone:var(--reg)} .tone-cls{--tone:var(--cls)}
+.tone-clu{--tone:var(--clu)} .tone-shared{--tone:var(--shared)} .tone-nn{--tone:var(--nn)}
+.tag{display:inline-block;font-size:12px;font-weight:650;padding:1px 8px;border-radius:999px;
+  color:var(--tone);background:color-mix(in srgb,var(--tone) 10%,#fff);
+  border:1px solid color-mix(in srgb,var(--tone) 30%,#fff);white-space:nowrap}
+
+/* ---------- 표 ---------- */
+.tbl{overflow-x:auto;margin:10px 0;border:1px solid var(--line);border-radius:8px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;
+  word-break:keep-all}
+th{background:#FAFBFA;font-size:13px;color:var(--muted);font-weight:650;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+
+/* ---------- 카드 ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:10px 0}
+.card{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:#FCFDFC;min-width:0}
+.card h4{margin:0 0 4px}
+.card p{margin:4px 0;font-size:14px}
+
+/* ---------- 체크리스트 ---------- */
+.check{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.check > div{border-radius:8px;padding:12px 14px;border:1px solid var(--line)}
+.check .ok{background:color-mix(in srgb,var(--reg) 5%,#fff)}
+.check .no{background:color-mix(in srgb,var(--nn) 5%,#fff)}
+.check h4{margin:0 0 6px}
+.check ul{margin:0}
+
+/* ---------- 흐름 ---------- */
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:12px 0}
+.flow .step{flex:1 1 170px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#FCFDFC}
+.flow .step b{display:block;font-size:12.5px;color:var(--muted);font-weight:650}
+.flow .step span{font-size:14.5px}
+.flow .arrow{align-self:center;color:var(--muted);font-weight:700}
+
+/* ---------- 코드 ---------- */
+.code-wrap{position:relative;margin:10px 0}
+.code{margin:0;padding:11px 13px;overflow-x:auto;font-family:var(--mono);
+  font-size:12.6px;line-height:1.62;border-radius:7px;min-width:0;
+  background:#F7F8F8;border-left:2px solid var(--line);
+  background:color-mix(in srgb,var(--tone,var(--shared)) 5%,#fff);
+  border-left:2px solid color-mix(in srgb,var(--tone,var(--shared)) 40%,#fff)}
+.code code{white-space:pre;font-size:inherit;background:none;padding:0}
+.out{margin:6px 0 10px;padding:9px 13px;overflow-x:auto;font-family:var(--mono);font-size:12.2px;
+  line-height:1.55;border-radius:7px;background:#FAFBFA;border:1px dashed var(--line);color:var(--muted)}
+.out code{white-space:pre;background:none;padding:0;font-size:inherit}
+.t-com{color:var(--muted)}
+.t-str{color:#8A4B12}
+.t-kw{color:var(--tone,var(--shared));font-weight:600}
+.t-num{color:#8A4B12}
+.t-fn{color:var(--ink);font-weight:600}
+.copy{position:absolute;top:6px;right:6px;font:inherit;font-size:11px;font-weight:600;
+  padding:3px 9px;border-radius:5px;cursor:pointer;background:var(--surface);
+  color:var(--muted);border:1px solid var(--line);opacity:0;transition:opacity .12s}
+.code-wrap:hover .copy,.copy:focus-visible{opacity:1}
+.copy.done{color:var(--tone,var(--shared));border-color:var(--tone,var(--shared))}
+
+/* ---------- 원-핫 그림 ---------- */
+.match{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin:12px 0}
+.vec{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#FCFDFC;min-width:0}
+.vec .cap{font-size:12.5px;color:var(--muted);font-weight:650;margin-bottom:6px}
+.vec table{font-size:13px}
+.vec td,.vec th{padding:5px 8px;text-align:center}
+.vec .hi{background:color-mix(in srgb,var(--nn) 12%,#fff);font-weight:700;color:var(--nn)}
+.match .mid{color:var(--muted);font-size:13px;text-align:center;font-weight:650}
+
+.quote{margin:10px 0;padding:10px 14px;border-left:3px solid var(--reg);background:#F7FAFA;
+  font-size:14.2px;word-break:keep-all}
+.quote b{font-family:var(--mono);font-size:13px}
+
+/* ---------- 좁은 화면 ---------- */
+@media (max-width:720px){
+  .wrap{padding-left:0;padding-right:0}
+  .hero{padding:36px 16px 18px}
+  .bar{padding:0 12px}
+  .stage{border-radius:0}
+  .panel{border-left:0;border-right:0;border-radius:0}
+  .block{padding:16px}
+  .check{grid-template-columns:1fr}
+  .match{grid-template-columns:1fr}
+  .match .mid{transform:rotate(90deg)}
+  .copy{opacity:1}
+  .code{font-size:11.8px}
+  .tbl table:has(th:nth-child(4)){min-width:640px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- 인쇄 ---------- */
+@media print{
+  .bar,.copy{display:none}
+  body{background:#fff;font-size:10pt}
+  .stage{background:#eee;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .block{break-inside:avoid}
+  .tbl{overflow:visible}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker">인공지능 기초 · 4. 인공지능 프로젝트 · 참고 자료</p>
+  <h1>프로젝트 데이터 찾기와 주제·특징·타깃 정하기</h1>
+  <p class="lead">프로젝트를 시작할 때 막히는 세 가지, 즉 데이터는 어디서 구하는지, 주제는 어떻게 좁히는지, 무엇을 넣고 무엇을 맞힐지를 차례로 정리했습니다. 코드는 2단원 실습과 같은 절차를 따릅니다.</p>
+</header>
+
+<div class="bar">
+  <nav class="jump" aria-label="이 페이지의 단계">
+    <a href="#stage-1"><b>1</b>데이터 구하는 곳</a>
+    <a href="#stage-2"><b>2</b>주제 정하기</a>
+    <a href="#stage-3"><b>3</b>특징·타깃 정하기</a>
+    <a href="#stage-4"><b>4</b>회귀·분류·군집 바꿔 보기</a>
+    <a href="#stage-5"><b>5</b>신경망 분류의 타깃</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ======================= 1 ======================= -->
+<div class="stage" id="stage-1"><span class="stage-num">1</span><h2>데이터 구하는 곳</h2></div>
+<section class="panel">
+
+<div class="block tone-shared" id="d-quick">
+  <h3><span class="n">1-1</span>바로 써 볼 수 있는 데이터</h3>
+  <p>가입이나 다운로드 없이 코드 한 줄로 불러올 수 있는 데이터입니다. 주제를 정하기 전에 모델을 먼저 돌려 보거나, 내 데이터가 준비되기 전에 절차를 연습할 때 좋습니다.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>출처</th><th>데이터</th><th>크기</th><th>맞힐 것(예)</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="5"><a href="https://github.com/mwaskom/seaborn-data">seaborn 내장</a></td><td><code>penguins</code> 펭귄</td><td>344행 × 7열</td><td>종(분류), 몸무게(회귀)</td></tr>
+      <tr><td><code>titanic</code> 타이타닉 승객</td><td>891행 × 15열</td><td>생존 여부(분류)</td></tr>
+      <tr><td><code>iris</code> 붓꽃</td><td>150행 × 5열</td><td>품종(분류)</td></tr>
+      <tr><td><code>mpg</code> 자동차 연비</td><td>398행 × 9열</td><td>연비(회귀)</td></tr>
+      <tr><td><code>tips</code> 식당 팁</td><td>244행 × 7열</td><td>팁 금액(회귀)</td></tr>
+      <tr><td rowspan="3"><a href="https://scikit-learn.org/stable/datasets/toy_dataset.html">scikit-learn 내장</a></td><td><code>load_wine</code> 와인 성분</td><td>178행 × 14열</td><td>와인 종류(분류)</td></tr>
+      <tr><td><code>load_breast_cancer</code> 유방암 진단</td><td>569행 × 31열</td><td>악성·양성(분류)</td></tr>
+      <tr><td><code>load_diabetes</code> 당뇨 진행</td><td>442행 × 11열</td><td>1년 뒤 진행 정도(회귀)</td></tr>
+      <tr><td><a href="https://archive.ics.uci.edu">UCI ML Repository</a></td><td>기계학습 연구용 데이터 수백 종 (2단원 전복 데이터도 여기 있음)</td><td>데이터마다 다름</td><td>데이터마다 다름</td></tr>
+    </tbody>
+  </table></div>
+  <div class="code-wrap">
+<pre class="code"><code><span class="t-kw">import</span> seaborn <span class="t-kw">as</span> sns
+df = sns.<span class="t-fn">load_dataset</span>(<span class="t-str">'penguins'</span>)      <span class="t-com"># 인터넷 연결 필요</span>
+sns.<span class="t-fn">get_dataset_names</span>()                 <span class="t-com"># 불러올 수 있는 데이터 이름 목록</span>
+
+<span class="t-kw">from</span> sklearn.datasets <span class="t-kw">import</span> load_wine
+df = <span class="t-fn">load_wine</span>(as_frame=<span class="t-kw">True</span>).frame       <span class="t-com"># 마지막 열 'target' 이 정답</span></code></pre>
+    <button class="copy" type="button" aria-label="코드 복사">복사</button>
+  </div>
+  <p class="note">※ 내장 데이터는 영어 열 이름이고 대부분 외국 데이터입니다. 연습용으로 쓰고, 프로젝트 주제는 아래 국내 데이터에서 찾아보길 권합니다.</p>
+</div>
+
+<div class="block tone-shared" id="d-kaggle">
+  <h3><span class="n">1-2</span>Kaggle</h3>
+  <p><a href="https://www.kaggle.com/datasets">kaggle.com/datasets</a>는 전 세계 사람들이 올린 데이터셋 모음입니다. 주제가 매우 다양하고 대부분 CSV라 바로 쓰기 좋지만, <b>회원 가입(로그인)이 있어야 다운로드</b>할 수 있고 설명이 영어입니다.</p>
+  <h4>CSV 받는 방법</h4>
+  <ol>
+    <li>로그인한 뒤 검색창에 영어 키워드를 넣습니다 (예: <code>air quality korea</code>, <code>bike sharing</code>).</li>
+    <li>데이터셋 페이지에서 <b>Download</b> 버튼을 누르면 zip 파일로 받아집니다.</li>
+    <li>압축을 풀어 CSV를 꺼내고, Colab 왼쪽 파일 탭에 올린 뒤 <code>pd.read_csv('파일명.csv')</code>로 읽습니다.</li>
+  </ol>
+  <h4>좋은 데이터셋 고르는 요령</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>볼 것</th><th>어디서</th><th>기준</th></tr></thead>
+    <tbody>
+      <tr><td>Usability 점수</td><td>페이지 오른쪽 정보</td><td>10점 만점. 열 설명, 출처, 라이선스가 잘 적혀 있을수록 높습니다. 7점 이상이면 무난합니다.</td></tr>
+      <tr><td>행·열 수</td><td>Data Card 아래 파일 미리보기</td><td>행이 적어도 수백 개는 되는지, 내가 맞히려는 값이 열로 있는지 확인합니다.</td></tr>
+      <tr><td>라이선스</td><td>페이지 오른쪽 License</td><td>CC0, CC BY 같은 공개 라이선스인지 봅니다. 출처(데이터셋 이름과 주소)는 보고서에 꼭 적습니다.</td></tr>
+      <tr><td>열 설명</td><td>Data Card의 Column 설명</td><td>열 이름의 뜻을 알 수 없으면 특징·타깃을 고를 수 없습니다.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">※ Code 탭에는 같은 데이터로 만든 다른 사람의 노트북이 있습니다. 데이터 이해에 참고만 하고, 내 프로젝트 코드는 수업에서 배운 절차대로 직접 작성합니다.</p>
+</div>
+
+<div class="block tone-shared" id="d-korea">
+  <h3><span class="n">1-3</span>국내 공개 데이터 — 분야별</h3>
+  <p>한 곳에 모인 종합 포털이 아니라, 분야마다 따로 운영되는 개별 사이트를 기준으로 정리했습니다. 공공 데이터 상당수는 <a href="https://www.data.go.kr">공공데이터포털</a>에서 파일로 받거나 API 키 하나로 받을 수 있습니다.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>분야</th><th>출처</th><th>데이터 종류</th><th>활용 예시</th></tr></thead>
+    <tbody>
+      <tr><td>야구</td><td><a href="https://www.koreabaseball.com">KBO 기록실</a>, <a href="https://statiz.sporki.com">STATIZ</a></td><td>선수 성적, 팀 기록, 연봉, 세이버메트릭스 지표</td><td>성적→연봉 예측(회귀), 경기 승패(분류), 선수 유형 묶기(군집)</td></tr>
+      <tr><td>축구·농구·배구</td><td><a href="https://data.kleague.com">K리그 데이터포털</a>, <a href="https://www.kbl.or.kr">KBL</a>, <a href="https://www.kovo.co.kr">KOVO</a></td><td>경기별 기록, 순위</td><td>경기 결과 예측(분류)</td></tr>
+      <tr><td>영화</td><td><a href="https://www.kobis.or.kr/kobisopenapi">영화진흥위원회 KOBIS 오픈API</a></td><td>일별·주별 박스오피스, 스크린 수, 개봉일</td><td>최종 관객 수 예측(회귀)</td></tr>
+      <tr><td>영화 정보</td><td><a href="https://www.kmdb.or.kr">한국영상자료원 KMDb</a> API</td><td>장르, 감독, 출연진 등 메타데이터</td><td>장르 분류, 유사 영화 묶기(군집)</td></tr>
+      <tr><td>음악</td><td><a href="https://circlechart.kr">써클차트</a></td><td>주간·월간 순위, 앨범 판매량, 발매일, 기획사</td><td>초동→누적 판매량(회귀), 롱런 여부(분류), 순위 변화 패턴 묶기(군집)</td></tr>
+      <tr><td>도서</td><td><a href="https://www.data4library.kr">도서관 정보나루</a></td><td>인기 대출 도서, 대출 건수, 연령대, 분야</td><td>추천 시스템, 대출 성향별 묶기(군집)</td></tr>
+      <tr><td>문화</td><td><a href="https://www.culture.go.kr/data/">문화공공데이터광장</a></td><td>공연·전시·문화시설 정보</td><td>지역별 문화시설 유형 묶기(군집)</td></tr>
+      <tr><td>날씨</td><td><a href="https://data.kma.go.kr">기상청 기상자료개방포털</a></td><td>기온, 강수량, 풍속, 습도</td><td>기온 예측(회귀)</td></tr>
+      <tr><td>대기</td><td><a href="https://www.airkorea.or.kr">에어코리아</a></td><td>미세먼지·오존 농도</td><td>다음 날 농도 예측(회귀)</td></tr>
+      <tr><td>물</td><td><a href="https://opendata.kwater.or.kr">K-water 공공데이터 개방포털</a>, <a href="https://www.water.or.kr">MyWater 물정보포털</a>, <a href="https://www.wamis.go.kr">국가수자원관리종합정보시스템(WAMIS)</a></td><td>댐·하천 수위, 유량, 강수량, 수질</td><td>강수량→수위 예측(회귀), 수질 등급(분류)</td></tr>
+      <tr><td>농업</td><td><a href="https://www.nongsaro.go.kr">농사로(농촌진흥청)</a>, <a href="https://data.mafra.go.kr">농림축산식품 공공데이터포털</a></td><td>작물·농업기술 정보, 농축산물 가격, 농장 통계</td><td>농산물 가격 예측(회귀)</td></tr>
+      <tr><td>에너지</td><td><a href="https://bigdata.kepco.co.kr">전력데이터 개방 포털(한국전력)</a></td><td>지역·용도별 전력 사용량</td><td>전력 사용량 예측(회귀)</td></tr>
+      <tr><td>교통·생활</td><td><a href="https://data.seoul.go.kr">서울 열린데이터광장</a></td><td>따릉이 대여량, 지하철 역별·시간대별 승하차</td><td>대여량 예측(회귀), 역 유형 구분(군집)</td></tr>
+      <tr><td>교통</td><td><a href="https://www.bigdata-transportation.kr">국가교통 데이터 오픈마켓</a></td><td>교통량, 대중교통 이용 등</td><td>교통량 예측(회귀)</td></tr>
+      <tr><td>교통사고</td><td><a href="https://taas.koroad.or.kr">TAAS 교통사고분석시스템</a></td><td>사고 시간, 기상, 도로 형태, 피해 정도</td><td>사고 심각도 분류</td></tr>
+      <tr><td>학교</td><td><a href="https://open.neis.go.kr">NEIS 교육정보 개방포털</a></td><td>급식 식단, 영양소, 학사일정</td><td>식단 유형 묶기(군집)</td></tr>
+      <tr><td>부동산</td><td><a href="https://rt.molit.go.kr">국토교통부 실거래가</a></td><td>면적, 층, 건축연도, 거래금액</td><td>아파트 가격 예측(회귀)</td></tr>
+      <tr><td>주식</td><td><a href="https://data.krx.co.kr">KRX 정보데이터시스템</a>, 파이썬 pykrx</td><td>종목별 시세, 거래량</td><td>시계열 예측(회귀)</td></tr>
+      <tr><td>경제·인구</td><td><a href="https://ecos.bok.or.kr">한국은행 ECOS</a>, <a href="https://kosis.kr">KOSIS 국가통계포털</a></td><td>금리, 물가, 인구 등 거시지표</td><td>지표 간 관계 분석(회귀)</td></tr>
+      <tr><td>통계 원자료</td><td><a href="https://mdis.mods.go.kr">마이크로데이터 통합서비스(MDIS)</a></td><td>설문조사 응답 원자료 (가계, 청소년, 생활시간 등). 회원 가입 후 이용</td><td>응답 특성으로 유형 묶기(군집)</td></tr>
+      <tr><td>식품</td><td><a href="https://various.foodsafetykorea.go.kr/nutrient/">식품영양성분 데이터베이스(식약처)</a></td><td>탄수화물, 단백질, 지방, 나트륨</td><td>비슷한 음식끼리 묶기(군집)</td></tr>
+      <tr><td>건강</td><td>국민건강보험공단 건강검진정보 (<a href="https://www.data.go.kr">공공데이터포털</a>에서 검색)</td><td>키, 몸무게, 혈압, 혈당</td><td>흡연·음주 여부 분류</td></tr>
+      <tr><td>게임</td><td><a href="https://openapi.nexon.com">넥슨 Open API</a></td><td>캐릭터 정보, 경기 기록</td><td>승패 예측(분류)</td></tr>
+      <tr><td>동물</td><td><a href="https://www.animal.go.kr">국가동물보호정보시스템</a></td><td>축종, 나이, 체중, 발견 장소, 처리 결과</td><td>입양 여부 분류</td></tr>
+      <tr><td>관광</td><td>한국관광공사 TourAPI (<a href="https://api.visitkorea.or.kr">한국관광콘텐츠랩</a>)</td><td>관광지 정보, 위치, 분류</td><td>지역별 특성 묶기(군집)</td></tr>
+      <tr><td>딥러닝</td><td><a href="https://www.aihub.or.kr">AI Hub</a></td><td>이미지, 음성, 텍스트 대규모 데이터셋</td><td>이미지 분류 등</td></tr>
+    </tbody>
+  </table></div>
+  <h4>지역 데이터 포털</h4>
+  <p>우리 지역 문제를 다루고 싶다면 지역 포털을 먼저 찾아봅니다. <a href="https://data.seoul.go.kr">서울 열린데이터광장</a>, <a href="https://data.gg.go.kr">경기데이터드림</a>, <a href="https://data.incheon.go.kr">인천데이터포털</a>, <a href="https://data.busan.go.kr/bdip/">부산 빅데이터웨이브</a> 등이 있고, 다른 시·도도 이름에 "데이터"나 "열린데이터"가 들어간 포털을 운영하는 경우가 많습니다.</p>
+  <p class="note">※ 음원·앨범 차트는 공식 API가 없어 웹 페이지에서 직접 모아야 하고, 곡의 음향 특성(템포, 에너지 등)은 제공하지 않습니다. 멜론·지니도 공식 API가 없으므로 모으기 전에 이용 약관을 확인해야 합니다.</p>
+</div>
+
+<div class="block tone-shared" id="d-before">
+  <h3><span class="n">1-4</span>데이터를 받기 전에 확인할 것</h3>
+  <ul>
+    <li><b>API 키는 미리 신청합니다.</b> 공공데이터포털 등은 승인이나 키 활성화에 시간이 걸릴 수 있습니다. 파일(CSV) 내려받기가 있으면 그쪽이 더 간단합니다.</li>
+    <li><b>받은 데이터는 CSV로 저장해 둡니다.</b> 수업 중에 API를 매번 호출하면 호출 제한이나 네트워크 문제로 막힐 수 있습니다.</li>
+    <li><b>공식 API가 없는 사이트</b>(써클차트, 멜론, 지니 등)는 모으기 전에 약관을 확인합니다.</li>
+    <li><b>빈 칸과 이상한 값</b>이 얼마나 있는지 봅니다. 공공 데이터는 빈 칸이나 형식이 깨진 행이 흔합니다. 숫자처럼 보이는데 <code>"5.2(Kg)"</code>처럼 단위가 붙어 있는 열도 있습니다.</li>
+    <li><b>행 수가 충분한지</b> 봅니다. 연도별 합계처럼 행이 수십 개뿐이면 월별·지역별·시간대별 자료를 찾아 수천 개로 늘립니다.</li>
+    <li><b>출처를 적어 둡니다.</b> 사이트 이름, 데이터 이름, 주소, 받은 날짜.</li>
+  </ul>
+</div>
+</section>
+
+<!-- ======================= 2 ======================= -->
+<div class="stage" id="stage-2"><span class="stage-num">2</span><h2>주제 정하기</h2></div>
+<section class="panel">
+
+<div class="block tone-shared">
+  <h3><span class="n">2-1</span>관심 분야 → 질문 → 맞힐 값으로 좁히기</h3>
+  <p>데이터부터 고르면 오히려 질문이 떠오르지 않습니다. 급식, 게임, 음악, 지하철, 날씨처럼 매일 겪는 것에서 출발해 세 단계로 좁힙니다.</p>
+  <div class="flow">
+    <div class="step"><b>관심 분야</b><span>자전거, 날씨</span></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="step"><b>궁금한 질문</b><span>비 오는 날에는 따릉이를 얼마나 덜 탈까?</span></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="step"><b>맞힐 값(타깃)</b><span>시간대별 대여량 → 숫자 → 회귀</span></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="step"><b>필요한 데이터</b><span>서울 열린데이터광장 대여 기록 + 기상자료개방포털 강수량</span></div>
+  </div>
+  <p>질문이 잘 안 나오면 아래 세 문장 중 하나에 넣어 봅니다.</p>
+  <ul>
+    <li>"◯◯는 <b>얼마나</b> 될까?" → <span class="tag tone-reg">회귀</span></li>
+    <li>"이건 <b>어느 쪽</b>일까?" → <span class="tag tone-cls">분류</span></li>
+    <li>"<b>어떤 유형들</b>이 있을까?" → <span class="tag tone-clu">군집</span></li>
+  </ul>
+</div>
+
+<div class="block tone-shared">
+  <h3><span class="n">2-2</span>주제를 넓히는 방법</h3>
+  <ul>
+    <li><b>데이터 두 개를 합칩니다.</b> 따릉이 대여량에 날씨를 붙이면 "비 오는 날 얼마나 줄어드는가"가 됩니다. 미세먼지에 기상 데이터, 박스오피스에 개봉 시기나 경쟁작 수를 붙이는 식입니다. 합치는 순간 질문이 훨씬 구체적으로 바뀝니다.</li>
+    <li><b>예측이 빗나가는 지점을 찾아봅니다.</b> 2020년 교통사고, 역주행한 노래, 예상 밖으로 흥행한 영화처럼 패턴에서 벗어난 사례를 보면 "모델은 과거만 배운다"는 한계를 직접 확인할 수 있습니다. 평가 단계에서 개선 방향을 쓸 때도 좋은 소재가 됩니다.</li>
+    <li><b>데이터부터 구할 수 있는지 확인합니다.</b> 주제가 좋아도 데이터가 없으면 진행할 수 없습니다. 주제를 정하면 바로 해당 사이트에 들어가 몇 행이나 받을 수 있는지 먼저 봅니다.</li>
+  </ul>
+</div>
+
+<div class="block tone-shared">
+  <h3><span class="n">2-3</span>주제 점검표</h3>
+  <div class="check">
+    <div class="ok"><h4>진행할 수 있는 주제</h4><ul>
+      <li>데이터를 <b>실제로 내려받아</b> 열어 보았다</li>
+      <li>행이 <b>적어도 수백 개</b> 있다</li>
+      <li>맞히고 싶은 값이 <b>열로 들어 있다</b> (군집이라면 묶을 기준이 될 숫자 열이 여러 개 있다)</li>
+      <li>그 값을 짐작하게 해 줄 <b>다른 열이 여러 개</b> 있다</li>
+      <li>열 이름의 뜻을 <b>설명할 수 있다</b></li>
+    </ul></div>
+    <div class="no"><h4>다시 생각해 볼 주제</h4><ul>
+      <li>"찾으면 있겠지" 하고 아직 데이터를 보지 않았다</li>
+      <li>연도별 합계뿐이라 행이 수십 개다</li>
+      <li>맞히려는 값이 어디에도 기록되어 있지 않다</li>
+      <li>정답 열을 알면 바로 답이 나오는 질문이다 (3-2의 데이터 누수)</li>
+      <li>개인을 알아볼 수 있는 정보가 필요하다</li>
+    </ul></div>
+  </div>
+</div>
+
+<div class="block tone-shared">
+  <h3><span class="n">2-4</span>주제 예시</h3>
+  <div class="cards">
+    <div class="card tone-reg"><h4><span class="tag">회귀</span></h4><p><b>비 오는 날 따릉이 대여량 예측</b></p><p class="note">대여 기록 + 강수량·기온</p></div>
+    <div class="card tone-reg"><h4><span class="tag">회귀</span></h4><p><b>내일의 미세먼지 농도 예측</b></p><p class="note">에어코리아 + 기상 자료</p></div>
+    <div class="card tone-reg"><h4><span class="tag">회귀</span></h4><p><b>기온으로 지역 전력 사용량 예측</b></p><p class="note">전력데이터 + 기상 자료</p></div>
+    <div class="card tone-cls"><h4><span class="tag">분류</span></h4><p><b>교통사고 조건으로 중상 이상 여부 판별</b></p><p class="note">TAAS</p></div>
+    <div class="card tone-cls"><h4><span class="tag">분류</span></h4><p><b>유기동물의 입양 여부 예측</b></p><p class="note">국가동물보호정보시스템</p></div>
+    <div class="card tone-clu"><h4><span class="tag">군집</span></h4><p><b>영양 성분이 비슷한 음식 묶기</b></p><p class="note">식품영양성분 DB</p></div>
+  </div>
+</div>
+</section>
+
+<!-- ======================= 3 ======================= -->
+<div class="stage" id="stage-3"><span class="stage-num">3</span><h2>특징(feature)·타깃(target) 정하기</h2></div>
+<section class="panel">
+
+<div class="block tone-shared">
+  <h3><span class="n">3-1</span>타깃을 보면 방법이 정해진다</h3>
+  <p><b>타깃</b>은 모델이 맞혀야 할 값(정답, y)이고, <b>특징</b>은 그 값을 맞히는 데 쓰는 입력(X)입니다. 타깃이 어떤 값인지에 따라 회귀·분류·군집이 갈립니다.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>타깃</th><th>방법</th><th>예</th></tr></thead>
+    <tbody>
+      <tr><td>숫자 (크기가 의미 있는 값)</td><td><span class="tag tone-reg">회귀</span></td><td>관객 수, 아파트 가격, 미세먼지 농도</td></tr>
+      <tr><td>범주 (몇 가지 중 하나)</td><td><span class="tag tone-cls">분류</span></td><td>경기 승패, 입양 여부, 사고 심각도, 펭귄 종</td></tr>
+      <tr><td>없음</td><td><span class="tag tone-clu">군집</span></td><td>정답 없이 비슷한 것끼리 묶기: 선수 유형, 역 유형, 음식 유형</td></tr>
+    </tbody>
+  </table></div>
+</div>
+
+<div class="block tone-shared">
+  <h3><span class="n">3-2</span>특징 고르는 요령</h3>
+  <h4>타깃을 미리 알려 주는 열은 뺀다 (데이터 누수)</h4>
+  <p>타깃과 사실상 같은 내용이거나, 타깃이 정해진 <b>뒤에야</b> 알 수 있는 열을 특징에 넣으면 점수는 높게 나오지만 실제로는 쓸 수 없는 모델이 됩니다.</p>
+  <ul>
+    <li>seaborn 타이타닉 데이터의 <code>alive</code> 열은 <code>survived</code>(생존 여부)와 같은 내용입니다. 생존 여부를 맞힐 때 넣으면 안 됩니다.</li>
+    <li>유기동물의 입양 여부를 맞히면서 "보호 종료일"을 넣으면, 입양된 날을 미리 알려 주는 셈입니다.</li>
+    <li>점검 질문: <b>"예측하는 순간에 이 값을 알 수 있는가?"</b></li>
+  </ul>
+  <h4>행을 구별하기 위한 번호는 뺀다</h4>
+  <p>관리번호, 일련번호, 고객 번호처럼 행마다 붙인 번호는 숫자여도 타깃과 아무 관계가 없습니다. 이런 열이 특징에 들어가면 모델이 의미 없는 규칙을 배웁니다.</p>
+  <h4>상관관계를 확인한다</h4>
+  <p>회귀에서는 타깃과 상관계수가 큰(절댓값이 1에 가까운) 열이 좋은 후보입니다. 서로 거의 같은 내용인 특징 두 개(예: 키(cm)와 키(m))는 하나만 남깁니다.</p>
+  <div class="code-wrap">
+<pre class="code"><code>corr = df.<span class="t-fn">corr</span>(numeric_only=<span class="t-kw">True</span>)          <span class="t-com"># 숫자 열끼리 상관계수</span>
+corr[<span class="t-str">'body_mass_g'</span>].<span class="t-fn">sort_values</span>().<span class="t-fn">round</span>(<span class="t-num">2</span>)   <span class="t-com"># 타깃과의 상관계수만 보기</span>
+
+sns.<span class="t-fn">heatmap</span>(corr, annot=<span class="t-kw">True</span>, cmap=<span class="t-str">'coolwarm'</span>)  <span class="t-com"># 한눈에 보기</span></code></pre>
+    <button class="copy" type="button" aria-label="코드 복사">복사</button>
+  </div>
+  <div class="out"><code>bill_depth_mm       -0.47
+bill_length_mm       0.60
+flipper_length_mm    0.87
+body_mass_g          1.00</code></div>
+  <p class="note">※ 펭귄 몸무게를 맞힌다면 날개 길이(0.87)가 가장 유력한 특징입니다. 상관계수는 직선 관계만 보여 주므로, 낮다고 바로 버리지 말고 산점도도 함께 봅니다.</p>
+</div>
+
+<div class="block tone-shared">
+  <h3><span class="n">3-3</span>특징·타깃을 코드로 정하고 나누기</h3>
+  <p>정한 특징과 타깃을 X, y에 담고 훈련용과 테스트용으로 나눕니다. 2-2 실습과 같은 방식입니다.</p>
+  <div class="code-wrap">
+<pre class="code"><code>df = df.<span class="t-fn">dropna</span>()   <span class="t-com"># 결측치가 있는 행 정리</span>
+X = df[[<span class="t-str">'bill_length_mm'</span>, <span class="t-str">'bill_depth_mm'</span>, <span class="t-str">'flipper_length_mm'</span>, <span class="t-str">'body_mass_g'</span>]]   <span class="t-com"># 특징</span>
+y = df[<span class="t-str">'species'</span>]                                                              <span class="t-com"># 타깃</span>
+
+<span class="t-kw">from</span> sklearn.model_selection <span class="t-kw">import</span> train_test_split
+X_train, X_test, y_train, y_test = <span class="t-fn">train_test_split</span>(
+    X, y, test_size=<span class="t-num">0.3</span>, random_state=<span class="t-num">42</span>)</code></pre>
+    <button class="copy" type="button" aria-label="코드 복사">복사</button>
+  </div>
+  <p class="note">※ 군집은 타깃이 없으므로 <code>data = df[['열1', '열2']]</code>처럼 특징만 고르고, 나누지 않습니다.<br>※ 이후 단계(정규화, 학습, 평가)의 코드 패턴은 <a href="../ch2-2/references.html">2-2 참고 자료</a>를 봅니다.</p>
+</div>
+</section>
+
+<!-- ======================= 4 ======================= -->
+<div class="stage" id="stage-4"><span class="stage-num">4</span><h2>회귀·분류·군집 바꿔 보기</h2></div>
+<section class="panel">
+<div class="block tone-shared">
+  <h3><span class="n">4</span>같은 데이터, 세 가지 질문</h3>
+  <p>무엇을 타깃으로 삼느냐에 따라 같은 데이터로 세 방법을 모두 해 볼 수 있습니다. 따릉이 데이터라면 대여량 예측은 회귀, "많음/보통/적음" 판별은 분류, 대여소 이용 패턴 묶기는 군집입니다. 주제가 정해졌다면 내 데이터로도 세 질문을 만들어 보고, 가장 의미 있는 것을 고릅니다.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>데이터</th><th><span class="tag tone-reg">회귀</span></th><th><span class="tag tone-cls">분류</span></th><th><span class="tag tone-clu">군집</span></th></tr></thead>
+    <tbody>
+      <tr><td>따릉이 대여</td><td>시간대별 대여량</td><td>대여량 많음/보통/적음</td><td>대여소 이용 패턴 유형</td></tr>
+      <tr><td>유기동물</td><td>보호 기간 길이</td><td>입양 여부</td><td>비슷한 처지의 동물 묶기</td></tr>
+      <tr><td>박스오피스</td><td>최종 관객 수</td><td>손익분기 돌파 여부</td><td>흥행 곡선 유형</td></tr>
+      <tr><td>음원 차트</td><td>누적 판매량</td><td>롱런 여부</td><td>초동형·롱런형·역주행형</td></tr>
+      <tr><td>KBO 기록</td><td>다음 시즌 타율</td><td>경기 승패</td><td>거포형·교타형 선수 유형</td></tr>
+      <tr><td>급식 식단</td><td>하루 총 칼로리</td><td>잔반 많은 날 여부</td><td>비슷한 식단 묶기</td></tr>
+      <tr><td>아파트 실거래</td><td>거래가</td><td>가격대 구간</td><td>비슷한 성격의 단지</td></tr>
+      <tr><td>펭귄</td><td>몸무게</td><td>종</td><td>비슷한 체형끼리 묶기</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">※ 회귀 타깃을 구간으로 나누면 분류가 됩니다 (예: 대여량을 많음/보통/적음으로). 반대로 분류 타깃을 빼고 특징만 남기면 군집이 됩니다.</p>
+</div>
+</section>
+
+<!-- ======================= 5 ======================= -->
+<div class="stage" id="stage-5"><span class="stage-num">5</span><h2>신경망으로 분류할 때 — 타깃을 원-핫 인코딩으로</h2></div>
+<section class="panel">
+<div class="block tone-nn">
+  <h3><span class="n">5-1</span>왜 바꾸나</h3>
+  <p>2-3에서 만든 신경망 분류 모델은 출력층 노드 수가 <b>클래스 수</b>와 같고, softmax가 클래스마다 확률을 하나씩 내놓습니다. 그래서 정답도 같은 모양, 즉 <b>맞는 클래스 자리만 1이고 나머지는 0인 줄</b>로 바꿔 줍니다. 이것을 <b>원-핫 인코딩</b>이라고 합니다. 원-핫 타깃은 손실 함수 <code>'categorical_crossentropy'</code>와 함께 씁니다. 2-3처럼 정수 번호 타깃을 쓸 때는 <code>'sparse_categorical_crossentropy'</code>를 씁니다.</p>
+  <div class="match">
+    <div class="vec"><div class="cap">정답 (원-핫 타깃)</div>
+      <table><thead><tr><th>Adelie</th><th>Chinstrap</th><th>Gentoo</th></tr></thead>
+      <tbody><tr><td class="hi">1</td><td>0</td><td>0</td></tr></tbody></table></div>
+    <div class="mid" aria-hidden="true">⇄</div>
+    <div class="vec"><div class="cap">모델 출력 (softmax 확률, 합 = 1)</div>
+      <table><thead><tr><th>Adelie</th><th>Chinstrap</th><th>Gentoo</th></tr></thead>
+      <tbody><tr><td class="hi">0.826</td><td>0.166</td><td>0.008</td></tr></tbody></table></div>
+  </div>
+  <p>학습은 모델이 내놓는 확률을 정답 줄에 가깝게 만드는 과정이고, 예측할 때는 가장 큰 확률의 자리(argmax)를 골라 다시 클래스 이름으로 바꿉니다.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>클래스 수</th><th>출력층</th><th>타깃 모양</th><th>손실 함수</th></tr></thead>
+    <tbody><tr><td>3 (펭귄 종)</td><td><code>Dense(3, activation='softmax')</code></td><td>행마다 0·1 세 개</td><td><code>'categorical_crossentropy'</code></td></tr></tbody>
+  </table></div>
+</div>
+
+<div class="block tone-nn">
+  <h3><span class="n">5-2</span>펭귄 종 분류 신경망 예시</h3>
+  <h4>① 데이터 준비 · 타깃 원-핫 인코딩</h4>
+  <div class="code-wrap">
+<pre class="code"><code><span class="t-kw">import</span> seaborn <span class="t-kw">as</span> sns
+<span class="t-kw">import</span> pandas <span class="t-kw">as</span> pd
+df = sns.<span class="t-fn">load_dataset</span>(<span class="t-str">'penguins'</span>)
+df = df.<span class="t-fn">dropna</span>()
+
+X = df[[<span class="t-str">'bill_length_mm'</span>, <span class="t-str">'bill_depth_mm'</span>, <span class="t-str">'flipper_length_mm'</span>, <span class="t-str">'body_mass_g'</span>]].<span class="t-fn">to_numpy</span>()
+
+y_onehot = pd.<span class="t-fn">get_dummies</span>(df[<span class="t-str">'species'</span>], dtype=int)   <span class="t-com"># 종 이름 → 0·1 열 3개</span>
+y = y_onehot.<span class="t-fn">to_numpy</span>()
+y_onehot.<span class="t-fn">head</span>(<span class="t-num">3</span>)</code></pre>
+    <button class="copy" type="button" aria-label="코드 복사">복사</button>
+  </div>
+  <div class="out"><code>   Adelie  Chinstrap  Gentoo
+0       1          0       0
+1       1          0       0
+2       1          0       0</code></div>
+  <p class="note">※ <code>y_onehot.columns</code>에 열 순서(Adelie, Chinstrap, Gentoo)가 남아 있습니다. 마지막에 예측 결과를 종 이름으로 되돌릴 때 씁니다.</p>
+
+  <h4>② 분할 · 정규화</h4>
+  <div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> sklearn.model_selection <span class="t-kw">import</span> train_test_split
+<span class="t-kw">from</span> sklearn.preprocessing <span class="t-kw">import</span> MinMaxScaler
+X_train, X_test, y_train, y_test = <span class="t-fn">train_test_split</span>(
+    X, y, test_size=<span class="t-num">0.3</span>, random_state=<span class="t-num">42</span>)
+
+scaler = <span class="t-fn">MinMaxScaler</span>()
+X_train = scaler.<span class="t-fn">fit_transform</span>(X_train)
+X_test = scaler.<span class="t-fn">transform</span>(X_test)</code></pre>
+    <button class="copy" type="button" aria-label="코드 복사">복사</button>
+  </div>
+
+  <h4>③ 모델 설계 · 학습 (출력 노드 3개 = 종 3개)</h4>
+  <div class="code-wrap">
+<pre class="code"><code><span class="t-kw">from</span> tensorflow.keras <span class="t-kw">import</span> Sequential
+<span class="t-kw">from</span> tensorflow.keras.layers <span class="t-kw">import</span> Dense
+model = <span class="t-fn">Sequential</span>([
+    <span class="t-fn">Dense</span>(<span class="t-num">16</span>, activation=<span class="t-str">'relu'</span>, input_shape=(<span class="t-num">4</span>,)),
+    <span class="t-fn">Dense</span>(<span class="t-num">8</span>, activation=<span class="t-str">'relu'</span>),
+    <span class="t-fn">Dense</span>(<span class="t-num">3</span>, activation=<span class="t-str">'softmax'</span>)
+])
+model.<span class="t-fn">compile</span>(optimizer=<span class="t-str">'adam'</span>, loss=<span class="t-str">'categorical_crossentropy'</span>, metrics=[<span class="t-str">'accuracy'</span>])
+history = model.<span class="t-fn">fit</span>(X_train, y_train, epochs=<span class="t-num">100</span>)
+loss, accuracy = model.<span class="t-fn">evaluate</span>(X_test, y_test)</code></pre>
+    <button class="copy" type="button" aria-label="코드 복사">복사</button>
+  </div>
+
+  <h4>④ 예측 확률 → 종 이름으로 되돌리기</h4>
+  <div class="code-wrap">
+<pre class="code"><code><span class="t-kw">import</span> numpy <span class="t-kw">as</span> np
+probabilities = model.<span class="t-fn">predict</span>(X_test)           <span class="t-com"># 펭귄마다 확률 3개</span>
+predicted = np.<span class="t-fn">argmax</span>(probabilities, axis=<span class="t-num">1</span>)    <span class="t-com"># 가장 큰 확률의 자리: 0, 1, 2</span>
+
+names = y_onehot.columns                          <span class="t-com"># ['Adelie', 'Chinstrap', 'Gentoo']</span>
+<span class="t-fn">print</span>(<span class="t-fn">list</span>(names[predicted][:<span class="t-num">5</span>]))                 <span class="t-com"># 예측한 종 이름</span>
+<span class="t-fn">print</span>(<span class="t-fn">list</span>(names[np.<span class="t-fn">argmax</span>(y_test, axis=<span class="t-num">1</span>)][:<span class="t-num">5</span>]))  <span class="t-com"># 실제 종 이름</span></code></pre>
+    <button class="copy" type="button" aria-label="코드 복사">복사</button>
+  </div>
+  <div class="out"><code>['Adelie', 'Gentoo', 'Adelie', 'Chinstrap', 'Adelie']
+['Adelie', 'Gentoo', 'Adelie', 'Chinstrap', 'Adelie']</code></div>
+  <p class="note">※ 테스트 정확도는 실행할 때마다 조금씩 다르며, 직접 실행해 보았을 때 0.98~0.99였습니다. 실제 정답 <code>y_test</code>도 원-핫 모양이므로 같은 방법(argmax)으로 이름을 되돌려 비교합니다.</p>
+</div>
+</section>
+
+</main>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var code = btn.parentNode.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(function(){
+        btn.textContent = '복사됨';
+        btn.classList.add('done');
+        setTimeout(function(){ btn.textContent = '복사'; btn.classList.remove('done'); }, 1400);
+      }, function(){ btn.textContent = '복사 실패'; });
+    });
+  });
+})();
+</script>
+</body>
+</html>
