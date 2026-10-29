@@ -183,7 +183,10 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
 <div class="code-wrap">
 <pre class="code"><code><span class="t-kw">import</span> pandas <span class="t-kw">as</span> pd
 
-df = pd.<span class="t-fn">read_csv</span>(<span class="t-str">'파일명.csv'</span>)       <span class="t-com"># csv 파일 → 데이터프레임</span></code></pre>
+df = pd.<span class="t-fn">read_csv</span>(<span class="t-str">'파일명.csv'</span>)       <span class="t-com"># csv 파일 → 데이터프레임</span>
+
+<span class="t-com"># UnicodeDecodeError가 나면 → 한글 인코딩(cp949) 지정</span>
+df = pd.<span class="t-fn">read_csv</span>(<span class="t-str">'파일명.csv'</span>, encoding=<span class="t-str">'cp949'</span>)</code></pre>
 <button class="copy" type="button" aria-label="코드 복사">복사</button>
 </div>
 </div>
