@@ -1,0 +1,19 @@
+model: claude-haiku-5-5
+ollama_base_url: http://localhost:11434/v1
+# 비워 두면 Ollama의 /v1/models에서 첫 번째 모델을 자동 선택합니다.
+ollama_model: "gemma4:e4b"
+ollama_timeout_seconds: 120
+turns: 5
+question_seconds: 30
+answer_seconds: 30
+autosubmit_grace_seconds: 5
+max_tokens: 1024
+effort: medium
+teacher_ips: ["127.0.0.1", "::1"]
+answer_max_chars: 100
+question_max_chars: 100
+reason_max_chars: 60
+api_call_limit: 3000
+input_cost_per_million_usd: 1.0
+output_cost_per_million_usd: 5.0
+

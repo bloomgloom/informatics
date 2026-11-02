@@ -1,0 +1,10 @@
+{
+  "model": "claude-haiku-5-5",
+  "max_tokens": 1024,
+  "port": 8000,
+  "limit_per_minute": 10,
+  "limit_per_student": 30,
+  "limit_per_class": 1000,
+  "max_concurrent": 5,
+  "max_input_chars": 4000
+}

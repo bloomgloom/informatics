@@ -1,0 +1,16 @@
+{
+  "model": "claude-haiku-5-5",
+  "port": 5050,
+  "student_port": 6000,
+  "student_ip_start": 101,
+  "student_ip_end": 130,
+  "scan_interval": 3,
+  "reply_limit": 5,
+  "max_chars": 200,
+  "min_interval": 0.5,
+  "strike_limit": 3,
+  "mute_seconds": 60,
+  "max_students": 100,
+  "llm_limit_per_class": 3000,
+  "blocked_words": []
+}

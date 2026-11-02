@@ -1,0 +1,6 @@
+{
+  "port": 8000,
+  "limit_per_minute": 120,
+  "max_concurrent": 5,
+  "cache_seconds": 600
+}

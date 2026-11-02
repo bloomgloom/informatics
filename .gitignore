@@ -1,9 +1,23 @@
+# 모든 프로그램과 활동의 공통 규칙입니다. 하위 폴더에 .gitignore를 두지 않습니다.
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.pytest_cache/
 
 .venv/
 .claude/
 
 .DS_Store
 *.pdf
+
+# 비밀 값과 교실별 설정
+.env
+.env.*
+config.json
+
+# 학생 대화, 접속 기록
+logs/
+*.jsonl
+
+# 명단, 좌석표, 실습 사진과 결과처럼 그 컴퓨터에만 두는 파일
+local/
