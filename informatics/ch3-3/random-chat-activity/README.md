@@ -18,13 +18,14 @@
 학생B client -> 교사 -> 학생C server
 ```
 
+| 파일 | 내용 |
+|---|---|
 | `server.py` | 교사 프로그램 (설치할 것 없음) |
 | `setup.sh` / `setup.bat` | 설정 (Mac / Windows) |
 | `start-client.sh` / `.bat` | 단계 2: 교사가 클라이언트 |
 | `start-server.sh` / `.bat` | 단계 3: 교사가 서버 |
 | `start-random.sh` / `.bat` | 단계 4: 랜덤 채팅 |
-| `notebooks/Random_Chat_서버_활동지.ipynb`, `Random_Chat_클라이언트_활동지.ipynb` | 학생용. 코드 없이 빈 칸만 있고, 교사 설명을 들으며 따라 칩니다. 두 파일을 함께 나눠 줍니다. 코드는 `%%writefile`로 저장해 별도의 터미널 창 두 개에서 실행합니다. |
-| `notebooks/Random_Chat_서버_해설지.ipynb`, `Random_Chat_클라이언트_해설지.ipynb` | 교사용. 학생에게 주지 않습니다. |
+| `random-chat-activity-server.ipynb`, `random-chat-activity-client.ipynb` | 학생용. 코드 없이 빈 칸만 있고, 교사 설명을 들으며 따라 칩니다. 두 파일을 함께 나눠 줍니다. 코드는 `%%writefile`로 저장해 별도의 터미널 창 두 개에서 실행합니다. |
 | `logs/` | 학생 대화 기록 (git 제외) |
 
 ## 수업 전 확인
