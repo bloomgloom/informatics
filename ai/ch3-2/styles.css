@@ -1,0 +1,393 @@
+/* ch3-2에는 공통 디자인 토큰을 재정의하지 않고 단원별 배치만 둔다. */
+
+/* 01 여섯 가지 쟁점 */
+.issue-grid {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.issue-grid .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.issue-grid .panel > p {
+  display: grid;
+  flex: 1;
+  align-content: center;
+  border-radius: var(--radius);
+  padding: 16px;
+  background: var(--tone-soft);
+}
+
+/* 쟁점별 사례 슬라이드: 사례 설명 + 자료 */
+.case-layout {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 22px;
+}
+
+.case-layout .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.case-source {
+  align-self: flex-start;
+}
+
+.case-points {
+  display: grid;
+  flex: 1;
+  align-content: center;
+  gap: 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.case-points li {
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  background: var(--tone-soft);
+}
+
+/* 자료 칸 공통: 남은 높이를 채우는 연한 영역 */
+.evidence {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  align-content: center;
+  gap: 18px;
+  border-radius: var(--radius);
+  padding: 20px;
+  background: var(--tone-soft);
+}
+
+.evidence .label {
+  color: var(--muted);
+}
+
+/* 막대 (신뢰성 설문) */
+.bar-chart {
+  display: grid;
+  gap: 22px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+}
+
+.bar-row > span {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  line-height: 1.15;
+}
+
+.bar-track {
+  position: relative;
+  height: 76px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.bar-fill {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: var(--radius);
+  padding: 0 16px;
+  background: var(--tone);
+  color: #fff;
+  font-size: var(--fs-body);
+}
+
+.bar-fill.is-muted {
+  background: var(--tone-sub);
+}
+
+/* 흐름 상자 (세로) */
+.flow {
+  display: grid;
+  gap: 8px;
+}
+
+.flow > div {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  background: #fff;
+}
+
+.flow > div > b {
+  color: var(--tone-dark);
+  font-size: var(--fs-body);
+}
+
+.flow > div > span {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  line-height: 1.2;
+}
+
+.flow > i {
+  color: var(--tone-sub);
+  font-size: var(--fs-label);
+  font-style: normal;
+  line-height: 1;
+  text-align: center;
+}
+
+.flow > div.is-alert {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.flow > div.is-alert > b {
+  color: var(--danger);
+}
+
+/* 두 선택지 비교 (윤리성, 투명성) */
+.choice-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.choice-pair > div {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  background: #fff;
+  text-align: center;
+}
+
+.choice-pair b {
+  color: var(--tone-dark);
+  font-size: var(--fs-body);
+}
+
+.choice-pair span {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  line-height: 1.2;
+}
+
+.choice-pair .big {
+  color: var(--ink);
+  font-size: var(--fs-h2);
+  line-height: 1;
+}
+
+.choice-pair > div.is-alert {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.choice-pair > div.is-alert b {
+  color: var(--danger);
+}
+
+.question-box {
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: 1.25;
+  text-align: center;
+}
+
+/* 책무성: 구성원별 책임 */
+.role-cards {
+  display: grid;
+  gap: 14px;
+}
+
+.role-cards > div {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  background: #fff;
+}
+
+.role-cards b {
+  color: var(--tone-dark);
+  font-size: var(--fs-body);
+}
+
+.role-cards span {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  line-height: 1.2;
+}
+
+/* 08 공존 */
+.coexist-layout {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.coexist-layout .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.coexist-layout .case-points {
+  align-content: start;
+  gap: 14px;
+}
+
+/* 09 EU 위험 수준 */
+.risk-levels {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.risk-levels > div {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 22px;
+  border: 2px solid var(--line);
+  border-left: 14px solid var(--tone);
+  border-radius: var(--radius);
+  padding: 12px 22px;
+  background: #fff;
+}
+
+.risk-levels > div.is-banned {
+  border-left-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.risk-levels h3 {
+  color: var(--tone-dark);
+}
+
+.risk-levels .is-banned h3 {
+  color: var(--danger);
+}
+
+.risk-levels p {
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: 1.2;
+}
+
+.risk-levels p strong {
+  color: var(--tone-dark);
+}
+
+.risk-levels .is-banned p strong {
+  color: var(--danger);
+}
+
+.risk-levels .label {
+  color: var(--muted);
+}
+
+/* 10 국내 윤리 기준 */
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.principles .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.requirements {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.requirements > div {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  background: var(--blue-soft);
+}
+
+.requirements b {
+  color: var(--blue);
+  font-size: var(--fs-body);
+}
+
+.requirements span {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  line-height: 1.2;
+}
+
+.requirements em {
+  margin-right: 8px;
+  color: var(--blue-sub);
+  font-style: normal;
+}
+
+/* 사례 링크 */
+.case-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.case-links .label {
+  color: var(--muted);
+}
+
+.case-links a {
+  border: 2px solid var(--tone);
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  background: #fff;
+  color: var(--tone-dark);
+  font-size: var(--fs-label);
+  text-decoration: none;
+}
+
+.case-links a:hover {
+  background: var(--tone-soft);
+}

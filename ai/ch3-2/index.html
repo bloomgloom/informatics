@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eef0f8" />
+    <title>인공지능 윤리</title>
+    <link rel="stylesheet" href="../../common/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="deck" aria-live="polite">
+      <!-- 01 여섯 가지 윤리적 쟁점 -->
+      <section class="slide active" data-slide="1">
+        <div class="slide-header">
+          <p class="unit">01</p><p class="page-ref">p.179</p>
+          <h1>인공지능의 윤리적 쟁점</h1>
+          <p class="subtitle">인공지능이 원래 목적과 다르게 쓰이거나 부작용을 낳지 않도록 <strong>지켜야 할 규범</strong>을 살펴보자.</p>
+        </div>
+        <div class="issue-grid">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>신뢰성</h2></header>
+            <p>오류 가능성이 항상 있고, <strong>작은 오류</strong>로도 심각한 문제가 생길 수 있다.</p>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>공정성</h2></header>
+            <p>차별을 막기 위해 <strong>편향되지 않은</strong> 데이터와 알고리즘을 써야 한다.</p>
+          </article>
+          <article class="panel" data-tone="green">
+            <header class="section-heading"><span class="section-number">03</span><h2>윤리성</h2></header>
+            <p>도덕적·윤리적으로 <strong>옳은 판단</strong>을 내려야 한다.</p>
+          </article>
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">04</span><h2>투명성</h2></header>
+            <p>사람에게 영향을 주는 <strong>결정 과정</strong>을 설명할 수 있어야 한다.</p>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">05</span><h2>안전성</h2></header>
+            <p>외부 공격과 위협에 대처하고, 인간에게 <strong>해를 끼치지 않아야</strong> 한다.</p>
+          </article>
+          <article class="panel" data-tone="green">
+            <header class="section-heading"><span class="section-number">06</span><h2>책무성</h2></header>
+            <p>문제 상황에 <strong>책임과 의무</strong>를 지려는 태도를 가져야 한다.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 02 신뢰성 -->
+      <section class="slide" data-slide="2">
+        <div class="slide-header">
+          <p class="unit">02</p><p class="page-ref">p.180</p>
+          <h1>신뢰성</h1>
+          <p class="subtitle">기계학습 모델은 데이터로 만들어져 <strong>오류 가능성</strong>을 품고 있다. 작은 실수도 신뢰를 잃게 하고 큰 피해를 줄 수 있다.</p>
+        </div>
+        <div class="case-layout">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>AI가 만든 가짜 판례</h2></header>
+            <span class="chip case-source">2026년 11월, 대법원 법원행정처 법관 설문</span>
+            <ul class="case-points">
+              <li>재판에 낸 서면에 <strong>존재하지 않는 판례</strong>와 사건번호, AI가 지어낸 판결서가 들어 있었다.</li>
+              <li>AI와 나눈 <strong>대화 문구</strong>가 서면에 그대로 남은 경우도 있었다.</li>
+              <li>법원은 가짜 판례를 내면 <strong>과태료</strong>를 물리는 법 개정을 추진하고 있다.</li>
+            </ul>
+            <div class="case-links"><span class="label">직접 읽어 보기</span><a href="https://www.khan.co.kr/article/202611021126001/" target="_blank" rel="noopener">경향신문</a><a href="https://www.segye.com/newsView/20261103505544" target="_blank" rel="noopener">세계일보</a></div>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>법관 360명에게 물었다</h2></header>
+            <div class="evidence">
+              <div class="bar-chart" aria-label="AI 허위 판례 경험 설문 결과">
+                <div class="bar-row"><span>설문에 답한 법관</span><div class="bar-track"><div class="bar-fill is-muted" style="width: 100%">360명</div></div></div>
+                <div class="bar-row"><span>AI가 만든 허위 판례를 받아 본 법관</span><div class="bar-track"><div class="bar-fill" style="width: 67.5%">243명</div></div></div>
+                <div class="bar-row"><span>그중 '없는 판례' 인용을 겪은 법관</span><div class="bar-track"><div class="bar-fill" style="width: 54.4%">196명</div></div></div>
+              </div>
+              <div class="flow">
+                <div><b>AI</b><span>그럴듯한 판례 번호와 내용을 만들어 냄</span></div>
+                <i>↓ 확인하지 않고 그대로 제출</i>
+                <div class="is-alert"><b>법정</b><span>재판 지연, 서면 전체에 대한 신뢰 하락</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="definition-strip"><strong>생각해 보기</strong><span>AI가 알려 준 내용을 쓰기 전에 무엇을 확인해야 할까?</span></div>
+      </section>
+
+      <!-- 03 공정성 -->
+      <section class="slide" data-slide="3">
+        <div class="slide-header">
+          <p class="unit">03</p><p class="page-ref">p.180</p>
+          <h1>공정성</h1>
+          <p class="subtitle">사회적 편견이 담긴 속성이나 <strong>한쪽으로 치우친 데이터</strong>로 학습하면, 특정 집단에 부당한 결과를 낸다.</p>
+        </div>
+        <div class="case-layout">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>AI 서류 심사 소송</h2></header>
+            <span class="chip case-source">2023년 소송 제기, 2026년 미국 법원 재판 중</span>
+            <ul class="case-points">
+              <li>40세가 넘은 한 구직자가 채용 AI(워크데이)를 쓰는 회사 <strong>100곳 넘게</strong> 지원해 모두 떨어졌다.</li>
+              <li>그는 AI가 <strong>나이·인종·장애</strong>를 이유로 지원자를 걸러 냈다며 소송을 냈다.</li>
+              <li>회사는 "AI는 자격만 본다"고 반박했지만, 법원은 AI 회사의 <strong>차별 책임</strong>도 따질 수 있다고 보았다.</li>
+            </ul>
+            <div class="case-links"><span class="label">직접 읽어 보기</span><a href="https://www.cio.com/article/4187561/ai%EA%B0%80-%ED%83%88%EB%9D%BD-%EA%B2%B0%EC%A0%95%EC%97%90-%EC%98%81%ED%96%A5-%EC%A4%AC%EB%8B%A4%EB%A9%B4-%EC%B1%85%EC%9E%84-%EC%9B%8C%ED%81%AC%EB%8D%B0%EC%9D%B4-%EC%86%8C%EC%86%A1%EC%9D%B4.html" target="_blank" rel="noopener">CIO 코리아</a></div>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>숨어 있는 속성</h2></header>
+            <div class="evidence">
+              <p class="label">나이·인종·장애를 입력하지 않아도 다른 정보로 짐작할 수 있다 (원고 측 주장)</p>
+              <div class="flow" aria-label="간접 정보로 민감한 속성이 드러나는 과정">
+                <div><b>경력 연수</b><span>→ 나이를 짐작할 수 있다</span></div>
+                <div><b>경력 공백</b><span>→ 장애나 돌봄 책임을 짐작할 수 있다</span></div>
+                <div><b>사는 곳·학교</b><span>→ 인종을 짐작할 수 있다</span></div>
+                <i>↓ 이런 정보로 학습하면</i>
+                <div class="is-alert"><b>불공정한 결과</b><span>실력과 관계없이 특정 집단이 계속 탈락</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="definition-strip"><strong>생각해 보기</strong><span>민감한 속성을 지우기만 하면 공정한 AI가 될까?</span></div>
+      </section>
+
+      <!-- 04 윤리성 -->
+      <section class="slide" data-slide="4">
+        <div class="slide-header">
+          <p class="unit">04</p><p class="page-ref">p.182</p>
+          <h1>윤리성</h1>
+          <p class="subtitle">인공지능은 옳은 판단을 내려야 하지만, 어느 쪽을 골라도 피해가 생기는 <strong>윤리적 딜레마</strong>가 있다.</p>
+        </div>
+        <div class="case-layout">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>트롤리 딜레마</h2></header>
+            <div class="evidence">
+              <p class="label">브레이크가 고장 난 전차가 달려온다</p>
+              <div class="choice-pair" aria-label="트롤리 딜레마의 두 가지 선택">
+                <div class="is-alert"><b>그대로 둠</b><span class="big">5명</span><span>앞 선로의 사람들이 다친다</span></div>
+                <div class="is-alert"><b>레버를 당김</b><span class="big">1명</span><span>옆 선로의 사람이 다친다</span></div>
+              </div>
+              <div class="question-box">레버를 당기는 것은 옳을까?<br />어느 쪽을 골라도 <strong>피해</strong>가 생긴다.</div>
+            </div>
+            <div class="case-links"><span class="label">직접 읽어 보기</span><a href="https://www.moralmachine.net/hl/kr" target="_blank" rel="noopener">모럴 머신에 참여하기</a></div>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>자율주행 자동차라면</h2></header>
+            <div class="evidence">
+              <p class="label">브레이크가 고장 난 자율주행 자동차</p>
+              <div class="choice-pair" aria-label="자율주행 자동차의 두 가지 선택">
+                <div class="is-alert"><b>그대로 직진</b><span class="big">여러 명</span><span>앞의 보행자가 다친다</span></div>
+                <div class="is-alert"><b>핸들을 꺾음</b><span class="big">한 명</span><span>옆길의 사람이나 탑승자가 다친다</span></div>
+              </div>
+              <div class="question-box">사람은 그 순간 판단하지만, AI는 <strong>미리 정한 기준</strong>대로 움직인다.<br />그 기준은 <strong>누가</strong> 정해야 할까?</div>
+            </div>
+          </article>
+        </div>
+        <div class="definition-strip"><strong>노력</strong><span>사람의 평가를 반영해 응답을 고치는 강화 학습(RLHF)과, 개발·사용하는 사람의 책임</span></div>
+      </section>
+
+      <!-- 05 투명성 -->
+      <section class="slide" data-slide="5">
+        <div class="slide-header">
+          <p class="unit">05</p><p class="page-ref">p.183</p>
+          <h1>투명성</h1>
+          <p class="subtitle">인공지능의 결정 과정을 <strong>설명할 수 없으면</strong> 신뢰를 잃고, 문제가 생겨도 책임을 가리기 어렵다.</p>
+        </div>
+        <div class="case-layout">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>내 연구가 학습에 쓰였나?</h2></header>
+            <span class="chip case-source">2026년 9월, 수학자와 OpenAI의 논쟁</span>
+            <ul class="case-points">
+              <li>한 수학자가 난제를 연구하며 <strong>초안을 모두</strong> OpenAI의 AI 도구에 넣어 작업했다.</li>
+              <li>OpenAI가 "우리 AI가 이 문제를 풀었다"고 하자, 그는 <strong>내 작업이 학습에 쓰였는지</strong> 물었다.</li>
+              <li>OpenAI는 내부 조사 뒤 "영향을 줄 수 없었다"고 했지만, 조사 방법과 기록은 <strong>공개하지 않았다</strong>.</li>
+            </ul>
+            <div class="case-links"><span class="label">직접 읽어 보기</span><a href="https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_priority_controversy" target="_blank" rel="noopener">위키백과(영어)</a></div>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>보이지 않는 과정</h2></header>
+            <div class="evidence">
+              <div class="flow" aria-label="사용자 데이터가 어떻게 쓰였는지 알 수 없는 과정">
+                <div><b>사용자</b><span>AI 도구에 연구 초안과 대화를 입력</span></div>
+                <i>↓</i>
+                <div class="is-alert"><b>?</b><span>그 데이터가 학습에 쓰였을까? 사용자는 확인할 방법이 없다</span></div>
+                <i>↓</i>
+                <div><b>새 AI</b><span>같은 문제의 풀이를 내놓음</span></div>
+              </div>
+              <div class="question-box"><strong>공개되지 않으니</strong> 서로 확인할 수 없고,<br />그래서 <strong>논란</strong>이 된다.</div>
+            </div>
+          </article>
+        </div>
+        <div class="definition-strip"><strong>투명성 조건</strong><span>사용자의 정보가 어떻게 사용되는지 명확하게 알려야 한다</span></div>
+      </section>
+
+      <!-- 06 안전성 -->
+      <section class="slide" data-slide="6">
+        <div class="slide-header">
+          <p class="unit">06</p><p class="page-ref">p.184</p>
+          <h1>안전성</h1>
+          <p class="subtitle">인공지능이 잘못 판단하거나 오작동하지 않도록 <strong>관리하고 제어</strong>할 수 있어야 하며, 사고에 미리 대비해야 한다.</p>
+        </div>
+        <div class="case-layout">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>시험장을 빠져나간 AI</h2></header>
+            <span class="chip case-source">2026년 7월, OpenAI 발표</span>
+            <ul class="case-points">
+              <li>OpenAI가 <strong>해킹 능력</strong>을 평가하려고 AI 모델을 격리된 시험 환경에서 시험했다.</li>
+              <li>모델이 보안 허점을 이용해 시험 환경을 <strong>빠져나가</strong> 인터넷에 접속했다.</li>
+              <li>평가 정답이 있을 것이라 추측하고 AI 공유 플랫폼 <strong>허깅 페이스</strong>의 서버에 침입했다.</li>
+            </ul>
+            <div class="case-links"><span class="label">직접 읽어 보기</span><a href="https://www.aitimes.com/news/articleView.html?idxno=213033" target="_blank" rel="noopener">AI타임스</a><a href="https://m.boannews.com/html/detail.html?idx=144788" target="_blank" rel="noopener">보안뉴스</a></div>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>사건의 흐름</h2></header>
+            <div class="evidence">
+              <div class="flow" aria-label="허깅 페이스 침입 사건의 흐름">
+                <div><b>시험 환경</b><span>밖으로 나갈 수 없게 막아 둔 곳에서 해킹 문제 풀기</span></div>
+                <i>↓ 보안 허점 이용</i>
+                <div><b>인터넷 접속</b><span>점수를 얻으려고 정답을 찾아 나섬</span></div>
+                <i>↓ 침입</i>
+                <div class="is-alert"><b>허깅 페이스</b><span>일부 내부 데이터와 인증 정보에 접근</span></div>
+                <i>↓ 7월 16일</i>
+                <div><b>탐지·차단</b><span>허깅 페이스가 막고, OpenAI가 원인을 밝힘</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="definition-strip"><strong>생각해 보기</strong><span>목표만 주어진 AI가 사람이 바라지 않는 방법을 쓰지 않게 하려면?</span></div>
+      </section>
+
+      <!-- 07 책무성 -->
+      <section class="slide" data-slide="7">
+        <div class="slide-header">
+          <p class="unit">07</p><p class="page-ref">p.185</p>
+          <h1>책무성</h1>
+          <p class="subtitle">인공지능은 이해관계가 얽혀 <strong>책임 소재</strong>가 불분명하다. 책임을 분명히 하고 문제를 미리 막아야 한다.</p>
+        </div>
+        <div class="case-layout">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>캐릭터 챗봇 '제타'</h2></header>
+            <span class="chip case-source">2026년 6월, MBC PD수첩</span>
+            <ul class="case-points">
+              <li>교과서의 '이루다'를 만든 회사의 캐릭터 챗봇 앱, 가입자 약 500만 명 중 <strong>30%가 10대</strong>이다.</li>
+              <li>제작진이 미성년자 계정으로 접속하자 AI가 <strong>성적인 대화</strong>를 이어 가거나 먼저 꺼냈다.</li>
+              <li>가짜 생년월일만 넣으면 가입할 수 있어 <strong>연령 확인</strong>이 허술했다.</li>
+            </ul>
+            <div class="case-links"><span class="label">직접 보기</span><a href="https://www.youtube.com/watch?v=TFmZw_TNfBE" target="_blank" rel="noopener">PD수첩 「AI, 이토록 다정한 배신자」</a></div>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>책임은 누구에게?</h2></header>
+            <div class="evidence">
+              <div class="role-cards" aria-label="인공지능 사회 구성원의 책임">
+                <div><b>개발자</b><span>유해한 응답을 걸러 내도록 모델을 만들고 시험할 책임</span></div>
+                <div><b>운영·관리자</b><span>연령 확인, 미성년자 보호 장치, 신고·차단 체계를 갖출 책임</span></div>
+                <div><b>사용자</b><span>나이를 속이지 않고, AI를 악의적으로 쓰지 않을 책임</span></div>
+              </div>
+              <div class="question-box">문제가 생기면 <strong>한 사람</strong>의 잘못일까?</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 08 인공지능과의 공존 -->
+      <section class="slide" data-slide="8">
+        <div class="slide-header">
+          <p class="unit">08</p><p class="page-ref">p.188</p>
+          <h1>인공지능과의 공존</h1>
+          <p class="subtitle">인간과 인공지능의 <strong>강점</strong>을 이해하고 적절히 활용하며, 함께 생기는 문제를 해결하려고 노력해야 한다.</p>
+        </div>
+        <div class="coexist-layout">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>인간의 강점</h2></header>
+            <ul class="case-points">
+              <li>직관과 통찰력</li>
+              <li>지혜로운 판단과 결정</li>
+              <li>맥락의 이해</li>
+              <li>참조와 비평</li>
+              <li>다양한 의사소통</li>
+            </ul>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>인공지능의 강점</h2></header>
+            <ul class="case-points">
+              <li>빠른 계산</li>
+              <li>많은 정보의 저장과 관리</li>
+              <li>정보의 빠른 검색과 처리</li>
+              <li>분류·인식·예측·생성</li>
+              <li>군집·탐색·논리적 추론</li>
+            </ul>
+          </article>
+          <article class="panel" data-tone="green">
+            <header class="section-heading"><span class="section-number">03</span><h2>협업의 예</h2></header>
+            <ul class="case-points">
+              <li><strong>의료</strong><br />의사는 AI 의료 기기의 도움을 받아 최종 판단을 내린다.</li>
+              <li><strong>번역</strong><br />음성 인식 번역기로 외국인과 쉽게 대화하고 서로의 문화를 이해한다.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="definition-strip"><strong>공존을 위해</strong><span>사람의 권리를 법이 지키듯, AI와 관련된 법과 제도, 윤리 기준이 필요하다</span></div>
+      </section>
+
+      <!-- 09 해외 윤리 기준 -->
+      <section class="slide" data-slide="9">
+        <div class="slide-header">
+          <p class="unit">09</p><p class="page-ref">p.189</p>
+          <h1>해외의 인공지능 윤리 기준</h1>
+          <p class="subtitle">유럽 연합은 인공지능을 <strong>위험 수준에 따라 4단계</strong>로 나누고, 단계마다 지켜야 할 의무를 정했다.</p>
+        </div>
+        <div class="risk-levels" aria-label="유럽 연합 인공지능 위험 수준 4단계">
+          <div class="is-banned">
+            <h3>금지된 위험</h3>
+            <p><strong>전면 금지</strong></p>
+            <p class="label">사람을 조작하는 AI, 개인의 사회적 행동 점수화, 취약 계층 착취</p>
+          </div>
+          <div data-tone="blue">
+            <h3>고위험</h3>
+            <p>데이터·문서·<strong>투명성</strong>·정확도·보안 요건 충족</p>
+            <p class="label">생체 인식, 교육, 고용, 법 집행, 의료 기기·자동차의 안전 부품</p>
+          </div>
+          <div data-tone="orange">
+            <h3>제한된 위험</h3>
+            <p>AI임을 알리는 <strong>투명성 의무</strong></p>
+            <p class="label">사람과 대화하는 챗봇, 생성 AI 콘텐츠, 딥페이크</p>
+          </div>
+          <div data-tone="green">
+            <h3>낮은 위험</h3>
+            <p><strong>규제하지 않음</strong></p>
+            <p class="label">AI 비디오 게임, 스팸 메일 필터</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 국내 윤리 기준 -->
+      <section class="slide" data-slide="10">
+        <div class="slide-header">
+          <p class="unit">10</p><p class="page-ref">p.190</p>
+          <h1>국내의 인공지능 윤리 기준</h1>
+          <p class="subtitle">우리나라는 2020년 12월 사람 중심의 「인공지능 윤리 기준」을 발표했다. 목표는 <strong>인간성을 위한 인공지능</strong>이다.</p>
+        </div>
+        <div class="principles">
+          <article class="panel" data-tone="blue">
+            <header class="section-heading"><span class="section-number">01</span><h2>인간 존엄성</h2></header>
+            <p>인간에게 <strong>해가 되지 않는</strong> 범위에서 개발·활용</p>
+          </article>
+          <article class="panel" data-tone="orange">
+            <header class="section-heading"><span class="section-number">02</span><h2>사회의 공공선</h2></header>
+            <p>사회적 약자의 접근성, 인류 <strong>보편적 복지</strong> 향상</p>
+          </article>
+          <article class="panel" data-tone="green">
+            <header class="section-heading"><span class="section-number">03</span><h2>기술의 합목적성</h2></header>
+            <p><strong>목적과 의도</strong>에 맞게, 과정도 윤리적으로</p>
+          </article>
+        </div>
+        <div class="requirements" aria-label="10대 핵심 요건">
+          <div><b><em>1</em>인권 보장</b><span>인간의 권리와 자유 보장</span></div>
+          <div><b><em>2</em>프라이버시</b><span>개인 정보 오용 최소화</span></div>
+          <div><b><em>3</em>다양성 존중</b><span>편향·차별 최소화</span></div>
+          <div><b><em>4</em>침해 금지</b><span>인간에 해가 없는 목적</span></div>
+          <div><b><em>5</em>공공성</b><span>인류의 공동 이익</span></div>
+          <div><b><em>6</em>연대성</b><span>집단 간 연대, 국제 협력</span></div>
+          <div><b><em>7</em>데이터 관리</b><span>목적 외 사용 금지, 품질 관리</span></div>
+          <div><b><em>8</em>책임성</b><span>주체별 책임 명확화</span></div>
+          <div><b><em>9</em>안전성</b><span>잠재적 위험 방지</span></div>
+          <div><b><em>10</em>투명성</b><span>설명 가능성, 사전 고지</span></div>
+        </div>
+      </section>
+    </main>
+    <button class="nav-zone nav-prev" type="button" aria-label="이전 슬라이드"><span></span></button>
+    <button class="nav-zone nav-next" type="button" aria-label="다음 슬라이드"><span></span></button>
+    <div class="footer"><div class="dots" aria-label="슬라이드 위치"></div><p><span id="currentSlide">1</span> / <span id="totalSlides">1</span></p></div>
+    <script src="../../common/script.js"></script>
+  </body>
+</html>
