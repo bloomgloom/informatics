@@ -17,7 +17,7 @@ import requests
 import server
 
 # 해설지는 비공개 저장소에 있습니다. 없으면 해설지 시험을 건너뜁니다.
-ANSWER_KEY = ROOT.parents[3] / "informatics-private/informatics/ch3-3/neis-api-activity/neis-api-activity.ipynb"
+ANSWER_KEY = ROOT.parents[3] / "informatics-private/informatics/ch3-5/neis-api-activity/neis-api-activity.ipynb"
 REAL_KEY = "real-neis-secret"
 STUDENT_KEY = "lunch-tiger-piano"
 calls = []

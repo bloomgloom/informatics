@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT))
 import server
 
 # 해설지는 비공개 저장소에 있습니다. 없으면 해설지 시험을 건너뜁니다.
-ANSWER_DIR = ROOT.parents[3] / "informatics-private/informatics/ch3-3/random-chat-activity"
+ANSWER_DIR = ROOT.parents[3] / "informatics-private/informatics/ch1-1/random-chat-activity"
 
 mock = {"fail": False, "calls": 0, "bodies": []}
 

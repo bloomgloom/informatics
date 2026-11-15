@@ -255,7 +255,7 @@ with tempfile.TemporaryDirectory() as folder:
     server.CONFIG_PATH = saved_path
 
 # 해설지는 비공개 저장소에 있습니다. 없으면 해설지 시험을 건너뜁니다.
-ANSWER_KEY = ROOT.parents[3] / "informatics-private/informatics/ch3-3/llm-api-activity/llm-api-activity.ipynb"
+ANSWER_KEY = ROOT.parents[3] / "informatics-private/informatics/ch4-1/llm-api-activity/llm-api-activity.ipynb"
 student = json.loads((ROOT / "llm-api-activity.ipynb").read_text(encoding="utf-8"))
 teacher_code = []
 if ANSWER_KEY.exists():
