@@ -45,6 +45,11 @@ cache = {}  # (서비스, 요청 항목) -> (저장 시각, 응답)
 request_count = 0
 
 
+class ClassServer(ThreadingHTTPServer):
+    # 기본값(5)이면 30명이 한꺼번에 접속할 때 일부 연결이 끊깁니다.
+    request_queue_size = 128
+
+
 class Busy(Exception):
     """기다려도 나이스를 호출하지 못한 경우입니다."""
 
@@ -286,7 +291,7 @@ def start():
     ask_school(config, config["neis_key"])
     config["student_key"] = make_student_key()
     api_slots = threading.BoundedSemaphore(config["max_concurrent"])
-    server = ThreadingHTTPServer(("0.0.0.0", config["port"]), Handler)
+    server = ClassServer(("0.0.0.0", config["port"]), Handler)
 
     print(f"학교: {config['school_name']}")
     print(f"제한: 학생당 분당 {config['limit_per_minute']}회, 동시 호출 {config['max_concurrent']}개, "

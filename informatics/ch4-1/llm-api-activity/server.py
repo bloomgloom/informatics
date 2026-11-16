@@ -3,7 +3,10 @@
 Anthropic API와 같은 형식으로 요청을 받으므로 학생은 anthropic 라이브러리를 그대로 쓰고,
 환경 변수 ANTHROPIC_BASE_URL과 ANTHROPIC_API_KEY만 이 서버의 주소와 수업용 키로 설정합니다.
 
-학생 코드 -> (이 서버: 수업용 키 확인, 모델 제한, 사용량 제한, 실제 키로 교체) -> Claude API
+학생 코드 -> (이 서버: 수업용 키 확인, 모델 제한, 사용량 제한, 수업 규칙 추가, 실제 키로 교체) -> Claude API
+
+모든 요청과 응답은 시간, IP와 함께 logs/llm-날짜-시각.jsonl에 기록합니다(git 제외).
+요청마다 config.json의 class_rules(수업 상황 설명과 부적절한 내용 거절)를 system 맨 앞에 붙입니다.
 
 설정: python3 server.py setup  (config.example.json으로 config.json을 만듦)
 실행: python3 server.py start  (API 키를 묻고, 수업용 키를 받아 서버를 엶. API 키는 파일에 저장하지 않음)
@@ -26,6 +29,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 CONFIG_PATH = Path(__file__).parent / "config.json"
+LOG_DIR = Path(__file__).parent / "logs"
 EXAMPLE_PATH = Path(__file__).parent / "config.example.json"
 API_URL = "https://api.anthropic.com/v1/messages"
 API_VERSION = "2023-06-01"
@@ -46,6 +50,35 @@ recent_requests = defaultdict(deque)  # 학생 IP -> 최근 1분 요청 시각
 # 아래 두 횟수는 서버를 켤 때마다 0부터 다시 셉니다. 즉 수업당 제한입니다.
 student_counts = defaultdict(int)  # 학생 IP -> 이번 수업 요청 수
 class_count = 0
+log_file = None
+log_lock = threading.Lock()
+
+
+def write_log(event, **fields):
+    """요청과 응답 내용까지 모두 기록합니다. 파일은 git에서 제외되어 있습니다."""
+    if log_file is None:
+        return
+    entry = {"time": time.strftime("%Y-%m-%d %H:%M:%S"), "event": event, **fields}
+    with log_lock:
+        log_file.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        log_file.flush()
+
+
+def add_class_rules(system):
+    """학생이 정한 system 앞에 수업 규칙을 붙입니다. 학생 지시와 부딪치면 수업 규칙을 따르게 합니다."""
+    rules = config.get("class_rules", "").strip()
+    if not rules:
+        return system
+    if system is None or system == "":
+        return rules
+    if isinstance(system, str):
+        return rules + "\n\n[학생이 정한 지시]\n" + system
+    return [{"type": "text", "text": rules + "\n\n[학생이 정한 지시]"}] + system
+
+
+class ClassServer(ThreadingHTTPServer):
+    # 기본값(5)이면 30명이 한꺼번에 접속할 때 일부 연결이 끊깁니다.
+    request_queue_size = 128
 
 
 class BadRequest(Exception):
@@ -125,8 +158,12 @@ def parse_request(body):
     if total > config["max_input_chars"]:
         raise BadRequest(f"입력이 너무 깁니다. ({total}자, 최대 {config['max_input_chars']}자)")
 
-    # 출력 길이는 설정값을 넘지 않게 줄입니다.
-    return {**body, "max_tokens": min(max_tokens, config["max_tokens"])}
+    # 출력 길이는 설정값을 넘지 않게 줄이고, 수업 규칙을 system 앞에 붙입니다.
+    payload = {**body, "max_tokens": min(max_tokens, config["max_tokens"])}
+    system = add_class_rules(body.get("system"))
+    if system is not None:
+        payload["system"] = system
+    return payload
 
 
 def check_limit(ip):
@@ -245,13 +282,15 @@ class Handler(BaseHTTPRequestHandler):
     def send_error_json(self, status, error_type, message):
         # Anthropic API의 오류 형식과 같습니다.
         self.log_chat(f"거절({status}): {message}")
+        if getattr(self, "student_request", None) is not None:
+            write_log("거절", ip=self.client_address[0], status=status, reason=message, request=self.student_request)
         self.send_json(status, {"type": "error", "error": {"type": error_type, "message": message}})
 
     def log_message(self, format, *args):
         pass  # 기본 접속 기록 대신 log_chat만 씁니다.
 
     def log_chat(self, result):
-        # 학생이 쓴 내용은 기록하지 않습니다.
+        # 교사 화면에는 짧게만 보이고, 학생이 쓴 내용과 답은 write_log로 파일에 남깁니다.
         print(f"{time.strftime('%H:%M:%S')} {self.client_address[0]} {result}", flush=True)
 
     def check_key(self):
@@ -280,6 +319,7 @@ class Handler(BaseHTTPRequestHandler):
         if self.path.split("?")[0] != "/v1/messages":
             self.send_error_json(404, "not_found_error", "없는 주소입니다.")
             return
+        self.student_request = None
         if not self.check_key():
             return
 
@@ -287,7 +327,9 @@ class Handler(BaseHTTPRequestHandler):
             length = int(self.headers.get("Content-Length", 0))
             if not 0 < length <= MAX_BODY_BYTES:
                 raise BadRequest("요청 내용이 없거나 너무 큽니다.")
-            payload = parse_request(json.loads(self.rfile.read(length)))
+            body = json.loads(self.rfile.read(length))
+            self.student_request = body  # 기록에는 수업 규칙을 붙이기 전, 학생이 보낸 그대로 남깁니다.
+            payload = parse_request(body)
         except BadRequest as error:
             self.send_error_json(400, "invalid_request_error", str(error))
             return
@@ -330,6 +372,10 @@ class Handler(BaseHTTPRequestHandler):
         # 생각 블록을 빼서 어느 모델에서든 content[0].text가 답이 되게 합니다.
         result["content"] = [block for block in result.get("content", [])
                              if block.get("type") not in ("thinking", "redacted_thinking")]
+        answer = "".join(block.get("text", "") for block in result["content"])
+        write_log("응답", ip=self.client_address[0], request=self.student_request, answer=answer,
+                  stop_reason=result.get("stop_reason"), input_tokens=usage.get("input_tokens", 0),
+                  output_tokens=usage.get("output_tokens", 0))
         self.send_json(200, result)
 
 
@@ -343,13 +389,23 @@ def local_ip():
             return "127.0.0.1"
 
 
+def open_log():
+    """이번 수업의 기록 파일을 엽니다. 본인만 읽을 수 있게 만듭니다."""
+    global log_file
+    LOG_DIR.mkdir(mode=0o700, exist_ok=True)
+    path = LOG_DIR / f"llm-{time.strftime('%Y%m%d-%H%M%S')}.jsonl"
+    path.touch(mode=0o600)
+    log_file = path.open("a", encoding="utf-8")
+    return path
+
+
 def start():
     """수업용 키를 받아 서버를 열고 접속 정보를 안내합니다."""
     global config, api_slots
     config = load_config()
     config["api_key"] = ask_api_key()
     api_slots = threading.BoundedSemaphore(config["max_concurrent"])
-    server = ThreadingHTTPServer(("0.0.0.0", config["port"]), Handler)
+    server = ClassServer(("0.0.0.0", config["port"]), Handler)
 
     print("Claude에게 수업용 키를 받는 중입니다...", flush=True)
     try:
@@ -365,6 +421,8 @@ def start():
     print(f"  수업용 키 (ANTHROPIC_API_KEY):  {config['student_key']}")
     print(f"  모델:                           {config['model']}")
     print()
+    print(f"기록: {open_log()} (요청과 응답 내용, IP, 시간)")
+    print(f"수업 규칙: {'사용' if config.get('class_rules', '').strip() else '사용 안 함'} (config.json의 class_rules)")
     print("끄려면 Ctrl+C", flush=True)
     try:
         server.serve_forever()

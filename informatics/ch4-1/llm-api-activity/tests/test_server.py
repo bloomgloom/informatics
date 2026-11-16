@@ -92,7 +92,7 @@ class Mock(BaseHTTPRequestHandler):
 
 
 def start(handler):
-    httpd = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    httpd = server.ClassServer(("127.0.0.1", 0), handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     return httpd.server_port
 
@@ -127,6 +127,39 @@ def error_of(func):
         return error
     return None
 
+
+# --- 수업 규칙: system 앞에 붙임
+RULES = "수업 규칙: 부적절한 요청은 거절"
+server.config["class_rules"] = RULES
+reset()
+create()
+check("규칙: system 없으면 규칙만", state["bodies"][0]["system"] == RULES)
+reset()
+create(system="너는 요리사야.")
+check("규칙: 학생 system 앞에 붙임", state["bodies"][0]["system"].startswith(RULES) and state["bodies"][0]["system"].endswith("너는 요리사야."))
+reset()
+create(system=[{"type": "text", "text": "블록 역할"}])
+check("규칙: 블록 system 앞에 붙임", state["bodies"][0]["system"][0]["text"].startswith(RULES) and state["bodies"][0]["system"][1]["text"] == "블록 역할")
+server.config["class_rules"] = ""
+
+# --- 기록: 요청과 응답, IP, 시간
+import tempfile
+log_dir = Path(tempfile.mkdtemp())
+server.LOG_DIR = log_dir
+log_path = server.open_log()
+reset()
+create(messages=[{"role": "user", "content": "기록될 질문"}], system="학생 역할")
+error_of(lambda: create(model="claude-opus-5-5", messages=[{"role": "user", "content": "거절될 질문"}]))
+server.log_file.close()
+server.log_file = None
+entries = [json.loads(line) for line in log_path.read_text(encoding="utf-8").splitlines()]
+ok_entry = next((e for e in entries if e["event"] == "응답"), {})
+bad_entry = next((e for e in entries if e["event"] == "거절"), {})
+check("기록: 응답에 질문·답·IP·시간", ok_entry.get("ip") == "127.0.0.1" and "기록될 질문" in json.dumps(ok_entry, ensure_ascii=False)
+      and ok_entry.get("answer") == "메시지 1개 받음" and ok_entry.get("time") and ok_entry["request"]["system"] == "학생 역할")
+check("기록: 거절도 남김", bad_entry.get("status") == 400 and "거절될 질문" in json.dumps(bad_entry, ensure_ascii=False))
+check("기록: 실제 키 없음", REAL_KEY not in log_path.read_text(encoding="utf-8"))
+check("기록 파일은 본인만 읽기", (log_path.stat().st_mode & 0o077) == 0)
 
 # --- 공식 형식
 reset()
@@ -263,14 +296,14 @@ if ANSWER_KEY.exists():
     reset()
     server.config["max_input_chars"] = 4000
     teacher = json.loads(ANSWER_KEY.read_text(encoding="utf-8"))
-    inputs = iter(["과일", "apple"])
+    inputs = iter(["내 별명은 코딩왕이야.", "/끝", "과일", "apple"])  # 단계 8 채팅, 퀴즈
     original_input = builtins.input
     builtins.input = lambda prompt="": (print(prompt, end=""), next(inputs))[1]
     namespace = {}
     for cell in teacher["cells"]:
         if cell["cell_type"] != "code":
             continue
-        source = "".join(cell["source"]).replace("http://선생님IP:8000", base_url).replace("수업용키", STUDENT_KEY)
+        source = "".join(cell["source"]).replace("http://선생님IP:포트번호", base_url).replace("수업용키", STUDENT_KEY)
         if "server.accept()" in source:  # 실행하면 기다리는 챗봇 칸은 아래에서 따로 시험합니다.
             chatbot_code = source
             continue
@@ -317,11 +350,12 @@ student_code = ["".join(c["source"]) for c in student["cells"] if c["cell_type"]
 if ANSWER_KEY.exists():
     teacher_code = ["".join(c["source"]) for c in teacher["cells"] if c["cell_type"] == "code"]
 check("활동지 첫 칸은 설치 코드", "pip" in student_code[0])
-check("활동지 나머지 코드 칸 비어 있음", all(not code.strip() or code.startswith("# 여기에") for code in student_code[1:]), f"{len(student_code)}칸")
+check("활동지 접속 설정 칸만 코드", "ANTHROPIC_BASE_URL" in student_code[1] and "선생님IP:포트번호" in student_code[1])
+check("활동지 나머지 코드 칸 비어 있음", all(not code.strip() or code.startswith("# 여기에") for code in student_code[2:]), f"{len(student_code)}칸")
 markdown = "\n".join("".join(c["source"]) for c in student["cells"] if c["cell_type"] == "markdown")
-check("활동지에 코드가 보이지 않음", "```python" not in markdown and not any(code in markdown for code in teacher_code[1:]))
+check("활동지에 코드가 보이지 않음", "```python" not in markdown and not any(code in markdown for code in teacher_code[2:]))
 check("활동지에 설명 있음", all(word in markdown for word in ("채팅에서 코드로", "API 키", "중계 서버", "코드 형식은 동일")))
-check("활동지 단계 9에 input 없음", "while True" not in markdown and "input(" not in markdown)
+check("활동지에 기록 안내", "기록" in markdown)
 for word in ("[교사]", "QUIZ_RULE", "sk-", "해설지"):
     check(f"활동지에 '{word}' 없음", word not in markdown)
 

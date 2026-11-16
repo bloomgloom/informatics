@@ -64,7 +64,7 @@ class Mock(BaseHTTPRequestHandler):
 
 
 def start(handler):
-    httpd = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    httpd = server.ClassServer(("127.0.0.1", 0), handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     return httpd.server_address[1]
 
