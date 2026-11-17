@@ -237,9 +237,15 @@ df.<span class="t-fn">drop</span>(인덱스, axis=<span class="t-num">0</span>, 
 <button class="copy" type="button" aria-label="코드 복사">복사</button>
 </div>
 </div>
-<div class="label"><p class="step"><span class="step-num">2-3</span>정규화</p><code class="pattern"><span class="t-fn">MinMaxScaler</span>().<span class="t-fn">fit_transform</span>()</code></div>
+<div class="label"><p class="step"><span class="step-num">2-3</span>정규화</p><code class="pattern">df.<span class="t-fn">describe</span>() → <span class="t-fn">MinMaxScaler</span>().<span class="t-fn">fit_transform</span>()</code></div>
 <div class="cell span3 tone-shared" data-types="reg cls clu">
 <p class="badge">세 유형 공통</p>
+<p class="subhead">정규화 필요 여부 확인</p>
+<div class="code-wrap">
+<pre class="code"><code>df.<span class="t-fn">describe</span>()        <span class="t-com"># 열마다 min · max 범위 비교 → 크기 차이가 크면 정규화</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="subhead">정규화 도구 준비</p>
 <div class="code-wrap">
 <pre class="code"><code><span class="t-kw">from</span> sklearn.preprocessing <span class="t-kw">import</span> MinMaxScaler
 scaler = <span class="t-fn">MinMaxScaler</span>()</code></pre>
@@ -255,12 +261,25 @@ scaler = <span class="t-fn">MinMaxScaler</span>()</code></pre>
 <pre class="code"><code>df[[<span class="t-str">'열1'</span>, <span class="t-str">'열2'</span>, <span class="t-str">'열3'</span>]] = scaler.<span class="t-fn">fit_transform</span>(df[[<span class="t-str">'열1'</span>, <span class="t-str">'열2'</span>, <span class="t-str">'열3'</span>]])   <span class="t-com"># 고른 열만 0~1 로 바뀜</span></code></pre>
 <button class="copy" type="button" aria-label="코드 복사">복사</button>
 </div>
+<p class="subhead">새 데이터에 같은 기준 적용</p>
+<div class="code-wrap">
+<pre class="code"><code>new_scaled = scaler.<span class="t-fn">transform</span>(new_X)   <span class="t-com"># 기존 데이터의 min · max 기준으로 변환</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ fit_transform → 기존 데이터에서 min · max 를 구하고 변환<span class="note-line">transform     → 이미 구한 min · max 로 변환만 (새 데이터는 기준에 반영되지 않음)</span><span class="note-line">새 데이터에 다시 fit 하면 모델이 배운 기준과 달라져 예측이 틀어짐</span></p>
 <p class="note">※ 정규화한 값을 쓰려면 다음 단계에 그 결과를 넣어야 함<span class="note-line">새 변수에 담았으면 → X_scaled 를 사용</span><span class="note-line">원본에 덮어썼으면  → df 에서 뽑은 X 가 이미 정규화된 상태</span></p>
-<p class="note">※ 속성마다 값의 크기 차이가 클 때 필요 (예: 부리 깊이 17 vs 체질량 4200)<span class="note-line">사용 여부 →  회귀: 사용 안 함  |  분류(kNN·로지스틱): 사용  |  군집: 사용(거리 기반)</span></p>
+<p class="note">※ 속성마다 값의 크기 차이가 클 때 필요 (예: 부리 깊이 17 vs 체질량 4200)<span class="note-line">사용 여부 →  회귀: 선택(결과는 같음, 계수 크기를 비교할 때 사용)  |  분류(kNN·로지스틱): 사용  |  군집: 사용(거리 기반)</span></p>
 </div>
 <div class="label"><p class="step"><span class="step-num">2-4</span>데이터 마련</p><span class="qualifier">(X, y 선정)</span><code class="pattern">X = 입력 / y = 정답</code></div>
 <div class="cell span2 tone-shared" data-types="reg cls">
 <p class="badge">회귀 · 분류 공통</p>
+<p class="subhead">속성 고르기 (필요한 경우)</p>
+<div class="code-wrap">
+<pre class="code"><code>sns.<span class="t-fn">heatmap</span>(df.<span class="t-fn">corr</span>(numeric_only=<span class="t-kw">True</span>), annot=<span class="t-kw">True</span>)   <span class="t-com"># 정답 열과 상관이 큰 속성 찾기</span></code></pre>
+<button class="copy" type="button" aria-label="코드 복사">복사</button>
+</div>
+<p class="note">※ 정답 열이 숫자일 때 사용 (회귀, 0/1 분류)</p>
+<p class="subhead">X, y 나누기</p>
 <div class="code-wrap">
 <pre class="code"><code>X = df[[<span class="t-str">'열1'</span>, <span class="t-str">'열2'</span>, ...]]           <span class="t-com"># 여러 개 선택</span>
 y = df[<span class="t-str">'정답 열'</span>]</code></pre>
@@ -381,7 +400,8 @@ df[<span class="t-str">'cluster'</span>] = model.labels_</code></pre>
 <div class="cell span2 tone-shared" data-types="reg cls">
 <p class="badge">회귀 · 분류 공통</p>
 <div class="code-wrap">
-<pre class="code"><code>model.<span class="t-fn">score</span>(X_test, y_test)</code></pre>
+<pre class="code"><code>model.<span class="t-fn">score</span>(X_test, y_test)     <span class="t-com"># 테스트 데이터 점수</span>
+model.<span class="t-fn">score</span>(X_train, y_train)   <span class="t-com"># 훈련 데이터 점수 (테스트 점수와 비교)</span></code></pre>
 <button class="copy" type="button" aria-label="코드 복사">복사</button>
 </div>
 <p class="note">※ 같은 코드지만 결과의 의미가 다름<span class="note-line">회귀 → 결정계수 R²  (1에 가까울수록 잘 설명)</span><span class="note-line">분류 → 분류 정확도  (맞힌 비율)</span></p>
